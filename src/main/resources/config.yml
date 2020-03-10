@@ -1,0 +1,54 @@
+#       ----------- + CryptoCurrency by Ziga Zajc + -----------   #
+#                                                                 #
+#                               Config                            #
+#                                                                 #
+#       ----------- + --------------------------- + -----------   #
+#
+#       You can use chat colors:
+#                ________________________
+#               |   code: | color:       |
+#               |________________________|
+#               |     &0  |	Black	     |
+#               |     &1  |	Dark Blue	 |
+#               |     &2  |	Dark Green	 |
+#               |     &3  |	Dark Aqua	 |
+#               |     &4  |	Dark Red	 |
+#               |     &5  |	Dark Purple	 |
+#               |     &6  |	Gold	     |
+#               |     &7  |	Gray	     |
+#               |     &8  |	Dark Gray	 |
+#               |     &9  |	Blue	     |
+#               |     &a  |	Green	     |
+#               |     &b  |	Aqua	     |
+#               |     &c  |	Red	         |
+#               |     &d  |	Light Purple |
+#               |     &e  |	Yellow	     |
+#               |     &f  |	White	     |
+#               |     &k  |	Obfuscated	 |
+#               |     &l  |	Bold	     |
+#               |     &m  |	Strikethrough|
+#               |     &n  |	Underline	 |
+#               |     &o  |	Italic	     |
+#               |     &r  |	Reset	     |
+#               |________________________|
+#
+#----------------------------------------------------------
+#                        Config
+#----------------------------------------------------------
+# Players will see messages in default language (Default is English) - Available options: English.
+# If you translate plugin into any other language feel free to send it and I will include it into this plugin.
+default_language: "English"
+#----------------------------------------------------------
+#                        Bungeecord
+#----------------------------------------------------------
+# Do you want to use mysql database?
+mysql: false
+# Here are all data for connection to Mysql database. Please create database, user and password by yourself. Do not use root as user, because of security risk!
+mysql_host: "localhost"
+mysql_port: "3306"
+mysql_database: "CryptoCurrency"
+mysql_user: "root"
+mysql_password: ""
+mysql_useSSL: false
+# How many seconds expires before plugin will collect data from MySQl again. (Default is 5)
+mysql_delay: 5
