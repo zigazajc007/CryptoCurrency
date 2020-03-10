@@ -50,5 +50,5 @@ vault_required: "&cYour server don't have installed Vault to complete this actio
 message_btc_balance: "&aYou have &2{amount} BTC &ain your wallet."
 message_btc_lost_wallet: "&cYou have lost your btc wallet. I can't find your address."
 message_btc_not_enough: "&cYou don't have enough BTC to send."
-message_btc_send_success: "&aYou have sended &2{amount} BTC &ato &2{player}&a."
-message_btc_receive_success: "&2{player} &asended you &2{amount} BTC&a."
+message_btc_send_success: "&aYou have sent &2{amount} BTC &ato &2{player}&a."
+message_btc_receive_success: "&2{player} &ahas sent you &2{amount} BTC&a."
