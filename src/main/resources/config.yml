@@ -39,6 +39,11 @@
 # If you translate plugin into any other language feel free to send it and I will include it into this plugin.
 default_language: "English"
 #----------------------------------------------------------
+#                        BTC API
+#----------------------------------------------------------
+# You can choose between: USD, AUD, BRL, CAD, CHF, CLP, CNY, DKK, EUR, GBP, HKD, INR, ISK, JPY, KRW, NZD, PLN, RUB, SEK, SGD, THB and TWD.
+btc_api_currency: "USD"
+#----------------------------------------------------------
 #                        Bungeecord
 #----------------------------------------------------------
 # Do you want to use mysql database?
