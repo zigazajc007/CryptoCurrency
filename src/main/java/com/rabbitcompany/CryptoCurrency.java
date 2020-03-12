@@ -1,6 +1,7 @@
 package com.rabbitcompany;
 
 import com.rabbitcompany.commands.BTC;
+import com.rabbitcompany.listeners.PlayerJoinListener;
 import com.rabbitcompany.utils.Message;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -62,11 +63,14 @@ public final class CryptoCurrency extends JavaPlugin {
             try {
                 mySQL = new MySQL(getConf().getString("mysql_host"), getConf().getString("mysql_port"), getConf().getString("mysql_database"), getConf().getString("mysql_user"), getConf().getString("mysql_password"), "?useSSL=" + getConf().getBoolean("mysql_useSSL") +"&allowPublicKeyRetrieval=true");
                 conn = mySQL.getConnection();
-                conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_btc(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance BIGINT UNSIGNED);");
+                conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_btc(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
             } catch (SQLException e) {
                 conn = null;
             }
         }
+
+        //Listeners
+        new PlayerJoinListener(this);
 
         //Commands
         this.getCommand("btc").setExecutor((CommandExecutor) new BTC());
@@ -157,7 +161,7 @@ public final class CryptoCurrency extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Name: &bCryptoCurrency"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Developer: &bBlack1_TV"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b1.0"));
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b0.0.1"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8| &cSupport:"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
