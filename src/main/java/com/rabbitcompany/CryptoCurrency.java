@@ -99,10 +99,8 @@ public final class CryptoCurrency extends JavaPlugin {
         this.getCommand("eth").setTabCompleter(new TabCompletion());
 
         //Updater
-        new UpdateChecker(this, 71157).getVersion(updater_version -> {
-            if (!getDescription().getVersion().equalsIgnoreCase(updater_version)) {
-                new_version = updater_version;
-            }
+        new UpdateChecker(this, 51).getVersion(updater_version -> {
+            if (!getDescription().getVersion().equalsIgnoreCase(updater_version)) new_version = updater_version;
             info("&aEnabling");
         });
 

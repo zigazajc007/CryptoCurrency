@@ -25,7 +25,8 @@ public class ETH implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        NumberFormat formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("eth_format"));
+        NumberFormat formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("eth_format", "0.000"));
+        NumberFormat money_formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("money_format", "###,###.00"));
 
         if(args.length == 0){
             Message.Help(player, "eth");
@@ -38,7 +39,7 @@ public class ETH implements CommandExecutor {
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
                 }
             }else if(args[0].equals("price")){
-                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_eth_price").replace("{amount}", formatter.format(API.eth_price)));
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_eth_price").replace("{amount}", money_formatter.format(API.eth_price)));
             }else if(args[0].equals("balance") || args[0].equals("bal") || args[0].equals("check") || args[0].equals("info")){
                 if(CryptoCurrency.conn != null){
                     double balance = MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(),"eth");

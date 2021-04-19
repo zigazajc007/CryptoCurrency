@@ -25,7 +25,8 @@ public class BTC implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        NumberFormat formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("btc_format"));
+        NumberFormat formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("btc_format", "0.0000"));
+        NumberFormat money_formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("money_format", "###,###.00"));
 
         if(args.length == 0){
             Message.Help(player, "btc");
@@ -38,7 +39,7 @@ public class BTC implements CommandExecutor {
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
                 }
             }else if(args[0].equals("price")){
-                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_btc_price").replace("{amount}", formatter.format(API.btc_price)));
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_btc_price").replace("{amount}", money_formatter.format(API.btc_price)));
             }else if(args[0].equals("balance") || args[0].equals("bal") || args[0].equals("check") || args[0].equals("info")){
                 if(CryptoCurrency.conn != null){
                     double balance = MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(),"btc");

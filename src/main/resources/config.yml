@@ -38,6 +38,8 @@
 # Players will see messages in default language (Default is English) - Available options: English.
 # If you translate plugin into any other language feel free to send it and I will include it into this plugin.
 default_language: "English"
+# Money decimal format
+money_format: "##,###.00"
 #----------------------------------------------------------
 #                        BTC API
 #----------------------------------------------------------
@@ -68,5 +70,3 @@ mysql_database: "CryptoCurrency"
 mysql_user: "root"
 mysql_password: ""
 mysql_useSSL: false
-# How many seconds expires before plugin will collect data from MySQl again. (Default is 5)
-mysql_delay: 5
