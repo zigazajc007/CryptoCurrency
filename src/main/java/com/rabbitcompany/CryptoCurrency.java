@@ -99,13 +99,11 @@ public final class CryptoCurrency extends JavaPlugin {
         this.getCommand("eth").setTabCompleter(new TabCompletion());
 
         //Updater
-        new UpdateChecker(this, 51).getVersion(updater_version -> {
+        new UpdateChecker(this, 80459).getVersion(updater_version -> {
             if (!getDescription().getVersion().equalsIgnoreCase(updater_version)) new_version = updater_version;
             info("&aEnabling");
+            Updater.sendConsole();
         });
-
-        //Check for updates
-        Updater.sendConsole();
 
         API.startBTCPriceFetcher(getConf().getString("btc_api_currency", "USD"));
         API.startETHPriceFetcher(getConf().getString("eth_api_currency", "USD"));
