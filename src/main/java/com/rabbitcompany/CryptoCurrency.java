@@ -3,14 +3,13 @@ package com.rabbitcompany;
 import com.rabbitcompany.commands.BTC;
 import com.rabbitcompany.listeners.PlayerJoinListener;
 import com.rabbitcompany.utils.Message;
+import com.zaxxer.hikari.HikariDataSource;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import pro.husk.mysql.MySQL;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +20,10 @@ public final class CryptoCurrency extends JavaPlugin {
 
     private static CryptoCurrency instance;
 
+    public static String new_version = null;
+
     //SQL
-    public static MySQL mySQL;
+    public static HikariDataSource hikari;
     public static Connection conn = null;
 
     //VaultAPI
@@ -31,15 +32,15 @@ public final class CryptoCurrency extends JavaPlugin {
 
     //Config
     private File co = null;
-    private YamlConfiguration conf = new YamlConfiguration();
+    private final YamlConfiguration conf = new YamlConfiguration();
 
     //English
     private File en = null;
-    private YamlConfiguration engl = new YamlConfiguration();
+    private final YamlConfiguration engl = new YamlConfiguration();
 
     //BTC Wallets
     private File bw = null;
-    private YamlConfiguration btcw = new YamlConfiguration();
+    private final YamlConfiguration btcw = new YamlConfiguration();
 
     @Override
     public void onEnable() {
@@ -51,19 +52,27 @@ public final class CryptoCurrency extends JavaPlugin {
         mkdir();
         loadYamls();
 
-        info("&aEnabling");
-
         //VaultAPI
-        if(setupEconomy()){
-            vault = true;
+        if (getServer().getPluginManager().getPlugin("Vault") != null){
+            vault = setupEconomy();
         }
 
         //SQL
         if(getConf().getBoolean("mysql", false)){
             try {
-                mySQL = new MySQL(getConf().getString("mysql_host"), getConf().getString("mysql_port"), getConf().getString("mysql_database"), getConf().getString("mysql_user"), getConf().getString("mysql_password"), "?useSSL=" + getConf().getBoolean("mysql_useSSL") +"&allowPublicKeyRetrieval=true");
-                conn = mySQL.getConnection();
+                hikari = new HikariDataSource();
+                hikari.setMaximumPoolSize(10);
+                hikari.setJdbcUrl("jdbc:mysql://" + getConf().getString("mysql_host") + ":" + getConf().getString("mysql_port") + "/" + getConf().getString("mysql_database"));
+                hikari.setUsername(getConf().getString("mysql_user"));
+                hikari.setPassword(getConf().getString("mysql_password"));
+                hikari.addDataSourceProperty("useSSL", getConf().getString("mysql_useSSL"));
+                hikari.addDataSourceProperty("cachePrepStmts", "true");
+                hikari.addDataSourceProperty("prepStmtCacheSize", "250");
+                hikari.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
+                conn = hikari.getConnection();
                 conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_btc(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
+                conn.close();
             } catch (SQLException e) {
                 conn = null;
             }
@@ -73,7 +82,18 @@ public final class CryptoCurrency extends JavaPlugin {
         new PlayerJoinListener(this);
 
         //Commands
-        this.getCommand("btc").setExecutor((CommandExecutor) new BTC());
+        this.getCommand("btc").setExecutor(new BTC());
+
+        //Updater
+        new UpdateChecker(this, 71157).getVersion(updater_version -> {
+            if (!getDescription().getVersion().equalsIgnoreCase(updater_version)) {
+                new_version = updater_version;
+            }
+            info("&aEnabling");
+        });
+
+        //Check for updates
+        Updater.sendConsole();
     }
 
     @Override
@@ -90,13 +110,8 @@ public final class CryptoCurrency extends JavaPlugin {
 
     //VaultAPI
     private boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Vault") == null) {
-            return false;
-        }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            return false;
-        }
+        if (rsp == null) return false;
         econ = rsp.getProvider();
         return true;
     }
@@ -161,7 +176,12 @@ public final class CryptoCurrency extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Name: &bCryptoCurrency"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Developer: &bBlack1_TV"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b0.0.1"));
+        if(new_version != null){
+            Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion() + " (FREE) (&6update available&b)"));
+        }else{
+            Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion() + " (FREE)"));
+        }
+        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Premium: &bhttps://rabbit-company.com"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8| &cSupport:"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));

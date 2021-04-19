@@ -6,9 +6,8 @@ public class Number {
         try {
             Double.parseDouble(str);
             return true;
-        } catch(NumberFormatException e){
-            return false;
-        }
+        } catch(NumberFormatException ignored){}
+        return false;
     }
 
 }

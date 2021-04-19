@@ -38,7 +38,7 @@ public class BTC implements CommandExecutor {
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
                 }
             }else if(args[0].equals("price")){
-                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_btc_price").replace("{amount}", formatter.format(1 / API.getBTCFromPrice(CryptoCurrency.getInstance().getConf().getString("btc_api_currency"),"1"))));
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_btc_price").replace("{amount}", formatter.format(API.btc_price)));
             }else if(args[0].equals("balance") || args[0].equals("bal") || args[0].equals("check") || args[0].equals("info")){
                 if(CryptoCurrency.conn != null){
                     double balance = MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(),"btc");
@@ -58,7 +58,7 @@ public class BTC implements CommandExecutor {
                     if (Number.isNumeric(args[1])) {
                         double amount_sell = Double.parseDouble(args[1]);
                         if(amount_sell >= CryptoCurrency.getInstance().getConf().getDouble("btc_minimum")) {
-                            double money_price = amount_sell / API.getBTCFromPrice(CryptoCurrency.getInstance().getConf().getString("btc_api_currency"), "1");
+                            double money_price = amount_sell * API.btc_price;
                             if (CryptoCurrency.conn != null) {
                                 double balance = MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), "btc");
                                 if (balance >= amount_sell) {
@@ -93,7 +93,7 @@ public class BTC implements CommandExecutor {
                     if (Number.isNumeric(args[1])) {
                         double amount_buy = Double.parseDouble(args[1]);
                         if(amount_buy >= CryptoCurrency.getInstance().getConf().getDouble("btc_minimum")) {
-                            double money_price = amount_buy / API.getBTCFromPrice(CryptoCurrency.getInstance().getConf().getString("btc_api_currency"), "1");
+                            double money_price = amount_buy * API.btc_price;
                             double balance = CryptoCurrency.getEconomy().getBalance(player);
                             if (CryptoCurrency.conn != null) {
                                 double btc_balance = MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), "btc");

@@ -1,12 +1,11 @@
 package com.rabbitcompany.listeners;
 
 import com.rabbitcompany.CryptoCurrency;
+import com.rabbitcompany.utils.MySql;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.sql.SQLException;
 
 public class PlayerJoinListener implements Listener {
 
@@ -22,9 +21,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event){
         //SQL
         if(CryptoCurrency.conn != null){
-            try {
-                CryptoCurrency.mySQL.update("INSERT INTO cryptocurrency_btc VALUES ('" + event.getPlayer().getUniqueId() + "', '" + event.getPlayer().getName() + "', 0);");
-            } catch (SQLException ignored) { }
+            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "btc");
         }
     }
 
