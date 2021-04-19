@@ -1,0 +1,40 @@
+package com.rabbitcompany;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TabCompletion implements TabCompleter {
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
+        if(command.getName().equalsIgnoreCase("btc") || command.getName().equalsIgnoreCase("eth")){
+            List<String> completions = new ArrayList<>();
+
+            if(args.length == 1){
+                completions.add("balance");
+                completions.add("price");
+                completions.add("send");
+                completions.add("buy");
+                completions.add("sell");
+
+                if(commandSender.hasPermission("cryptocurrency.give")) completions.add("give");
+                if(commandSender.hasPermission("cryptocurrency.take")) completions.add("take");
+            }else if(args.length == 2){
+                if(args[0].equals("send")){
+                    for(Player all : Bukkit.getServer().getOnlinePlayers()) {
+                        completions.add(all.getName());
+                    }
+                }
+            }
+
+            return completions;
+        }
+        return null;
+    }
+}

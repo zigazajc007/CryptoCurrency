@@ -196,7 +196,7 @@ public class ETH implements CommandExecutor {
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "is_not_a_number").replace("{number}", args[2]));
                 }
             }else if(args[0].equals("give")){
-                if(player.hasPermission("cryptocurrency.eth.give")) {
+                if(player.hasPermission("cryptocurrency.give")) {
                     if (Number.isNumeric(args[2])) {
                         double amount_send = Double.parseDouble(args[2]);
                         if(amount_send >= CryptoCurrency.getInstance().getConf().getDouble("eth_minimum")) {
@@ -243,7 +243,7 @@ public class ETH implements CommandExecutor {
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
                 }
             }else if(args[0].equals("take")) {
-                if(player.hasPermission("cryptocurrency.eth.take")){
+                if(player.hasPermission("cryptocurrency.take")){
                     if (Number.isNumeric(args[2])) {
                         double amount_take = Double.parseDouble(args[2]);
                         if(amount_take >= CryptoCurrency.getInstance().getConf().getDouble("eth_minimum")) {
