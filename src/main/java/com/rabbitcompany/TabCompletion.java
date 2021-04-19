@@ -25,14 +25,30 @@ public class TabCompletion implements TabCompleter {
 
                 if(commandSender.hasPermission("cryptocurrency.give")) completions.add("give");
                 if(commandSender.hasPermission("cryptocurrency.take")) completions.add("take");
+                if(commandSender.hasPermission("cryptocurrency.reload")) completions.add("reload");
             }else if(args.length == 2){
-                if(args[0].equals("send")){
-                    for(Player all : Bukkit.getServer().getOnlinePlayers()) {
-                        completions.add(all.getName());
-                    }
+                switch (args[0]) {
+                    case "send":
+                        for (Player all : Bukkit.getServer().getOnlinePlayers()) {
+                            completions.add(all.getName());
+                        }
+                        break;
+                    case "give":
+                        if (commandSender.hasPermission("cryptocurrency.give")) {
+                            for (Player all : Bukkit.getServer().getOnlinePlayers()) {
+                                completions.add(all.getName());
+                            }
+                        }
+                        break;
+                    case "take":
+                        if (commandSender.hasPermission("cryptocurrency.take")) {
+                            for (Player all : Bukkit.getServer().getOnlinePlayers()) {
+                                completions.add(all.getName());
+                            }
+                        }
+                        break;
                 }
             }
-
             return completions;
         }
         return null;

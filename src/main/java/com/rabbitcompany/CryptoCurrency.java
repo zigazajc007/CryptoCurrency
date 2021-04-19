@@ -94,7 +94,9 @@ public final class CryptoCurrency extends JavaPlugin {
 
         //Commands
         this.getCommand("btc").setExecutor(new BTC());
+        this.getCommand("btc").setTabCompleter(new TabCompletion());
         this.getCommand("eth").setExecutor(new ETH());
+        this.getCommand("eth").setTabCompleter(new TabCompletion());
 
         //Updater
         new UpdateChecker(this, 71157).getVersion(updater_version -> {

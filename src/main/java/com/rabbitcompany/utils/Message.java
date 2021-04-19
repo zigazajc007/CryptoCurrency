@@ -37,8 +37,10 @@ public class Message {
         player.sendMessage(Message.chat(color + "/" + currency + " send <player> <amount> &7- Send " + currency + " to player"));
         player.sendMessage(Message.chat(color + "/" + currency + " buy <amount> &7- buy " + currency));
         player.sendMessage(Message.chat(color + "/" + currency + " sell <amount> &7- sell " + currency));
-        player.sendMessage(Message.chat(color + "/" + currency + " give <player> <amount> &7- Give " + currency + " to player"));
-        player.sendMessage(Message.chat(color + "/" + currency + " take <player> <amount> &7- Take " + currency + " from player"));
+        if(player.hasPermission("cryptocurrency.give"))
+            player.sendMessage(Message.chat(color + "/" + currency + " give <player> <amount> &7- Give " + currency + " to player"));
+        if(player.hasPermission("cryptocurrency.take"))
+            player.sendMessage(Message.chat(color + "/" + currency + " take <player> <amount> &7- Take " + currency + " from player"));
         player.sendMessage(Message.chat(""));
     }
 }
