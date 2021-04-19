@@ -143,6 +143,12 @@ public class BTC implements CommandExecutor {
                             String target = ChatColor.stripColor(args[1]);
                             Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(args[1]));
                             if (target_player != null) {
+
+                                if(player.getName().equals(target_player.getName())){
+                                    player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_btc_send_yourself"));
+                                    return true;
+                                }
+
                                 double balance = MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), "btc");
                                 double target_balance = MySql.getPlayerBalance(target_player.getUniqueId().toString(), target_player.getName(), "btc");
                                 if (balance >= amount_send) {
@@ -179,6 +185,12 @@ public class BTC implements CommandExecutor {
                         } else {
                             Player target = Bukkit.getServer().getPlayer(ChatColor.stripColor(args[1]));
                             if (target != null) {
+
+                                if(player.getName().equals(target.getName())){
+                                    player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_btc_send_yourself"));
+                                    return true;
+                                }
+
                                 double balance = CryptoCurrency.getInstance().getBtcw().getDouble(player.getUniqueId().toString());
                                 double target_balance = CryptoCurrency.getInstance().getBtcw().getDouble(target.getUniqueId().toString());
                                 if (balance >= amount_send) {
