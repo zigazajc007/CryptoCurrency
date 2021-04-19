@@ -130,6 +130,12 @@ public class BTC implements CommandExecutor {
             }
         }else if(args.length == 3){
             if(args[0].equals("send")){
+
+                if(player.getName().equals(ChatColor.stripColor(args[1]))){
+                    player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_btc_send_yourself"));
+                    return true;
+                }
+
                 if(Number.isNumeric(args[2])){
                     double amount_send = Double.parseDouble(args[2]);
                     if(amount_send >= CryptoCurrency.getInstance().getConf().getDouble("btc_minimum")) {
