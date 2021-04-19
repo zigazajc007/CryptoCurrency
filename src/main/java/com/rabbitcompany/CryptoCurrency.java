@@ -64,6 +64,9 @@ public final class CryptoCurrency extends JavaPlugin {
             vault = setupEconomy();
         }
 
+        //Metrics
+        new Metrics(this, 11090);
+
         //SQL
         if(getConf().getBoolean("mysql", false)){
             try {
