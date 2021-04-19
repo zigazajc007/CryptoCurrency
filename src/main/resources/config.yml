@@ -48,6 +48,15 @@ btc_format: "0.0000"
 # Minimum BTC players can send, buy or sell.
 btc_minimum: 0.0001
 #----------------------------------------------------------
+#                        ETH API
+#----------------------------------------------------------
+# You can choose between: USD, AUD, BRL, CAD, CHF, CLP, CNY, DKK, EUR, GBP, HKD, INR, ISK, JPY, KRW, NZD, PLN, RUB, SEK, SGD, THB and TWD.
+eth_api_currency: "USD"
+# Eth decimal format
+eth_format: "0.000"
+# Minimum ETH players can send, buy or sell.
+eth_minimum: 0.001
+#----------------------------------------------------------
 #                        Bungeecord
 #----------------------------------------------------------
 # Do you want to use mysql database?

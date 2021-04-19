@@ -28,13 +28,17 @@ public class Message {
     }
 
     public static void Help(Player player, String currency){
+        String color = (currency.equals("btc")) ? "&6" : "&b";
+
         player.sendMessage(Message.chat("&7Listing commands:"));
         player.sendMessage(Message.chat(""));
-        player.sendMessage(Message.chat("&b/" + currency + " balance &7- Check btc balance"));
-        player.sendMessage(Message.chat("&b/" + currency + " price &7- Show btc price"));
-        player.sendMessage(Message.chat("&b/" + currency + " send <player> <amount> &7- Send btc to player"));
-        player.sendMessage(Message.chat("&b/" + currency + " give <player> <amount> &7- Give btc to player"));
-        player.sendMessage(Message.chat("&b/" + currency + " take <player> <amount> &7- Take btc from player"));
+        player.sendMessage(Message.chat(color + "/" + currency + " balance &7- Check " + currency + " balance"));
+        player.sendMessage(Message.chat(color + "/" + currency + " price &7- Show " + currency + " price"));
+        player.sendMessage(Message.chat(color + "/" + currency + " send <player> <amount> &7- Send " + currency + " to player"));
+        player.sendMessage(Message.chat(color + "/" + currency + " buy <amount> &7- buy " + currency));
+        player.sendMessage(Message.chat(color + "/" + currency + " sell <amount> &7- sell " + currency));
+        player.sendMessage(Message.chat(color + "/" + currency + " give <player> <amount> &7- Give " + currency + " to player"));
+        player.sendMessage(Message.chat(color + "/" + currency + " take <player> <amount> &7- Take " + currency + " from player"));
         player.sendMessage(Message.chat(""));
     }
 }
