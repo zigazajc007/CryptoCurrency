@@ -9,4 +9,7 @@ website: https://rabbit-company.com
 commands:
   btc:
     usage: /<command>
-    description: Manage bitcoins
+    description: Manage with bitcoins
+  eth:
+    usage: /<command>
+    description: Manage with ethereum

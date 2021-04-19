@@ -43,6 +43,7 @@ permission: "&cYou don't have permission to do this!"
 is_not_a_player: "&c{player} isn't a player!"
 is_not_a_number: "&c{number} isn't a number!"
 wrong_btc_arguments: "&cPlease use /btc help"
+wrong_eth_arguments: "&cPlease use /eth help"
 vault_required: "&cYour server don't have installed Vault to complete this action!"
 #----------------------------------------------------------
 #                       Messages
