@@ -5,6 +5,7 @@ import com.rabbitcompany.commands.ETH;
 import com.rabbitcompany.listeners.PlayerJoinListener;
 import com.rabbitcompany.utils.API;
 import com.rabbitcompany.utils.Message;
+import com.rabbitcompany.utils.Placeholders;
 import com.zaxxer.hikari.HikariDataSource;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -97,6 +98,11 @@ public final class CryptoCurrency extends JavaPlugin {
         this.getCommand("btc").setTabCompleter(new TabCompletion());
         this.getCommand("eth").setExecutor(new ETH());
         this.getCommand("eth").setTabCompleter(new TabCompletion());
+
+        //PlaceholderAPI
+        if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new Placeholders().register();
+        }
 
         //Updater
         new UpdateChecker(this, 80459).getVersion(updater_version -> {
