@@ -40,11 +40,13 @@
 default_language: "English"
 # Money decimal format
 money_format: "##,###.00"
+# You can choose between: USD, AUD, BRL, CAD, CHF, CLP, CNY, DKK, EUR, GBP, HKD, INR, ISK, JPY, KRW, NZD, PLN, RUB, SEK, SGD, THB and TWD.
+api_currency: "USD"
+# After how many minutes plugin will fetch data from Coinbase again (Gets crypto values)
+price_fetch: 1
 #----------------------------------------------------------
 #                        BTC API
 #----------------------------------------------------------
-# You can choose between: USD, AUD, BRL, CAD, CHF, CLP, CNY, DKK, EUR, GBP, HKD, INR, ISK, JPY, KRW, NZD, PLN, RUB, SEK, SGD, THB and TWD.
-btc_api_currency: "USD"
 # Btc decimal format
 btc_format: "0.0000"
 # Minimum BTC players can send, buy or sell.
@@ -52,8 +54,6 @@ btc_minimum: 0.0001
 #----------------------------------------------------------
 #                        ETH API
 #----------------------------------------------------------
-# You can choose between: USD, AUD, BRL, CAD, CHF, CLP, CNY, DKK, EUR, GBP, HKD, INR, ISK, JPY, KRW, NZD, PLN, RUB, SEK, SGD, THB and TWD.
-eth_api_currency: "USD"
 # Eth decimal format
 eth_format: "0.000"
 # Minimum ETH players can send, buy or sell.

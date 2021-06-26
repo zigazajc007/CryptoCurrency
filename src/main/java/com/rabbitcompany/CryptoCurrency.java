@@ -111,8 +111,7 @@ public final class CryptoCurrency extends JavaPlugin {
             Updater.sendConsole();
         });
 
-        API.startBTCPriceFetcher(getConf().getString("btc_api_currency", "USD"));
-        API.startETHPriceFetcher(getConf().getString("eth_api_currency", "USD"));
+        API.startPriceFetcher(getConf().getString("api_currency", "USD"));
     }
 
     @Override
