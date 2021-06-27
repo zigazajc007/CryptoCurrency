@@ -143,11 +143,10 @@ public final class CryptoCurrency extends JavaPlugin {
             new Placeholders().register();
         }
 
-        //Updater
-        new UpdateChecker(this, 80459).getVersion(updater_version -> {
+        //Update Checker
+        new UpdateChecker(this, 49).getVersion(updater_version -> {
             if (!getDescription().getVersion().equalsIgnoreCase(updater_version)) new_version = updater_version;
             info("&aEnabling");
-            Updater.sendConsole();
         });
 
         API.startPriceFetcher(getConf().getString("api_currency", "USD"));
@@ -348,9 +347,9 @@ public final class CryptoCurrency extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Name: &bCryptoCurrency"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Developer: &bBlack1_TV"));
         if(new_version != null){
-            Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion() + " (FREE) (&6update available&b)"));
+            Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion() + " (&6update available&b)"));
         }else{
-            Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion() + " (FREE)"));
+            Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion()));
         }
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Premium: &bhttps://rabbit-company.com"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
