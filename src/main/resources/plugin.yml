@@ -13,3 +13,6 @@ commands:
   eth:
     usage: /<command>
     description: Manage with ethereum
+  usdt:
+    usage: /<command>
+    description: Manager with tether

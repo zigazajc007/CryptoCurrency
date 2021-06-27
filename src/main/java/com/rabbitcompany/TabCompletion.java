@@ -13,7 +13,7 @@ public class TabCompletion implements TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] args) {
-        if(command.getName().equalsIgnoreCase("btc") || command.getName().equalsIgnoreCase("eth")){
+        if(command.getName().equalsIgnoreCase("btc") || command.getName().equalsIgnoreCase("eth") || command.getName().equalsIgnoreCase("usdt")){
             List<String> completions = new ArrayList<>();
 
             if(args.length == 1){

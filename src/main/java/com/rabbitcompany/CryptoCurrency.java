@@ -1,7 +1,6 @@
 package com.rabbitcompany;
 
-import com.rabbitcompany.commands.BTC;
-import com.rabbitcompany.commands.ETH;
+import com.rabbitcompany.commands.Crypto;
 import com.rabbitcompany.listeners.PlayerJoinListener;
 import com.rabbitcompany.utils.API;
 import com.rabbitcompany.utils.Message;
@@ -49,6 +48,10 @@ public final class CryptoCurrency extends JavaPlugin {
     private File ew = null;
     private final YamlConfiguration ethw = new YamlConfiguration();
 
+    //USDT Wallets
+    private File uw = null;
+    private final YamlConfiguration usdtw = new YamlConfiguration();
+
     @Override
     public void onEnable() {
         instance = this;
@@ -56,6 +59,7 @@ public final class CryptoCurrency extends JavaPlugin {
         this.en = new File(getDataFolder(), "Languages/English.yml");
         this.bw = new File(getDataFolder(), "Wallets/btc_wallets.yml");
         this.ew = new File(getDataFolder(), "Wallets/eth_wallets.yml");
+        this.uw = new File(getDataFolder(), "Wallets/usdt_wallets.yml");
 
         mkdir();
         loadYamls();
@@ -84,6 +88,7 @@ public final class CryptoCurrency extends JavaPlugin {
                 conn = hikari.getConnection();
                 conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_btc(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
                 conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_eth(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
+                conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_usdt(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
                 conn.close();
             } catch (SQLException e) {
                 conn = null;
@@ -94,10 +99,12 @@ public final class CryptoCurrency extends JavaPlugin {
         new PlayerJoinListener(this);
 
         //Commands
-        this.getCommand("btc").setExecutor(new BTC());
+        this.getCommand("btc").setExecutor(new Crypto());
         this.getCommand("btc").setTabCompleter(new TabCompletion());
-        this.getCommand("eth").setExecutor(new ETH());
+        this.getCommand("eth").setExecutor(new Crypto());
         this.getCommand("eth").setTabCompleter(new TabCompletion());
+        this.getCommand("usdt").setExecutor(new Crypto());
+        this.getCommand("usdt").setTabCompleter(new TabCompletion());
 
         //PlaceholderAPI
         if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
@@ -155,6 +162,10 @@ public final class CryptoCurrency extends JavaPlugin {
         if (!this.ew.exists()) {
             saveResource("Wallets/eth_wallets.yml", false);
         }
+
+        if (!this.uw.exists()) {
+            saveResource("Wallets/usdt_wallets.yml", false);
+        }
     }
 
     public void loadYamls(){
@@ -182,12 +193,19 @@ public final class CryptoCurrency extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+
+        try {
+            this.usdtw.load(this.uw);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
     }
 
     public YamlConfiguration getConf() { return this.conf; }
     public YamlConfiguration getEngl() { return this.engl; }
     public YamlConfiguration getBtcw() { return this.btcw; }
     public YamlConfiguration getEthw() { return this.ethw; }
+    public YamlConfiguration getUsdtw() { return this.usdtw; }
 
     public void saveBtcw() {
         try {
@@ -200,6 +218,14 @@ public final class CryptoCurrency extends JavaPlugin {
     public void saveEthw() {
         try {
             this.ethw.save(this.ew);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveUsdtw(){
+        try {
+            this.usdtw.save(this.uw);
         } catch (IOException e) {
             e.printStackTrace();
         }

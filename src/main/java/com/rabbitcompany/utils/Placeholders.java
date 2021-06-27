@@ -34,11 +34,13 @@ public class Placeholders extends PlaceholderExpansion {
 
         if (offlinePlayer == null) return "";
         if (!offlinePlayer.isOnline()) return "";
+        if (offlinePlayer.getPlayer() == null) return "";
 
         final Player player = offlinePlayer.getPlayer();
 
         NumberFormat btc_formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("btc_format", "0.0000"));
         NumberFormat eth_formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("eth_format", "0.000"));
+        NumberFormat usdt_formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("usdt_format", "0.00"));
         NumberFormat money_formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("money_format", "###,###.00"));
 
         switch (identifier) {
@@ -46,22 +48,17 @@ public class Placeholders extends PlaceholderExpansion {
                 return money_formatter.format(API.btc_price);
             case "eth_price":
                 return money_formatter.format(API.eth_price);
+            case "usdt_price":
+                return money_formatter.format(API.usdt_price);
             case "btc_balance":
-                double btc_balance;
-                if(CryptoCurrency.conn != null){
-                    btc_balance = MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), "btc");
-                }else{
-                    btc_balance = CryptoCurrency.getInstance().getBtcw().getDouble(player.getUniqueId().toString());
-                }
+                double btc_balance = (CryptoCurrency.conn != null) ? MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), "btc") : CryptoCurrency.getInstance().getBtcw().getDouble(player.getUniqueId().toString());
                 return btc_formatter.format(btc_balance);
             case "eth_balance":
-                double balance;
-                if(CryptoCurrency.conn != null){
-                    balance = MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), "eth");
-                }else{
-                    balance = CryptoCurrency.getInstance().getEthw().getDouble(player.getUniqueId().toString());
-                }
-                return eth_formatter.format(balance);
+                double eth_balance = (CryptoCurrency.conn != null) ? MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), "eth") : CryptoCurrency.getInstance().getEthw().getDouble(player.getUniqueId().toString());
+                return eth_formatter.format(eth_balance);
+            case "usdt_balance":
+                double usdt_balance = (CryptoCurrency.conn != null) ? MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), "usdt") : CryptoCurrency.getInstance().getUsdtw().getDouble(player.getUniqueId().toString());
+                return usdt_formatter.format(usdt_balance);
             default:
                 return null;
         }

@@ -28,7 +28,18 @@ public class Message {
     }
 
     public static void Help(Player player, String currency){
-        String color = (currency.equals("btc")) ? "&6" : "&b";
+        String color;
+        switch(currency){
+            case "eth":
+                color = "&b";
+                break;
+            case "usdt":
+                color = "&2";
+                break;
+            default:
+                color = "&6";
+                break;
+        }
 
         player.sendMessage(Message.chat("&7Listing commands:"));
         player.sendMessage(Message.chat(""));
