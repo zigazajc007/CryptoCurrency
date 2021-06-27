@@ -61,6 +61,13 @@ btc_format: "0.0000"
 # Minimum BTC players can send, buy or sell.
 btc_minimum: 0.0001
 #----------------------------------------------------------
+#                        BCH API
+#----------------------------------------------------------
+# Bch decimal format
+bch_format: "0.0000"
+# Minimum BCH players can send, buy or sell.
+bch_minimum: 0.0001
+#----------------------------------------------------------
 #                        ETH API
 #----------------------------------------------------------
 # Eth decimal format
@@ -68,11 +75,32 @@ eth_format: "0.000"
 # Minimum ETH players can send, buy or sell.
 eth_minimum: 0.001
 #----------------------------------------------------------
+#                        ETC API
+#----------------------------------------------------------
+# Etc decimal format
+etc_format: "0.000"
+# Minimum ETC players can send, buy or sell.
+etc_minimum: 0.001
+#----------------------------------------------------------
+#                        DOGE API
+#----------------------------------------------------------
+# Doge decimal format
+doge_format: "0.000"
+# Minimum DOGE players can send, buy or sell.
+doge_minimum: 0.001
+#----------------------------------------------------------
+#                        LTC API
+#----------------------------------------------------------
+# Ltc decimal format
+ltc_format: "0.000"
+# Minimum LTC players can send, buy or sell.
+ltc_minimum: 0.001
+#----------------------------------------------------------
 #                       USDT API
 #----------------------------------------------------------
-# Eth decimal format
+# Usdt decimal format
 usdt_format: "0.00"
-# Minimum ETH players can send, buy or sell.
+# Minimum USDT players can send, buy or sell.
 usdt_minimum: 0.01
 #----------------------------------------------------------
 #                        Bungeecord

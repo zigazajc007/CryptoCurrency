@@ -9,10 +9,22 @@ website: https://rabbit-company.com
 commands:
   btc:
     usage: /<command>
-    description: Manage with bitcoins
+    description: Manage with bitcoin
+  bch:
+    usage: /<command>
+    description: Manage with bitcoin cash
   eth:
     usage: /<command>
     description: Manage with ethereum
+  etc:
+    usage: /<command>
+    description: Manage with ethereum classic
+  doge:
+    usage: /<command>
+    description: Manage with dogecoin
+  ltc:
+    usage: /<command>
+    description: Manage with litecoin
   usdt:
     usage: /<command>
-    description: Manager with tether
+    description: Manage with tether

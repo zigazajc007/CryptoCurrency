@@ -44,9 +44,25 @@ public final class CryptoCurrency extends JavaPlugin {
     private File bw = null;
     private final YamlConfiguration btcw = new YamlConfiguration();
 
+    //BCH Wallets
+    private File bcw = null;
+    private final YamlConfiguration bchw = new YamlConfiguration();
+
     //ETH Wallets
     private File ew = null;
     private final YamlConfiguration ethw = new YamlConfiguration();
+
+    //ETC Wallets
+    private File etw = null;
+    private final YamlConfiguration etcw = new YamlConfiguration();
+
+    //DOGE Wallets
+    private File dw = null;
+    private final YamlConfiguration dogew = new YamlConfiguration();
+
+    //LTC Wallets
+    private File lw = null;
+    private final YamlConfiguration ltcw = new YamlConfiguration();
 
     //USDT Wallets
     private File uw = null;
@@ -58,7 +74,11 @@ public final class CryptoCurrency extends JavaPlugin {
         this.co = new File(getDataFolder(), "config.yml");
         this.en = new File(getDataFolder(), "Languages/English.yml");
         this.bw = new File(getDataFolder(), "Wallets/btc_wallets.yml");
+        this.bcw = new File(getDataFolder(), "Wallets/bch_wallets.yml");
         this.ew = new File(getDataFolder(), "Wallets/eth_wallets.yml");
+        this.etw = new File(getDataFolder(), "Wallets/etc_wallets.yml");
+        this.dw = new File(getDataFolder(), "Wallets/doge_wallets.yml");
+        this.lw = new File(getDataFolder(), "Wallets/ltc_wallets.yml");
         this.uw = new File(getDataFolder(), "Wallets/usdt_wallets.yml");
 
         mkdir();
@@ -87,7 +107,11 @@ public final class CryptoCurrency extends JavaPlugin {
 
                 conn = hikari.getConnection();
                 conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_btc(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
+                conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_bch(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
                 conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_eth(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
+                conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_etc(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
+                conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_doge(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
+                conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_ltc(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
                 conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_usdt(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
                 conn.close();
             } catch (SQLException e) {
@@ -101,8 +125,16 @@ public final class CryptoCurrency extends JavaPlugin {
         //Commands
         this.getCommand("btc").setExecutor(new Crypto());
         this.getCommand("btc").setTabCompleter(new TabCompletion());
+        this.getCommand("bch").setExecutor(new Crypto());
+        this.getCommand("bch").setTabCompleter(new TabCompletion());
         this.getCommand("eth").setExecutor(new Crypto());
         this.getCommand("eth").setTabCompleter(new TabCompletion());
+        this.getCommand("etc").setExecutor(new Crypto());
+        this.getCommand("etc").setTabCompleter(new TabCompletion());
+        this.getCommand("doge").setExecutor(new Crypto());
+        this.getCommand("doge").setTabCompleter(new TabCompletion());
+        this.getCommand("ltc").setExecutor(new Crypto());
+        this.getCommand("ltc").setTabCompleter(new TabCompletion());
         this.getCommand("usdt").setExecutor(new Crypto());
         this.getCommand("usdt").setTabCompleter(new TabCompletion());
 
@@ -159,8 +191,24 @@ public final class CryptoCurrency extends JavaPlugin {
             saveResource("Wallets/btc_wallets.yml", false);
         }
 
+        if (!this.bcw.exists()) {
+            saveResource("Wallets/bch_wallets.yml", false);
+        }
+
         if (!this.ew.exists()) {
             saveResource("Wallets/eth_wallets.yml", false);
+        }
+
+        if (!this.etw.exists()) {
+            saveResource("Wallets/etc_wallets.yml", false);
+        }
+
+        if (!this.dw.exists()) {
+            saveResource("Wallets/doge_wallets.yml", false);
+        }
+
+        if (!this.lw.exists()) {
+            saveResource("Wallets/ltc_wallets.yml", false);
         }
 
         if (!this.uw.exists()) {
@@ -189,7 +237,31 @@ public final class CryptoCurrency extends JavaPlugin {
         }
 
         try {
+            this.bchw.load(this.bcw);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        try {
             this.ethw.load(this.ew);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            this.etcw.load(this.etw);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            this.dogew.load(this.dw);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            this.ltcw.load(this.lw);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -204,7 +276,11 @@ public final class CryptoCurrency extends JavaPlugin {
     public YamlConfiguration getConf() { return this.conf; }
     public YamlConfiguration getEngl() { return this.engl; }
     public YamlConfiguration getBtcw() { return this.btcw; }
+    public YamlConfiguration getBchw() { return this.bchw; }
     public YamlConfiguration getEthw() { return this.ethw; }
+    public YamlConfiguration getEtcw() { return this.etcw; }
+    public YamlConfiguration getDogew() { return this.dogew; }
+    public YamlConfiguration getLtcw() { return this.ltcw; }
     public YamlConfiguration getUsdtw() { return this.usdtw; }
 
     public void saveBtcw() {
@@ -215,9 +291,41 @@ public final class CryptoCurrency extends JavaPlugin {
         }
     }
 
+    public void saveBchw() {
+        try {
+            this.bchw.save(this.bcw);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void saveEthw() {
         try {
             this.ethw.save(this.ew);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveEtcw() {
+        try {
+            this.etcw.save(this.etw);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveDogew() {
+        try {
+            this.dogew.save(this.dw);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveLtcw() {
+        try {
+            this.ltcw.save(this.lw);
         } catch (IOException e) {
             e.printStackTrace();
         }

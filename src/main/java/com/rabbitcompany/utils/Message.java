@@ -30,8 +30,20 @@ public class Message {
     public static void Help(Player player, String currency){
         String color;
         switch(currency){
+            case "bch":
+                color = "&a";
+                break;
             case "eth":
                 color = "&b";
+                break;
+            case "etc":
+                color = "&a";
+                break;
+            case "doge":
+                color = "&6";
+                break;
+            case "ltc":
+                color = "&7";
                 break;
             case "usdt":
                 color = "&2";

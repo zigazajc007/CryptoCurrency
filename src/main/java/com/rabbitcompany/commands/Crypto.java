@@ -52,22 +52,37 @@ public class Crypto implements CommandExecutor {
         }
 
         switch (command.getName()){
+            case "bch":
+                price = API.bch_price;
+                wallet = CryptoCurrency.getInstance().getBchw();
+                break;
             case "eth":
                 price = API.eth_price;
-                balance = (CryptoCurrency.conn != null) ? MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), command.getName()) : CryptoCurrency.getInstance().getEthw().getDouble(player.getUniqueId().toString());
                 wallet = CryptoCurrency.getInstance().getEthw();
+                break;
+            case "etc":
+                price = API.etc_price;
+                wallet = CryptoCurrency.getInstance().getEtcw();
+                break;
+            case "doge":
+                price = API.doge_price;
+                wallet = CryptoCurrency.getInstance().getDogew();
+                break;
+            case "ltc":
+                price = API.ltc_price;
+                wallet = CryptoCurrency.getInstance().getLtcw();
                 break;
             case "usdt":
                 price = API.usdt_price;
-                balance = (CryptoCurrency.conn != null) ? MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), command.getName()) : CryptoCurrency.getInstance().getUsdtw().getDouble(player.getUniqueId().toString());
                 wallet = CryptoCurrency.getInstance().getUsdtw();
                 break;
             default:
                 price = API.btc_price;
-                balance = (CryptoCurrency.conn != null) ? MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), command.getName()) : CryptoCurrency.getInstance().getBtcw().getDouble(player.getUniqueId().toString());
                 wallet = CryptoCurrency.getInstance().getBtcw();
                 break;
         }
+
+        balance = (CryptoCurrency.conn != null) ? MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), command.getName()) : wallet.getDouble(player.getUniqueId().toString());
 
         if(args.length == 1 && args[0].equals("price")){
             player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_price").replace("{amount}", money_formatter.format(price)));
@@ -105,14 +120,14 @@ public class Crypto implements CommandExecutor {
             if(CryptoCurrency.conn != null) {
                 MySql.setPlayerBalance(player.getUniqueId().toString(), player.getName(), formatter.format(balance - amount_sell), command.getName());
                 CryptoCurrency.getEconomy().depositPlayer(player, money_price);
-                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_sell").replace("{" + command.getName() + "}", formatter.format(amount_sell)).replace("{money}", formatter.format(money_price)));
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_sell").replace("{amount}", formatter.format(amount_sell)).replace("{money}", formatter.format(money_price)));
                 return true;
             }
 
             wallet.set(player.getUniqueId().toString(), balance - amount_sell);
             saveWallet(command.getName());
             CryptoCurrency.getEconomy().depositPlayer(player, money_price);
-            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_sell").replace("{" + command.getName() + "}", formatter.format(amount_sell)).replace("{money}", formatter.format(money_price)));
+            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_sell").replace("{amount}", formatter.format(amount_sell)).replace("{money}", formatter.format(money_price)));
             return true;
         }
 
@@ -143,14 +158,14 @@ public class Crypto implements CommandExecutor {
             if(CryptoCurrency.conn != null){
                 MySql.setPlayerBalance(player.getUniqueId().toString(), player.getName(), formatter.format(balance + amount_buy), command.getName());
                 CryptoCurrency.getEconomy().withdrawPlayer(player, money_price);
-                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_buy").replace("{" + command.getName() + "}", formatter.format(amount_buy)).replace("{money}", formatter.format(money_price)));
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_buy").replace("{amount}", formatter.format(amount_buy)).replace("{money}", formatter.format(money_price)));
                 return true;
             }
 
             wallet.set(player.getUniqueId().toString(), balance + amount_buy);
             saveWallet(command.getName());
             CryptoCurrency.getEconomy().withdrawPlayer(player, money_price);
-            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_buy").replace("{" + command.getName() + "}", formatter.format(amount_buy)).replace("{money}", formatter.format(money_price)));
+            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_buy").replace("{amount}", formatter.format(amount_buy)).replace("{money}", formatter.format(money_price)));
             return true;
         }
 
@@ -367,8 +382,20 @@ public class Crypto implements CommandExecutor {
 
     private void saveWallet(String crypto){
         switch (crypto){
+            case "bch":
+                CryptoCurrency.getInstance().saveBchw();
+                break;
             case "eth":
                 CryptoCurrency.getInstance().saveEthw();
+                break;
+            case "etc":
+                CryptoCurrency.getInstance().saveEtcw();
+                break;
+            case "doge":
+                CryptoCurrency.getInstance().saveDogew();
+                break;
+            case "ltc":
+                CryptoCurrency.getInstance().saveLtcw();
                 break;
             case "usdt":
                 CryptoCurrency.getInstance().saveUsdtw();

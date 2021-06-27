@@ -22,7 +22,11 @@ public class PlayerJoinListener implements Listener {
         //SQL
         if(CryptoCurrency.conn != null){
             MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "btc");
+            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "bch");
             MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "eth");
+            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "etc");
+            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "doge");
+            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "ltc");
             MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "usdt");
         }
     }
