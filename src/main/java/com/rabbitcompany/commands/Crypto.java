@@ -25,8 +25,8 @@ public class Crypto implements CommandExecutor {
 
         NumberFormat formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString(command.getName() + "_format", "0.0000"));
         NumberFormat money_formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("money_format", "###,###.00"));
-        double price = 0;
-        double balance = 0;
+        double price;
+        double balance;
         YamlConfiguration wallet;
 
         switch (command.getName()){
@@ -78,8 +78,26 @@ public class Crypto implements CommandExecutor {
                 return true;
             }
 
-            if(args.length == 1 && args[0].equals("price")){
-                sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_price").replace("{amount}", money_formatter.format(price)));
+            if(args.length == 1 && (args[0].equals("price") || args[0].equals("worth"))){
+                sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_price").replace("{amount}", "1").replace("{money}", money_formatter.format(price)));
+                return true;
+            }
+
+            if(args.length == 2 && (args[0].equals("price") || args[0].equals("worth"))){
+
+                if (!Number.isNumeric(args[1])) {
+                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_price").replace("{amount}", "1").replace("{money}", money_formatter.format(price)));
+                    return true;
+                }
+                double amount = Double.parseDouble(args[1]);
+
+                if(amount > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum", 1000000)){
+                    amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum", 1000000);
+                }else if(amount < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum", 0.0001)){
+                    amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum", 0.0001);
+                }
+
+                sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_price").replace("{amount}", formatter.format(amount)).replace("{money}", money_formatter.format(price * amount)));
                 return true;
             }
 
@@ -91,7 +109,7 @@ public class Crypto implements CommandExecutor {
             if(args.length == 2 && (args[0].equals("balance") || args[0].equals("bal") || args[0].equals("check") || args[0].equals("info"))){
                 String target = ChatColor.stripColor(args[1]);
                 Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(args[1]));
-                double target_balance = 0;
+                double target_balance;
                 if(CryptoCurrency.conn != null){
                     if(target_player != null){
                         target_balance = MySql.getPlayerBalance(target_player.getUniqueId().toString(), target_player.getName(), command.getName());
@@ -138,6 +156,11 @@ public class Crypto implements CommandExecutor {
                 double amount_send = Double.parseDouble(args[2]);
                 if(amount_send < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum")) {
                     sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_minimum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum"))));
+                    return true;
+                }
+
+                if(amount_send > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum")) {
+                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_maximum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum"))));
                     return true;
                 }
 
@@ -190,6 +213,11 @@ public class Crypto implements CommandExecutor {
                 double amount_take = Double.parseDouble(args[2]);
                 if(amount_take < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum")) {
                     sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_minimum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum"))));
+                    return true;
+                }
+
+                if(amount_take > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum")) {
+                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_maximum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum"))));
                     return true;
                 }
 
@@ -265,8 +293,26 @@ public class Crypto implements CommandExecutor {
             return true;
         }
 
-        if(args.length == 1 && args[0].equals("price")){
-            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_price").replace("{amount}", money_formatter.format(price)));
+        if(args.length == 1 && (args[0].equals("price") || args[0].equals("worth"))){
+            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_price").replace("{amount}", "1").replace("{money}", money_formatter.format(price)));
+            return true;
+        }
+
+        if(args.length == 2 && (args[0].equals("price") || args[0].equals("worth"))){
+
+            if (!Number.isNumeric(args[1])) {
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_price").replace("{amount}", "1").replace("{money}", money_formatter.format(price)));
+                return true;
+            }
+            double amount = Double.parseDouble(args[1]);
+
+            if(amount > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum", 1000000)){
+                amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum", 1000000);
+            }else if(amount < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum", 0.0001)){
+                amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum", 0.0001);
+            }
+
+            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_price").replace("{amount}", formatter.format(amount)).replace("{money}", money_formatter.format(price * amount)));
             return true;
         }
 
@@ -285,7 +331,7 @@ public class Crypto implements CommandExecutor {
 
             String target = ChatColor.stripColor(args[1]);
             Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(args[1]));
-            double target_balance = 0;
+            double target_balance;
             if(CryptoCurrency.conn != null){
                 if(target_player != null){
                     if(player.getName().equals(target_player.getName())){
@@ -333,8 +379,13 @@ public class Crypto implements CommandExecutor {
             }
 
             double amount_sell = Double.parseDouble(args[1]);
-            if(amount_sell < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum", 0.0001)){
-                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_minimum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum", 0.0001))));
+            if(amount_sell < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum")){
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_minimum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum"))));
+                return true;
+            }
+
+            if(amount_sell < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum")){
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_maximum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum"))));
                 return true;
             }
 
@@ -375,6 +426,11 @@ public class Crypto implements CommandExecutor {
                 return true;
             }
 
+            if(amount_buy > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum")){
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_maximum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum"))));
+                return true;
+            }
+
             double money_price = amount_buy * price;
             double player_balance = CryptoCurrency.getEconomy().getBalance(player);
             if(player_balance < money_price){
@@ -410,6 +466,11 @@ public class Crypto implements CommandExecutor {
             double amount_send = Double.parseDouble(args[2]);
             if(amount_send < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum")) {
                 player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_minimum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum"))));
+                return true;
+            }
+
+            if(amount_send > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum")) {
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_maximum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum"))));
                 return true;
             }
 
@@ -497,6 +558,11 @@ public class Crypto implements CommandExecutor {
                 return true;
             }
 
+            if(amount_send > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum")){
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_maximum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum"))));
+                return true;
+            }
+
             Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(args[1]));
             if(CryptoCurrency.conn != null){
                 if(target_player != null){
@@ -549,6 +615,11 @@ public class Crypto implements CommandExecutor {
             double amount_take = Double.parseDouble(args[2]);
             if(amount_take < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum")) {
                 player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_minimum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum"))));
+                return true;
+            }
+
+            if(amount_take > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum")) {
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_maximum").replace("{amount}", formatter.format(CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum"))));
                 return true;
             }
 

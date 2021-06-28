@@ -67,7 +67,8 @@ message_btc_taken_player: "&aYou have taken &6{amount} BTC &afrom &2{player}&a."
 message_btc_taken_target: "&2{player} &chas taken you &6{amount} BTC&c."
 message_btc_sell: "&aYou have just sold &6{amount} BTC &afor &2${money}&a."
 message_btc_buy: "&aYou have just bought &6{amount} BTC &afor &2${money}&a."
-message_btc_price: "&61 BTC &ais worth &2${amount}"
+message_btc_price: "&6{amount} BTC &ais worth &2${money}"
+message_btc_maximum: "&cYou can't manage with more then {amount} BTC."
 message_btc_minimum: "&cYou can't manage with less then {amount} BTC."
 #----------------------------------------------------------
 #                         BCH
@@ -82,7 +83,8 @@ message_bch_taken_player: "&aYou have taken {amount} BCH from &2{player}&a."
 message_bch_taken_target: "&2{player} &chas taken you {amount} BCH."
 message_bch_sell: "&aYou have just sold {amount} BCH for &2${money}&a."
 message_bch_buy: "&aYou have just bought {amount} BTC for &2${money}&a."
-message_bch_price: "&61 BCH &ais worth &2${amount}"
+message_bch_price: "&6{amount} BCH &ais worth &2${money}"
+message_bch_maximum: "&cYou can't manage with more then {amount} BCH."
 message_bch_minimum: "&cYou can't manage with less then {amount} BCH."
 #----------------------------------------------------------
 #                         ETH
@@ -97,7 +99,8 @@ message_eth_taken_player: "&aYou have taken &b{amount} ETH &afrom &2{player}&a."
 message_eth_taken_target: "&2{player} &chas taken you &b{amount} ETH&c."
 message_eth_sell: "&aYou have just sold &b{amount} ETH &afor &2${money}&a."
 message_eth_buy: "&aYou have just bought &b{amount} ETH &afor &2${money}&a."
-message_eth_price: "&b1 ETH &ais worth &2${amount}"
+message_eth_price: "&b{amount} ETH &ais worth &2${money}"
+message_eth_maximum: "&cYou can't manage with more then {amount} ETH."
 message_eth_minimum: "&cYou can't manage with less then {amount} ETH."
 #----------------------------------------------------------
 #                         ETC
@@ -112,7 +115,8 @@ message_etc_taken_player: "&aYou have taken {amount} ETC from &2{player}&a."
 message_etc_taken_target: "&2{player} &chas taken you {amount} ETC."
 message_etc_sell: "&aYou have just sold {amount} ETC for &2${money}&a."
 message_etc_buy: "&aYou have just bought {amount} ETC for &2${money}&a."
-message_etc_price: "&61 ETC &ais worth &2${amount}"
+message_etc_price: "&a{amount} ETC &ais worth &2${money}"
+message_etc_maximum: "&cYou can't manage with more then {amount} ETC."
 message_etc_minimum: "&cYou can't manage with less then {amount} ETC."
 #----------------------------------------------------------
 #                         DOGE
@@ -127,7 +131,8 @@ message_doge_taken_player: "&aYou have taken &6{amount} DOGE &afrom &2{player}&a
 message_doge_taken_target: "&2{player} &chas taken you &6{amount} DOGE&c."
 message_doge_sell: "&aYou have just sold &6{amount} DOGE &afor &2${money}&a."
 message_doge_buy: "&aYou have just bought &6{amount} DOGE &afor &2${money}&a."
-message_doge_price: "&61 DOGE &ais worth &2${amount}"
+message_doge_price: "&6{amount} DOGE &ais worth &2${money}"
+message_doge_maximum: "&cYou can't manage with more then {amount} DOGE."
 message_doge_minimum: "&cYou can't manage with less then {amount} DOGE."
 #----------------------------------------------------------
 #                         LTC
@@ -142,7 +147,8 @@ message_ltc_taken_player: "&aYou have taken &7{amount} LTC &afrom &2{player}&a."
 message_ltc_taken_target: "&2{player} &chas taken you &7{amount} LTC&c."
 message_ltc_sell: "&aYou have just sold &7{amount} LTC &afor &2${money}&a."
 message_ltc_buy: "&aYou have just bought &7{amount} LTC &afor &2${money}&a."
-message_ltc_price: "&71 LTC &ais worth &2${amount}"
+message_ltc_price: "&7{amount} LTC &ais worth &2${money}"
+message_ltc_maximum: "&cYou can't manage with more then {amount} LTC."
 message_ltc_minimum: "&cYou can't manage with less then {amount} LTC."
 #----------------------------------------------------------
 #                        USDT
@@ -157,5 +163,6 @@ message_usdt_taken_player: "&aYou have taken &2{amount} USDT &afrom &2{player}&a
 message_usdt_taken_target: "&2{player} &chas taken you &2{amount} USDT&c."
 message_usdt_sell: "&aYou have just sold &2{amount} USDT &afor &2${money}&a."
 message_usdt_buy: "&aYou have just bought &2{amount} USDT &afor &2${money}&a."
-message_usdt_price: "&21 USDT &ais worth &2${amount}"
+message_usdt_price: "&2{amount} USDT &ais worth &2${money}"
+message_usdt_maximum: "&cYou can't manage with more then {amount} USDT."
 message_usdt_minimum: "&cYou can't manage with less then {amount} USDT."

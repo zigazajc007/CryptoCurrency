@@ -58,6 +58,8 @@ price_fetch: 1
 #----------------------------------------------------------
 # Btc decimal format
 btc_format: "0.0000"
+# Maximum BTC players can send, buy or sell.
+btc_maximum: 100
 # Minimum BTC players can send, buy or sell.
 btc_minimum: 0.0001
 #----------------------------------------------------------
@@ -65,6 +67,8 @@ btc_minimum: 0.0001
 #----------------------------------------------------------
 # Bch decimal format
 bch_format: "0.0000"
+# Maximum BCH players can send, buy or sell.
+bch_maximum: 10000
 # Minimum BCH players can send, buy or sell.
 bch_minimum: 0.0001
 #----------------------------------------------------------
@@ -72,6 +76,8 @@ bch_minimum: 0.0001
 #----------------------------------------------------------
 # Eth decimal format
 eth_format: "0.000"
+# Maximum ETH players can send, buy or sell.
+eth_maximum: 5000
 # Minimum ETH players can send, buy or sell.
 eth_minimum: 0.001
 #----------------------------------------------------------
@@ -79,6 +85,8 @@ eth_minimum: 0.001
 #----------------------------------------------------------
 # Etc decimal format
 etc_format: "0.000"
+# Maximum ETC players can send, buy or sell.
+etc_maximum: 100000
 # Minimum ETC players can send, buy or sell.
 etc_minimum: 0.001
 #----------------------------------------------------------
@@ -86,6 +94,8 @@ etc_minimum: 0.001
 #----------------------------------------------------------
 # Doge decimal format
 doge_format: "0.000"
+# Maximum DOGE players can send, buy or sell.
+doge_maximum: 1000000
 # Minimum DOGE players can send, buy or sell.
 doge_minimum: 0.001
 #----------------------------------------------------------
@@ -93,6 +103,8 @@ doge_minimum: 0.001
 #----------------------------------------------------------
 # Ltc decimal format
 ltc_format: "0.000"
+# Maximum LTC players can send, buy or sell.
+ltc_maximum: 10000
 # Minimum LTC players can send, buy or sell.
 ltc_minimum: 0.001
 #----------------------------------------------------------
@@ -100,6 +112,8 @@ ltc_minimum: 0.001
 #----------------------------------------------------------
 # Usdt decimal format
 usdt_format: "0.00"
+# Maximum USDT players can send, buy or sell.
+usdt_maximum: 1000000
 # Minimum USDT players can send, buy or sell.
 usdt_minimum: 0.01
 #----------------------------------------------------------
