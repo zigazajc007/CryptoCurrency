@@ -2,6 +2,7 @@ package com.rabbitcompany.utils;
 
 import com.rabbitcompany.CryptoCurrency;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class Message {
         }
     }
 
-    public static void Help(Player player, String currency){
+    public static void Help(CommandSender player, String currency){
         String color;
         switch(currency){
             case "bch":

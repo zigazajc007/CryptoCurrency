@@ -144,7 +144,7 @@ public final class CryptoCurrency extends JavaPlugin {
         }
 
         //Update Checker
-        new UpdateChecker(this, 49).getVersion(updater_version -> {
+        new UpdateChecker(this, 51).getVersion(updater_version -> {
             if (!getDescription().getVersion().equalsIgnoreCase(updater_version)) new_version = updater_version;
             info("&aEnabling");
         });
