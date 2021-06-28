@@ -91,10 +91,10 @@ public class Crypto implements CommandExecutor {
                 }
                 double amount = Double.parseDouble(args[1]);
 
-                if(amount > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum", 1000000)){
-                    amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum", 1000000);
-                }else if(amount < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum", 0.0001)){
-                    amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum", 0.0001);
+                if(amount > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum")){
+                    amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum");
+                }else if(amount < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum")){
+                    amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum");
                 }
 
                 sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_price").replace("{amount}", formatter.format(amount)).replace("{money}", money_formatter.format(price * amount)));
@@ -306,10 +306,10 @@ public class Crypto implements CommandExecutor {
             }
             double amount = Double.parseDouble(args[1]);
 
-            if(amount > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum", 1000000)){
-                amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum", 1000000);
-            }else if(amount < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum", 0.0001)){
-                amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum", 0.0001);
+            if(amount > CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum")){
+                amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_maximum");
+            }else if(amount < CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum")){
+                amount = CryptoCurrency.getInstance().getConf().getDouble(command.getName() + "_minimum");
             }
 
             player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_price").replace("{amount}", formatter.format(amount)).replace("{money}", money_formatter.format(price * amount)));
