@@ -47,6 +47,16 @@ public class TabCompletion implements TabCompleter {
                             }
                         }
                         break;
+                    case "bal":
+                    case "balance":
+                    case "check":
+                    case "info":
+                        if(commandSender.hasPermission("cryptocurrency.balance")){
+                            for (Player all : Bukkit.getServer().getOnlinePlayers()) {
+                                completions.add(all.getName());
+                            }
+                        }
+                        break;
                 }
             }
             return completions;

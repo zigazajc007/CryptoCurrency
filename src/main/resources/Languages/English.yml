@@ -58,6 +58,7 @@ message_money_not_enough: "&cYou don't have enough money to send."
 #                         BTC
 #----------------------------------------------------------
 message_btc_balance: "&aYou have &6{amount} BTC &ain your wallet."
+message_btc_balance_player: "&2{player}&a has &6{amount} BTC &ain his wallet."
 message_btc_not_enough: "&cYou don't have enough BTC to send."
 message_btc_send_success: "&aYou have sent &6{amount} BTC &ato &2{player}&a."
 message_btc_send_yourself: "&cYou can't send BTC to yourself!"
@@ -72,6 +73,7 @@ message_btc_minimum: "&cYou can't manage with less then {amount} BTC."
 #                         BCH
 #----------------------------------------------------------
 message_bch_balance: "&aYou have {amount} BCH in your wallet."
+message_bch_balance_player: "&2{player} &ahas {amount} BCH in his wallet."
 message_bch_not_enough: "&cYou don't have enough BCH to send."
 message_bch_send_success: "&aYou have sent {amount} BCH to &2{player}&a."
 message_bch_send_yourself: "&cYou can't send BCH to yourself!"
@@ -86,6 +88,7 @@ message_bch_minimum: "&cYou can't manage with less then {amount} BCH."
 #                         ETH
 #----------------------------------------------------------
 message_eth_balance: "&aYou have &b{amount} ETH &ain your wallet."
+message_eth_balance_player: "&2{player} &ahas &b{amount} ETH &ain his wallet."
 message_eth_not_enough: "&cYou don't have enough ETH to send."
 message_eth_send_success: "&aYou have sent &b{amount} ETH &ato &2{player}&a."
 message_eth_send_yourself: "&cYou can't send ETH to yourself!"
@@ -100,6 +103,7 @@ message_eth_minimum: "&cYou can't manage with less then {amount} ETH."
 #                         ETC
 #----------------------------------------------------------
 message_etc_balance: "&aYou have {amount} ETC in your wallet."
+message_etc_balance_player: "&2{player} &ahas {amount} ETC in his wallet."
 message_etc_not_enough: "&cYou don't have enough ETC to send."
 message_etc_send_success: "&aYou have sent {amount} ETC to &2{player}&a."
 message_etc_send_yourself: "&cYou can't send ETC to yourself!"
@@ -114,6 +118,7 @@ message_etc_minimum: "&cYou can't manage with less then {amount} ETC."
 #                         DOGE
 #----------------------------------------------------------
 message_doge_balance: "&aYou have &6{amount} DOGE &ain your wallet."
+message_doge_balance_player: "&2{player} &ahas &6{amount} DOGE &ain his wallet."
 message_doge_not_enough: "&cYou don't have enough DOGE to send."
 message_doge_send_success: "&aYou have sent &6{amount} DOGE &ato &2{player}&a."
 message_doge_send_yourself: "&cYou can't send DOGE to yourself!"
@@ -128,6 +133,7 @@ message_doge_minimum: "&cYou can't manage with less then {amount} DOGE."
 #                         LTC
 #----------------------------------------------------------
 message_ltc_balance: "&aYou have &7{amount} LTC &ain your wallet."
+message_ltc_balance_player: "&2{player} &ahas &7{amount} LTC &ain his wallet."
 message_ltc_not_enough: "&cYou don't have enough LTC to send."
 message_ltc_send_success: "&aYou have sent &7{amount} LTC &ato &2{player}&a."
 message_ltc_send_yourself: "&cYou can't send LTC to yourself!"
@@ -142,6 +148,7 @@ message_ltc_minimum: "&cYou can't manage with less then {amount} LTC."
 #                        USDT
 #----------------------------------------------------------
 message_usdt_balance: "&aYou have &2{amount} USDT &ain your wallet."
+message_usdt_balance_player: "&2{player} &ahas &2{amount} USDT &ain his wallet."
 message_usdt_not_enough: "&cYou don't have enough USDT to send."
 message_usdt_send_success: "&aYou have sent &2{amount} USDT &ato &2{player}&a."
 message_usdt_send_yourself: "&cYou can't send USDT to yourself!"

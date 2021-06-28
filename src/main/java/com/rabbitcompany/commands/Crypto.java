@@ -88,6 +88,37 @@ public class Crypto implements CommandExecutor {
                 return true;
             }
 
+            if(args.length == 2 && (args[0].equals("balance") || args[0].equals("bal") || args[0].equals("check") || args[0].equals("info"))){
+                String target = ChatColor.stripColor(args[1]);
+                Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(args[1]));
+                double target_balance = 0;
+                if(CryptoCurrency.conn != null){
+                    if(target_player != null){
+                        target_balance = MySql.getPlayerBalance(target_player.getUniqueId().toString(), target_player.getName(), command.getName());
+                        sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_balance_player").replace("{player}", target_player.getName()).replace("{amount}", formatter.format(target_balance)));
+                        return true;
+                    }
+
+                    if(!MySql.isPlayerInDatabase(target, command.getName())){
+                        sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "is_not_a_player").replace("{player}", target));
+                        return true;
+                    }
+
+                    target_balance = MySql.getPlayerBalance("null", target, command.getName());
+                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_balance_player").replace("{player}", target).replace("{amount}", formatter.format(target_balance)));
+                    return true;
+                }
+
+                if(target_player == null){
+                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "is_not_a_player").replace("{player}", args[1]));
+                    return true;
+                }
+
+                target_balance = wallet.getDouble(target_player.getUniqueId().toString());
+                sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_" + command.getName() + "_balance_player").replace("{player}", target_player.getName()).replace("{amount}", formatter.format(target_balance)));
+                return true;
+            }
+
             if(args.length == 2 && args[0].equals("sell")){
                 sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + "&cYou can't sell " + command.getName() + " in console.");
                 return true;
@@ -234,15 +265,59 @@ public class Crypto implements CommandExecutor {
             return true;
         }
 
-        balance = (CryptoCurrency.conn != null) ? MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), command.getName()) : wallet.getDouble(player.getUniqueId().toString());
-
         if(args.length == 1 && args[0].equals("price")){
             player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_price").replace("{amount}", money_formatter.format(price)));
             return true;
         }
 
+        balance = (CryptoCurrency.conn != null) ? MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), command.getName()) : wallet.getDouble(player.getUniqueId().toString());
         if(args.length == 1 && (args[0].equals("balance") || args[0].equals("bal") || args[0].equals("check") || args[0].equals("info"))){
             player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_balance").replace("{amount}", formatter.format(balance)));
+            return true;
+        }
+
+        if(args.length == 2 && (args[0].equals("balance") || args[0].equals("bal") || args[0].equals("check") || args[0].equals("info"))){
+
+            if(!player.hasPermission("cryptocurrency.balance")){
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+                return true;
+            }
+
+            String target = ChatColor.stripColor(args[1]);
+            Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(args[1]));
+            double target_balance = 0;
+            if(CryptoCurrency.conn != null){
+                if(target_player != null){
+                    if(player.getName().equals(target_player.getName())){
+                        player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_balance").replace("{amount}", formatter.format(balance)));
+                        return true;
+                    }
+                    target_balance = MySql.getPlayerBalance(target_player.getUniqueId().toString(), target_player.getName(), command.getName());
+                    player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_balance_player").replace("{player}", target_player.getName()).replace("{amount}", formatter.format(target_balance)));
+                    return true;
+                }
+
+                if(!MySql.isPlayerInDatabase(target, command.getName())){
+                    player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "is_not_a_player").replace("{player}", target));
+                    return true;
+                }
+
+                target_balance = MySql.getPlayerBalance("null", target, command.getName());
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_balance_player").replace("{player}", target).replace("{amount}", formatter.format(target_balance)));
+                return true;
+            }
+
+            if(target_player == null){
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "is_not_a_player").replace("{player}", args[1]));
+                return true;
+            }
+
+            if(player.getName().equals(target_player.getName())){
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_balance").replace("{amount}", formatter.format(balance)));
+                return true;
+            }
+            target_balance = wallet.getDouble(target_player.getUniqueId().toString());
+            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_" + command.getName() + "_balance_player").replace("{player}", target_player.getName()).replace("{amount}", formatter.format(target_balance)));
             return true;
         }
 
