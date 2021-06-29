@@ -45,6 +45,18 @@ is_not_a_number: "&c{number} isn't a number!"
 wrong_arguments: "&cPlease use /{crypto} help"
 vault_required: "&cYour server don't have installed Vault to complete this action!"
 #----------------------------------------------------------
+#                        Help
+#----------------------------------------------------------
+help:
+  - "&7Listing commands:"
+  - ""
+  - "{color}/{crypto} balance &7- Check {crypto} balance"
+  - "{color}/{crypto} price <amount> &7- Show {crypto} price"
+  - "{color}/{crypto} buy <amount> &7- buy {crypto}"
+  - "{color}/{crypto} sell <amount> &7- sell {crypto}"
+  - "{color}/{crypto} send <player> <amount> &7- Send {crypto} to player"
+  - ""
+#----------------------------------------------------------
 #                       Messages
 #----------------------------------------------------------
 message_money_not_enough: "&cYou don't have enough money to send."
