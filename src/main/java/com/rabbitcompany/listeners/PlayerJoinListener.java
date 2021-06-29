@@ -2,6 +2,7 @@ package com.rabbitcompany.listeners;
 
 import com.rabbitcompany.CryptoCurrency;
 import com.rabbitcompany.utils.MySql;
+import com.rabbitcompany.utils.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,13 +22,7 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event){
         //SQL
         if(CryptoCurrency.conn != null){
-            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "btc");
-            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "bch");
-            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "eth");
-            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "etc");
-            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "doge");
-            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "ltc");
-            MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), "usdt");
+            for(String crypto : Settings.cryptos.keySet()) MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), crypto);
         }
     }
 

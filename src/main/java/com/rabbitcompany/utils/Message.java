@@ -29,30 +29,7 @@ public class Message {
     }
 
     public static void Help(CommandSender player, String currency){
-        String color;
-        switch(currency){
-            case "bch":
-                color = "&a";
-                break;
-            case "eth":
-                color = "&b";
-                break;
-            case "etc":
-                color = "&a";
-                break;
-            case "doge":
-                color = "&6";
-                break;
-            case "ltc":
-                color = "&7";
-                break;
-            case "usdt":
-                color = "&2";
-                break;
-            default:
-                color = "&6";
-                break;
-        }
+        String color = Settings.cryptos.get(currency).color;
 
         player.sendMessage(Message.chat("&7Listing commands:"));
         player.sendMessage(Message.chat(""));

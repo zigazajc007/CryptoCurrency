@@ -1,0 +1,79 @@
+#       ----------- + CryptoCurrency by Ziga Zajc + -----------   #
+#                                                                 #
+#                           CryptoCurrencies                      #
+#                                                                 #
+#       ----------- + --------------------------- + -----------   #
+#
+#       You can use chat colors:
+#                ________________________
+#               |   code: | color:       |
+#               |________________________|
+#               |     &0  |	Black	     |
+#               |     &1  |	Dark Blue	 |
+#               |     &2  |	Dark Green	 |
+#               |     &3  |	Dark Aqua	 |
+#               |     &4  |	Dark Red	 |
+#               |     &5  |	Dark Purple	 |
+#               |     &6  |	Gold	     |
+#               |     &7  |	Gray	     |
+#               |     &8  |	Dark Gray	 |
+#               |     &9  |	Blue	     |
+#               |     &a  |	Green	     |
+#               |     &b  |	Aqua	     |
+#               |     &c  |	Red	         |
+#               |     &d  |	Light Purple |
+#               |     &e  |	Yellow	     |
+#               |     &f  |	White	     |
+#               |     &k  |	Obfuscated	 |
+#               |     &l  |	Bold	     |
+#               |     &m  |	Strikethrough|
+#               |     &n  |	Underline	 |
+#               |     &o  |	Italic	     |
+#               |     &r  |	Reset	     |
+#               |________________________|
+#
+#----------------------------------------------------------
+#                    CryptoCurrencies
+#----------------------------------------------------------
+btc:
+  name: "Bitcoin"
+  color: "&6"
+  format: "0.0000"
+  maximum: 100
+  minimum: 0.0001
+bch:
+  name: "Bitcoin Cash"
+  color: "&a"
+  format: "0.0000"
+  maximum: 10000
+  minimum: 0.0001
+eth:
+  name: "Ethereum"
+  color: "&b"
+  format: "0.000"
+  maximum: 5000
+  minimum: 0.001
+etc:
+  name: "Ethereum Classic"
+  color: "&a"
+  format: "0.000"
+  maximum: 100000
+  minimum: 0.001
+doge:
+  name: "Dogecoin"
+  color: "&6"
+  format: "0.000"
+  maximum: 1000000
+  minimum: 1
+ltc:
+  name: "Litecoin"
+  color: "&7"
+  format: "0.000"
+  maximum: 10000
+  minimum: 0.001
+usdt:
+  name: "Tether"
+  color: "&2"
+  format: "0.00"
+  maximum: 1000000
+  minimum: 0.01

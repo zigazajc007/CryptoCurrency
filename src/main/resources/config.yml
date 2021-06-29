@@ -54,68 +54,19 @@ api_currency: "USD"
 # After how many minutes plugin will fetch data from Coinbase again (Gets crypto values)
 price_fetch: 1
 #----------------------------------------------------------
-#                        BTC API
+#                        SignShop
 #----------------------------------------------------------
-# Btc decimal format
-btc_format: "0.0000"
-# Maximum BTC players can send, buy or sell.
-btc_maximum: 100
-# Minimum BTC players can send, buy or sell.
-btc_minimum: 0.0001
-#----------------------------------------------------------
-#                        BCH API
-#----------------------------------------------------------
-# Bch decimal format
-bch_format: "0.0000"
-# Maximum BCH players can send, buy or sell.
-bch_maximum: 10000
-# Minimum BCH players can send, buy or sell.
-bch_minimum: 0.0001
-#----------------------------------------------------------
-#                        ETH API
-#----------------------------------------------------------
-# Eth decimal format
-eth_format: "0.000"
-# Maximum ETH players can send, buy or sell.
-eth_maximum: 5000
-# Minimum ETH players can send, buy or sell.
-eth_minimum: 0.001
-#----------------------------------------------------------
-#                        ETC API
-#----------------------------------------------------------
-# Etc decimal format
-etc_format: "0.000"
-# Maximum ETC players can send, buy or sell.
-etc_maximum: 100000
-# Minimum ETC players can send, buy or sell.
-etc_minimum: 0.001
-#----------------------------------------------------------
-#                        DOGE API
-#----------------------------------------------------------
-# Doge decimal format
-doge_format: "0.000"
-# Maximum DOGE players can send, buy or sell.
-doge_maximum: 1000000
-# Minimum DOGE players can send, buy or sell.
-doge_minimum: 0.001
-#----------------------------------------------------------
-#                        LTC API
-#----------------------------------------------------------
-# Ltc decimal format
-ltc_format: "0.000"
-# Maximum LTC players can send, buy or sell.
-ltc_maximum: 10000
-# Minimum LTC players can send, buy or sell.
-ltc_minimum: 0.001
-#----------------------------------------------------------
-#                       USDT API
-#----------------------------------------------------------
-# Usdt decimal format
-usdt_format: "0.00"
-# Maximum USDT players can send, buy or sell.
-usdt_maximum: 1000000
-# Minimum USDT players can send, buy or sell.
-usdt_minimum: 0.01
+shop_buy_format: "[cbuy]"
+shop_buy_error: "&0[&ccbuy&0]"
+shop_buy_player_color: "&0"
+shop_buy_amount_color: "&2"
+shop_buy_material_color: "&2"
+
+shop_sell_format: "[csell]"
+shop_sell_error: "&0[&ccsell&0]"
+shop_sell_player_color: "&0"
+shop_sell_amount_color: "&c"
+shop_sell_material_color: "&c"
 #----------------------------------------------------------
 #                        Bungeecord
 #----------------------------------------------------------

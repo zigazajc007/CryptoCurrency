@@ -42,34 +42,26 @@ prefix: "&7[&bCryptoCurrency&7] "
 permission: "&cYou don't have permission to do this!"
 is_not_a_player: "&c{player} isn't a player!"
 is_not_a_number: "&c{number} isn't a number!"
-wrong_btc_arguments: "&cPlease use /btc help"
-wrong_bch_arguments: "&cPlease use /bch help"
-wrong_eth_arguments: "&cPlease use /eth help"
-wrong_etc_arguments: "&cPlease use /etc help"
-wrong_doge_arguments: "&cPlease use /doge help"
-wrong_ltc_arguments: "&cPlease use /ltc help"
-wrong_usdt_arguments: "&cPlease use /usdt help"
+wrong_arguments: "&cPlease use /{crypto} help"
 vault_required: "&cYour server don't have installed Vault to complete this action!"
 #----------------------------------------------------------
 #                       Messages
 #----------------------------------------------------------
 message_money_not_enough: "&cYou don't have enough money to send."
-#----------------------------------------------------------
-#                         BTC
-#----------------------------------------------------------
-message_btc_balance: "&aYou have &6{amount} BTC &ain your wallet."
-message_btc_balance_player: "&2{player}&a has &6{amount} BTC &ain his wallet."
-message_btc_not_enough: "&cYou don't have enough BTC to send."
-message_btc_send_success: "&aYou have sent &6{amount} BTC &ato &2{player}&a."
-message_btc_send_yourself: "&cYou can't send BTC to yourself!"
-message_btc_receive_success: "&2{player} &ahas sent you &6{amount} BTC&a."
-message_btc_taken_player: "&aYou have taken &6{amount} BTC &afrom &2{player}&a."
-message_btc_taken_target: "&2{player} &chas taken you &6{amount} BTC&c."
-message_btc_sell: "&aYou have just sold &6{amount} BTC &afor &2${money}&a."
-message_btc_buy: "&aYou have just bought &6{amount} BTC &afor &2${money}&a."
-message_btc_price: "&6{amount} BTC &ais worth &2${money}"
-message_btc_maximum: "&cYou can't manage with more then {amount} BTC."
-message_btc_minimum: "&cYou can't manage with less then {amount} BTC."
+
+message_balance: "&aYou have {color}{amount} {crypto} &ain your wallet."
+message_balance_player: "&2{player}&a has {color}{amount} {crypto} &ain his wallet."
+message_not_enough: "&cYou don't have enough {color}{crypto} to send."
+message_send_success: "&aYou have sent &6{amount} BTC &ato &2{player}&a."
+message_send_yourself: "&cYou can't send BTC to yourself!"
+message_receive_success: "&2{player} &ahas sent you &6{amount} BTC&a."
+message_taken_player: "&aYou have taken &6{amount} BTC &afrom &2{player}&a."
+message_taken_target: "&2{player} &chas taken you &6{amount} BTC&c."
+message_sell: "&aYou have just sold &6{amount} BTC &afor &2${money}&a."
+message_buy: "&aYou have just bought &6{amount} BTC &afor &2${money}&a."
+message_price: "&6{amount} BTC &ais worth &2${money}"
+message_maximum: "&cYou can't manage with more then {amount} BTC."
+message_minimum: "&cYou can't manage with less then {amount} BTC."
 #----------------------------------------------------------
 #                         BCH
 #----------------------------------------------------------
