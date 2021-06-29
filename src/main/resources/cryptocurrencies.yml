@@ -67,7 +67,7 @@ doge:
   minimum: 1
 ltc:
   name: "Litecoin"
-  color: "&8"
+  color: "&7"
   format: "0.000"
   maximum: 10000
   minimum: 0.001

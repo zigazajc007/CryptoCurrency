@@ -1,6 +1,7 @@
 package com.rabbitcompany;
 
 import com.rabbitcompany.commands.CryptoCMD;
+import com.rabbitcompany.listeners.PlayerInteractListener;
 import com.rabbitcompany.listeners.PlayerJoinListener;
 import com.rabbitcompany.listeners.SignChangeListener;
 import com.rabbitcompany.listeners.TabCompleteListener;
@@ -43,6 +44,10 @@ public final class CryptoCurrency extends JavaPlugin {
     private File cc = null;
     private final YamlConfiguration crypto = new YamlConfiguration();
 
+    //Sign shop
+    private File ss = null;
+    private final YamlConfiguration signs = new YamlConfiguration();
+
     //English
     private File en = null;
     private final YamlConfiguration engl = new YamlConfiguration();
@@ -52,6 +57,7 @@ public final class CryptoCurrency extends JavaPlugin {
         instance = this;
         this.co = new File(getDataFolder(), "config.yml");
         this.cc = new File(getDataFolder(), "cryptocurrencies.yml");
+        this.ss = new File(getDataFolder(), "signshop.yml");
         this.en = new File(getDataFolder(), "Languages/English.yml");
 
         mkdir();
@@ -98,6 +104,7 @@ public final class CryptoCurrency extends JavaPlugin {
         new PlayerJoinListener(this);
         new SignChangeListener(this);
         new TabCompleteListener(this);
+        new PlayerInteractListener(this);
 
         try {
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -150,19 +157,10 @@ public final class CryptoCurrency extends JavaPlugin {
     }
 
     private void mkdir(){
-
-        if(!this.co.exists()){
-            saveResource("config.yml", false);
-        }
-
-        if(!this.cc.exists()){
-            saveResource("cryptocurrencies.yml", false);
-        }
-
-        if (!this.en.exists()) {
-            saveResource("Languages/English.yml", false);
-        }
-
+        if(!this.co.exists()) saveResource("config.yml", false);
+        if(!this.cc.exists()) saveResource("cryptocurrencies.yml", false);
+        if(!this.ss.exists()) saveResource("signshop.yml", false);
+        if(!this.en.exists()) saveResource("Languages/English.yml", false);
     }
 
     public void loadYamls(){
@@ -179,6 +177,12 @@ public final class CryptoCurrency extends JavaPlugin {
             e.printStackTrace();
         }
 
+        try{
+            this.signs.load(this.ss);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
         try {
             this.engl.load(this.en);
         } catch (IOException | InvalidConfigurationException e) {
@@ -189,6 +193,7 @@ public final class CryptoCurrency extends JavaPlugin {
 
     public YamlConfiguration getConf() { return this.conf; }
     public YamlConfiguration getCrypto() { return this.crypto; }
+    public YamlConfiguration getSigns() { return this.signs; }
     public YamlConfiguration getEngl() { return this.engl; }
 
     private void info(String message){

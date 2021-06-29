@@ -3,6 +3,7 @@ package com.rabbitcompany.listeners;
 import com.rabbitcompany.CryptoCurrency;
 import com.rabbitcompany.utils.Message;
 import com.rabbitcompany.utils.Number;
+import com.rabbitcompany.utils.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,8 @@ import org.bukkit.event.block.SignChangeEvent;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.List;
 
 public class SignChangeListener implements Listener {
 
@@ -38,44 +41,19 @@ public class SignChangeListener implements Listener {
                     if(!(amount < 1 || amount > 64)){
                         if(Material.getMaterial(line3.toUpperCase()) != null){
                             String currency = "btc";
-                            if(line4.contains("BCH")) currency = "bch";
-                            if(line4.contains("ETH")) currency = "eth";
-                            if(line4.contains("ETC")) currency = "etc";
-                            if(line4.contains("DOGE")) currency = "doge";
-                            if(line4.contains("LTC")) currency = "ltc";
-                            if(line4.contains("USDT")) currency = "usdt";
-                            event.getPlayer().sendMessage("Before: " + line4);
+                            for(String crypto : Settings.cryptos.keySet()) if(line4.contains(crypto.toUpperCase())) currency = crypto;
                             line4 = line4.replaceAll("[^0-9.]", "");
-                            event.getPlayer().sendMessage("After: " + line4);
                             if(Number.isNumeric(line4)){
                                 double price = Double.parseDouble(line4);
-                                NumberFormat formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString(currency + "_format", "0.0000"));
+                                NumberFormat formatter = new DecimalFormat("#" + Settings.cryptos.get(currency).format);
                                 event.setLine(0, Message.chat(cryptoCurrency.getConf().getString("shop_" + type + "_player_color") + event.getPlayer().getName()));
                                 event.setLine(1, Message.chat(cryptoCurrency.getConf().getString("shop_" + type + "_amount_color") + amount));
-                                event.setLine(2, Message.chat(cryptoCurrency.getConf().getString("shop_" + type + "_material_color") + line3.toLowerCase()));
-                                switch (currency){
-                                    case "bch":
-                                        event.setLine(3, Message.chat("&a" + formatter.format(price) + " BCH"));
-                                        break;
-                                    case "eth":
-                                        event.setLine(3, Message.chat("&b" + formatter.format(price) + " ETH"));
-                                        break;
-                                    case "etc":
-                                        event.setLine(3, Message.chat("&a" + formatter.format(price) + " ETC"));
-                                        break;
-                                    case "doge":
-                                        event.setLine(3, Message.chat("&6" + formatter.format(price) + " DOGE"));
-                                        break;
-                                    case "ltc":
-                                        event.setLine(3, Message.chat("&7" + formatter.format(price) + " LTC"));
-                                        break;
-                                    case "usdt":
-                                        event.setLine(3, Message.chat("&2" + formatter.format(price) + " USDT"));
-                                        break;
-                                    default:
-                                        event.setLine(3, Message.chat("&6" + formatter.format(price) + " BTC"));
-                                        break;
-                                }
+                                String[] lin3 = line3.split("_");
+                                StringBuilder sb = new StringBuilder();
+                                for(String li3 : lin3) sb.append(Character.toUpperCase(li3.charAt(0))).append(li3.toLowerCase().substring(1)).append(" ");
+                                sb.deleteCharAt(sb.length()-1);
+                                event.setLine(2, Message.chat(cryptoCurrency.getConf().getString("shop_" + type + "_material_color") + sb));
+                                event.setLine(3, Message.chat(Settings.cryptos.get(currency).color + formatter.format(price) + " " + currency.toUpperCase()));
                             }else{
                                 event.setLine(3, Message.chat("&cInvalid price"));
                             }
