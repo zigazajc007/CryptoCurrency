@@ -79,12 +79,12 @@ public class CryptoCMD extends Command {
             }
 
             if(args.length == 2 && args[0].equals("sell")){
-                sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + "&cYou can't sell " + crypto_type + " in console.");
+                sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.chat("&cYou can't sell " + crypto_type.toUpperCase() + " in console."));
                 return true;
             }
 
             if(args.length == 2 && args[0].equals("buy")){
-                sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + "&cYou can't buy " + crypto_type + " in console.");
+                sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.chat("&cYou can't buy " + crypto_type.toUpperCase() + " in console."));
                 return true;
             }
 
