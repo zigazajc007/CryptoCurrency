@@ -47,7 +47,7 @@ public class PlayerInteractListener implements Listener {
         if(!Number.isNumeric(line4)) return;
         double price = Double.parseDouble(line4);
 
-        String owner = cryptoCurrency.getSigns().getString(line1, null);
+        String owner = cryptoCurrency.getPlayers().getString(line1, null);
         if(owner == null) return;
 
 

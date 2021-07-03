@@ -1,30 +1,118 @@
 package com.rabbitcompany.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.rabbitcompany.CryptoCurrency;
 import org.bukkit.Bukkit;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Scanner;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class API {
 
-    public static void startPriceFetcher(String currency){
-        for(String crypto : Settings.cryptos.keySet()){
-            Bukkit.getScheduler().runTaskTimerAsynchronously(CryptoCurrency.getInstance(), () -> {
-                try {
-                    String jsonS = new Scanner(new URL("https://api.coinbase.com/v2/prices/" + crypto.toUpperCase() + "-" + currency + "/spot").openStream(), "UTF-8").useDelimiter("\\A").next();
+    public static NumberFormat moneyFormatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("money_format", "###,###.00"));
 
-                    Gson gson = new Gson();
-                    JsonObject jsonObject = gson.fromJson(jsonS, JsonObject.class);
-                    String data = jsonObject.getAsJsonObject("data").get("amount").getAsString();
+    public static boolean isCryptoEnabled(String crypto){
+        return Settings.cryptos.get(crypto) != null;
+    }
 
-                    if(Double.parseDouble(data) != 0) Settings.cryptos.get(crypto).price = Double.parseDouble(data);
+    public static String getAPICurrency(){
+        return CryptoCurrency.getInstance().getConf().getString("api_currency", "USD");
+    }
 
-                } catch (IOException ignored) { }
-            }, 0L, 20L * 60L * CryptoCurrency.getInstance().getConf().getInt("price_fetch", 1));
+    public static NumberFormat getFormatter(String crypto){
+        if(!isCryptoEnabled(crypto)) return new DecimalFormat("#0.0000");
+        return new DecimalFormat("#" + Settings.cryptos.get(crypto).format);
+    }
+
+    public static boolean reloadCrypto(String crypto){
+        if(!isCryptoEnabled(crypto)) return false;
+        Settings.cryptos.get(crypto).initializeWallet();
+        return true;
+    }
+
+    public static void reloadConfigFiles(){
+        CryptoCurrency.getInstance().loadYamls();
+    }
+
+    public static String getUUID(String player){
+        return CryptoCurrency.getInstance().getPlayers().getString(player, null);
+    }
+
+    public static boolean hasWallet(String player){
+        return CryptoCurrency.getInstance().getPlayers().getString(player, null) != null;
+    }
+
+    public static double getBalance(String player, String crypto){
+        if(!isCryptoEnabled(crypto)) return 0;
+        if(!hasWallet(player)) return 0;
+        String UUID = getUUID(player);
+        if(CryptoCurrency.conn != null) return MySql.getPlayerBalance(UUID, player, crypto);
+        return Settings.cryptos.get(crypto).wallet.getDouble(UUID, 0);
+    }
+
+    public static String getBalanceFormatted(String crypto, String player){
+        return getFormatter(crypto).format(getBalance(crypto, player));
+    }
+
+    public static double getCryptoPrice(String crypto){
+        if(!isCryptoEnabled(crypto)) return 0;
+        return Settings.cryptos.get(crypto).price;
+    }
+
+    public static double getCryptoPrice(String crypto, double amount){
+        return getCryptoPrice(crypto) * amount;
+    }
+
+    public static String getCryptoPriceFormatted(String crypto){
+        return moneyFormatter.format(getCryptoPrice(crypto));
+    }
+
+    public static String getCryptoPriceFormatted(String crypto, double amount){
+        return moneyFormatter.format(getCryptoPrice(crypto, amount));
+    }
+
+    public static boolean giveCrypto(String toPlayer, String crypto, double amount){
+        if(!isCryptoEnabled(crypto)) return false;
+        double balance = getBalance(toPlayer, crypto);
+        if(!hasWallet(toPlayer)) return false;
+        String UUID = getUUID(toPlayer);
+        if(CryptoCurrency.conn != null){
+            MySql.setPlayerBalance(UUID, toPlayer, getFormatter(crypto).format(balance + amount), crypto);
+            return true;
         }
+        Bukkit.getConsoleSender().sendMessage("Balance: " + balance);
+        Bukkit.getConsoleSender().sendMessage("Amount: " + amount);
+        Bukkit.getConsoleSender().sendMessage("Sum: " + (balance + amount));
+        Settings.cryptos.get(crypto).wallet.set(UUID, balance + amount);
+        Settings.cryptos.get(crypto).saveWallet();
+        return true;
+    }
+
+    public static boolean takeCrypto(String fromPlayer, String crypto, double amount){
+        if(!isCryptoEnabled(crypto)) return false;
+        double balance = getBalance(fromPlayer, crypto);
+        if(!hasWallet(fromPlayer)) return false;
+        String UUID = getUUID(fromPlayer);
+        if(balance - amount < 0) amount = balance;
+        if(CryptoCurrency.conn != null){
+            MySql.setPlayerBalance(UUID, fromPlayer, getFormatter(crypto).format(balance - amount), crypto);
+            return true;
+        }
+        Settings.cryptos.get(crypto).wallet.set(UUID, balance - amount);
+        Settings.cryptos.get(crypto).saveWallet();
+        return true;
+    }
+
+    public static int sendCrypto(String fromPlayer, String toPlayer, String crypto, double amount){
+        if(!isCryptoEnabled(crypto)) return 1;
+        if(amount < Settings.cryptos.get(crypto).minimum) return 2;
+        if(amount > Settings.cryptos.get(crypto).maximum) return 3;
+        if(!hasWallet(fromPlayer)) return 4;
+        if(!hasWallet(toPlayer)) return 5;
+        double fromBalance = getBalance(crypto, fromPlayer);
+
+        if(fromBalance < amount) return 6;
+        if(!takeCrypto(fromPlayer, crypto, amount)) return 7;
+        if(!giveCrypto(toPlayer, crypto, amount)) return 8;
+        return 9;
     }
 }

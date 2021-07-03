@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerJoinListener implements Listener {
 
-    private CryptoCurrency cryptoCurrency;
+    private final CryptoCurrency cryptoCurrency;
 
     public PlayerJoinListener(CryptoCurrency plugin){
         cryptoCurrency = plugin;
@@ -20,7 +20,10 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
-        //SQL
+        //Save players UUID
+        cryptoCurrency.getPlayers().set(event.getPlayer().getName(), event.getPlayer().getUniqueId().toString());
+        cryptoCurrency.savePlayers();
+        //Save player to Database
         if(CryptoCurrency.conn != null){
             for(String crypto : Settings.cryptos.keySet()) MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), crypto);
         }

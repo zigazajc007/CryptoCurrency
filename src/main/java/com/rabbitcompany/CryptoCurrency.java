@@ -44,9 +44,9 @@ public final class CryptoCurrency extends JavaPlugin {
     private File cc = null;
     private final YamlConfiguration crypto = new YamlConfiguration();
 
-    //Sign shop
-    private File ss = null;
-    private final YamlConfiguration signs = new YamlConfiguration();
+    //Players
+    private File pl = null;
+    private final YamlConfiguration players = new YamlConfiguration();
 
     //English
     private File en = null;
@@ -57,7 +57,7 @@ public final class CryptoCurrency extends JavaPlugin {
         instance = this;
         this.co = new File(getDataFolder(), "config.yml");
         this.cc = new File(getDataFolder(), "cryptocurrencies.yml");
-        this.ss = new File(getDataFolder(), "signshop.yml");
+        this.pl = new File(getDataFolder(), "players.yml");
         this.en = new File(getDataFolder(), "Languages/English.yml");
 
         mkdir();
@@ -129,7 +129,6 @@ public final class CryptoCurrency extends JavaPlugin {
             info("&aEnabling");
         });
 
-        API.startPriceFetcher(getConf().getString("api_currency", "USD"));
     }
 
     @Override
@@ -159,7 +158,7 @@ public final class CryptoCurrency extends JavaPlugin {
     private void mkdir(){
         if(!this.co.exists()) saveResource("config.yml", false);
         if(!this.cc.exists()) saveResource("cryptocurrencies.yml", false);
-        if(!this.ss.exists()) saveResource("signshop.yml", false);
+        if(!this.pl.exists()) saveResource("players.yml", false);
         if(!this.en.exists()) saveResource("Languages/English.yml", false);
     }
 
@@ -178,7 +177,7 @@ public final class CryptoCurrency extends JavaPlugin {
         }
 
         try{
-            this.signs.load(this.ss);
+            this.players.load(this.pl);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -193,8 +192,16 @@ public final class CryptoCurrency extends JavaPlugin {
 
     public YamlConfiguration getConf() { return this.conf; }
     public YamlConfiguration getCrypto() { return this.crypto; }
-    public YamlConfiguration getSigns() { return this.signs; }
+    public YamlConfiguration getPlayers() { return this.players; }
     public YamlConfiguration getEngl() { return this.engl; }
+
+    public void savePlayers(){
+        try {
+            this.players.save(pl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void info(String message){
         Bukkit.getConsoleSender().sendMessage(Message.chat(""));
