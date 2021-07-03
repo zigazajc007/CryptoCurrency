@@ -31,10 +31,22 @@ public class SignChangeListener implements Listener {
         String line4 = event.getLine(3);
 
         if(line1 == null || line2 == null || line3 == null || line4 == null) return;
-        if(!line1.equals(cryptoCurrency.getConf().getString("shop_buy_format")) && !line1.equals(cryptoCurrency.getConf().getString("shop_sell_format"))) return;
+        if(!line1.equals(cryptoCurrency.getConf().getString("shop_buy_format")) && !line1.equals(cryptoCurrency.getConf().getString("shop_sell_format")) && !line1.equals(cryptoCurrency.getConf().getString("admin_shop_buy_format")) && !line1.equals(cryptoCurrency.getConf().getString("admin_shop_sell_format"))) return;
 
-        String type = (line1.equals(cryptoCurrency.getConf().getString("shop_buy_format"))) ? "buy" : "sell";
-        event.setLine(0, Message.chat(cryptoCurrency.getConf().getString("shop_" + type + "_error")));
+        String type;
+        if(line1.equals(cryptoCurrency.getConf().getString("admin_shop_buy_format"))){
+            type = "admin_shop_buy";
+        }else if (line1.equals(cryptoCurrency.getConf().getString("admin_shop_sell_format"))){
+            type = "admin_shop_sell";
+        }else if (line1.equals(cryptoCurrency.getConf().getString("shop_sell_format"))){
+            type = "shop_sell";
+        }else{
+            type = "shop_buy";
+        }
+
+        if(type.contains("admin") && !event.getPlayer().hasPermission("cryptocurrency.shop")) type = type.replace("admin_", "");
+
+        event.setLine(0, Message.chat(cryptoCurrency.getConf().getString(type + "_error")));
 
         if(!Number.isNumeric(line2)){
             event.setLine(1, Message.chat("&cInvalid number"));
@@ -63,13 +75,17 @@ public class SignChangeListener implements Listener {
 
         double price = Double.parseDouble(line4);
         NumberFormat formatter = new DecimalFormat("#" + Settings.cryptos.get(currency).format);
-        event.setLine(0, Message.chat(cryptoCurrency.getConf().getString("shop_" + type + "_player_color") + event.getPlayer().getName()));
-        event.setLine(1, Message.chat(cryptoCurrency.getConf().getString("shop_" + type + "_amount_color") + amount));
+        if(type.contains("admin")){
+            event.setLine(0, Message.chat(cryptoCurrency.getConf().getString(type + "_player_color") + cryptoCurrency.getConf().getString("admin_shop_owner")));
+        }else{
+            event.setLine(0, Message.chat(cryptoCurrency.getConf().getString(type + "_player_color") + event.getPlayer().getName()));
+        }
+        event.setLine(1, Message.chat(cryptoCurrency.getConf().getString(type + "_amount_color") + amount + "x"));
         String[] lin3 = line3.split("_");
         StringBuilder sb = new StringBuilder();
         for(String li3 : lin3) sb.append(Character.toUpperCase(li3.charAt(0))).append(li3.toLowerCase().substring(1)).append(" ");
         sb.deleteCharAt(sb.length()-1);
-        event.setLine(2, Message.chat(cryptoCurrency.getConf().getString("shop_" + type + "_material_color") + sb));
+        event.setLine(2, Message.chat(cryptoCurrency.getConf().getString(type + "_material_color") + sb));
         event.setLine(3, Message.chat(Settings.cryptos.get(currency).color + formatter.format(price) + " " + currency.toUpperCase()));
     }
 

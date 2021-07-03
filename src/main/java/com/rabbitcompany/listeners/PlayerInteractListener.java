@@ -1,6 +1,7 @@
 package com.rabbitcompany.listeners;
 
 import com.rabbitcompany.CryptoCurrency;
+import com.rabbitcompany.utils.Message;
 import com.rabbitcompany.utils.Number;
 import com.rabbitcompany.utils.Settings;
 import org.bukkit.Bukkit;
@@ -14,7 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class PlayerInteractListener implements Listener {
 
-    private CryptoCurrency cryptoCurrency;
+    private final CryptoCurrency cryptoCurrency;
 
     public PlayerInteractListener(CryptoCurrency plugin){
         cryptoCurrency = plugin;
@@ -30,7 +31,7 @@ public class PlayerInteractListener implements Listener {
 
         Sign sign = (Sign) event.getClickedBlock().getState();
         String line1 = ChatColor.stripColor(sign.getLine(0));
-        String line2 = ChatColor.stripColor(sign.getLine(1));
+        String line2 = ChatColor.stripColor(sign.getLine(1)).replace("x", "");
         String line3 = ChatColor.stripColor(sign.getLine(2));
         String line4 = ChatColor.stripColor(sign.getLine(3));
 
@@ -49,6 +50,11 @@ public class PlayerInteractListener implements Listener {
 
         String owner = cryptoCurrency.getPlayers().getString(line1, null);
         if(owner == null) return;
+
+        if(owner.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_buy_player_color") + cryptoCurrency.getConf().getString("admin_shop_owner")))){
+
+            return;
+        }
 
 
     }
