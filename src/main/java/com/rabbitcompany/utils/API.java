@@ -1,10 +1,11 @@
 package com.rabbitcompany.utils;
 
 import com.rabbitcompany.CryptoCurrency;
-import org.bukkit.Bukkit;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class API {
 
@@ -12,6 +13,10 @@ public class API {
 
     public static boolean isCryptoEnabled(String crypto){
         return Settings.cryptos.get(crypto) != null;
+    }
+
+    public static List<String> getEnabledCryptos(){
+        return new ArrayList<>(Settings.cryptos.keySet());
     }
 
     public static String getAPICurrency(){
