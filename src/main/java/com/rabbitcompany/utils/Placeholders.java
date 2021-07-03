@@ -42,15 +42,24 @@ public class Placeholders extends PlaceholderExpansion {
 
         if(Settings.cryptos.get(identi[0]) == null) return "";
 
+        if(identi.length == 3){
+            if(identi[1].equals("price")){
+
+            }
+
+            if(identi[1].equals("balance")){
+                String target = identi[2];
+                NumberFormat formatter = new DecimalFormat("#" + API.getFormatter(identi[1]));
+            }
+        }
+
         if(identi[1].equals("price")){
             NumberFormat money_formatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("money_format", "###,###.00"));
             return money_formatter.format(Settings.cryptos.get(identi[0]).price);
         }
 
         if(identi[1].equals("balance")){
-            NumberFormat formatter = new DecimalFormat("#" + Settings.cryptos.get(identi[0]).format);
-            double balance = (CryptoCurrency.conn != null) ? MySql.getPlayerBalance(player.getUniqueId().toString(), player.getName(), identi[0]) : Settings.cryptos.get(identi[0]).wallet.getDouble(player.getUniqueId().toString());
-            return formatter.format(balance);
+            return API.getBalanceFormatted(player.getName(), identi[1]);
         }
 
         return "";
