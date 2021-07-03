@@ -104,15 +104,23 @@ public class CryptoCMD extends Command {
                     return true;
                 }
 
-                if(API.giveCrypto(target, crypto_type, amount_send)){
-                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_send_success").replace("{amount}", API.getFormatter(crypto_type).format(amount_send)).replace("{player}", target).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
-                    if(target_player != null && target_player.isOnline()){
-                        target_player.sendMessage(Message.getMessage(target_player.getUniqueId(), "prefix") + Message.getMessage(target_player.getUniqueId(), "message_receive_success").replace("{player}", "Console").replace("{amount}", API.getFormatter(crypto_type).format(amount_send)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
-                    }
-                    return true;
+                switch (API.giveCrypto(target, crypto_type, amount_send)){
+                    case 2:
+                        sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_minimum").replace("{amount}", API.getFormatter(crypto_type).format(Settings.cryptos.get(crypto_type).minimum)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                        return true;
+                    case 3:
+                        sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_maximum").replace("{amount}", API.getFormatter(crypto_type).format(Settings.cryptos.get(crypto_type).maximum)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                        return true;
+                    case 4:
+                        sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "is_not_a_player").replace("{player}", target));
+                        return true;
+                    case 10:
+                        sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_send_success").replace("{amount}", API.getFormatter(crypto_type).format(amount_send)).replace("{player}", target).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                        if(target_player != null && target_player.isOnline())
+                            target_player.sendMessage(Message.getMessage(target_player.getUniqueId(), "prefix") + Message.getMessage(target_player.getUniqueId(), "message_receive_success").replace("{player}", "Console").replace("{amount}", API.getFormatter(crypto_type).format(amount_send)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                        return true;
                 }
-
-                sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "is_not_a_player").replace("{player}", target));
+                return true;
             }
 
             if(args.length == 3 && args[0].equals("take")){
@@ -123,60 +131,26 @@ public class CryptoCMD extends Command {
                 }
 
                 double amount_take = Double.parseDouble(args[2]);
-                if(amount_take < Settings.cryptos.get(crypto_type).minimum) {
-                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_minimum").replace("{amount}", API.getFormatter(crypto_type).format(Settings.cryptos.get(crypto_type).minimum)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
-                    return true;
-                }
-
-                if(amount_take > Settings.cryptos.get(crypto_type).maximum) {
-                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_maximum").replace("{amount}", API.getFormatter(crypto_type).format(Settings.cryptos.get(crypto_type).maximum)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
-                    return true;
-                }
 
                 String target = ChatColor.stripColor(args[1]);
                 Player target_player = Bukkit.getServer().getPlayer(ChatColor.stripColor(args[1]));
-                if (CryptoCurrency.conn != null) {
-                    if(target_player != null){
-                        double target_balance = MySql.getPlayerBalance(target_player.getUniqueId().toString(), target_player.getName(), crypto_type);
-                        if(target_balance >= amount_take){
-                            MySql.setPlayerBalance(target_player.getUniqueId().toString(), target_player.getName(), API.getFormatter(crypto_type).format(target_balance-amount_take), crypto_type);
-                        }else{
-                            MySql.setPlayerBalance(target_player.getUniqueId().toString(), target_player.getName(), "0", crypto_type);
-                        }
-                        sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_taken_player").replace("{amount}", API.getFormatter(crypto_type).format(amount_take)).replace("{player}", target_player.getName()).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
-                        target_player.sendMessage(Message.getMessage(target_player.getUniqueId(), "prefix") + Message.getMessage(target_player.getUniqueId(), "message_taken_target").replace("{player}", "Console").replace("{amount}", API.getFormatter(crypto_type).format(amount_take)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
-                        return true;
-                    }
 
-                    if(!MySql.isPlayerInDatabase(target, crypto_type)){
+                switch (API.takeCrypto(target, crypto_type, amount_take)){
+                    case 2:
+                        sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_minimum").replace("{amount}", API.getFormatter(crypto_type).format(Settings.cryptos.get(crypto_type).minimum)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                        return true;
+                    case 3:
+                        sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_maximum").replace("{amount}", API.getFormatter(crypto_type).format(Settings.cryptos.get(crypto_type).maximum)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                        return true;
+                    case 4:
                         sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "is_not_a_player").replace("{player}", target));
                         return true;
-                    }
-
-                    double target_balance = MySql.getPlayerBalance("null", target, crypto_type);
-                    if(target_balance >= amount_take){
-                        MySql.setPlayerBalance("null", target, API.getFormatter(crypto_type).format(target_balance-amount_take), crypto_type);
-                    }else{
-                        MySql.setPlayerBalance("null", target, "0", crypto_type);
-                    }
-                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_taken_player").replace("{amount}", API.getFormatter(crypto_type).format(amount_take)).replace("{player}", target).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
-                    return true;
+                    case 10:
+                        sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_taken_player").replace("{amount}", API.getFormatter(crypto_type).format(amount_take)).replace("{player}", target).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                        if(target_player != null && target_player.isOnline())
+                            target_player.sendMessage(Message.getMessage(target_player.getUniqueId(), "prefix") + Message.getMessage(target_player.getUniqueId(), "message_taken_target").replace("{player}", "Console").replace("{amount}", API.getFormatter(crypto_type).format(amount_take)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                        return true;
                 }
-
-                if(target_player == null){
-                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "is_not_a_player").replace("{player}", args[1]));
-                    return true;
-                }
-
-                double target_balance = wallet.getDouble(target_player.getUniqueId().toString());
-                if (target_balance >= amount_take) {
-                    wallet.set(target_player.getUniqueId().toString(), target_balance - amount_take);
-                } else {
-                    wallet.set(target_player.getUniqueId().toString(), 0);
-                }
-                Settings.cryptos.get(crypto_type).saveWallet();
-                sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_taken_player").replace("{amount}", API.getFormatter(crypto_type).format(amount_take)).replace("{player}", target_player.getName()).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
-                target_player.sendMessage(Message.getMessage(target_player.getUniqueId(), "prefix") + Message.getMessage(target_player.getUniqueId(), "message_taken_target").replace("{player}", "Console").replace("{amount}", API.getFormatter(crypto_type).format(amount_take)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
                 return true;
             }
             sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "wrong_arguments").replace("{crypto}", crypto_type));

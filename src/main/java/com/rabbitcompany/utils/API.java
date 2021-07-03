@@ -49,7 +49,7 @@ public class API {
         return Settings.cryptos.get(crypto).wallet.getDouble(UUID, 0);
     }
 
-    public static String getBalanceFormatted(String crypto, String player){
+    public static String getBalanceFormatted(String player, String crypto){
         return getFormatter(crypto).format(getBalance(crypto, player));
     }
 
@@ -70,36 +70,37 @@ public class API {
         return moneyFormatter.format(getCryptoPrice(crypto, amount));
     }
 
-    public static boolean giveCrypto(String toPlayer, String crypto, double amount){
-        if(!isCryptoEnabled(crypto)) return false;
-        double balance = getBalance(toPlayer, crypto);
-        if(!hasWallet(toPlayer)) return false;
+    public static int giveCrypto(String toPlayer, String crypto, double amount){
+        if(!isCryptoEnabled(crypto)) return 1;
+        if(amount < Settings.cryptos.get(crypto).minimum) return 2;
+        if(amount > Settings.cryptos.get(crypto).maximum) return 3;
+        if(!hasWallet(toPlayer)) return 4;
         String UUID = getUUID(toPlayer);
+        double balance = getBalance(toPlayer, crypto);
         if(CryptoCurrency.conn != null){
             MySql.setPlayerBalance(UUID, toPlayer, getFormatter(crypto).format(balance + amount), crypto);
-            return true;
+            return 10;
         }
-        Bukkit.getConsoleSender().sendMessage("Balance: " + balance);
-        Bukkit.getConsoleSender().sendMessage("Amount: " + amount);
-        Bukkit.getConsoleSender().sendMessage("Sum: " + (balance + amount));
         Settings.cryptos.get(crypto).wallet.set(UUID, balance + amount);
         Settings.cryptos.get(crypto).saveWallet();
-        return true;
+        return 10;
     }
 
-    public static boolean takeCrypto(String fromPlayer, String crypto, double amount){
-        if(!isCryptoEnabled(crypto)) return false;
-        double balance = getBalance(fromPlayer, crypto);
-        if(!hasWallet(fromPlayer)) return false;
+    public static int takeCrypto(String fromPlayer, String crypto, double amount){
+        if(!isCryptoEnabled(crypto)) return 1;
+        if(amount < Settings.cryptos.get(crypto).minimum) return 2;
+        if(amount > Settings.cryptos.get(crypto).maximum) return 3;
+        if(!hasWallet(fromPlayer)) return 4;
         String UUID = getUUID(fromPlayer);
+        double balance = getBalance(fromPlayer, crypto);
         if(balance - amount < 0) amount = balance;
         if(CryptoCurrency.conn != null){
             MySql.setPlayerBalance(UUID, fromPlayer, getFormatter(crypto).format(balance - amount), crypto);
-            return true;
+            return 10;
         }
         Settings.cryptos.get(crypto).wallet.set(UUID, balance - amount);
         Settings.cryptos.get(crypto).saveWallet();
-        return true;
+        return 10;
     }
 
     public static int sendCrypto(String fromPlayer, String toPlayer, String crypto, double amount){
@@ -111,8 +112,8 @@ public class API {
         double fromBalance = getBalance(crypto, fromPlayer);
 
         if(fromBalance < amount) return 6;
-        if(!takeCrypto(fromPlayer, crypto, amount)) return 7;
-        if(!giveCrypto(toPlayer, crypto, amount)) return 8;
-        return 9;
+        if(takeCrypto(fromPlayer, crypto, amount) != 10) return 7;
+        if(giveCrypto(toPlayer, crypto, amount) != 10) return 8;
+        return 10;
     }
 }
