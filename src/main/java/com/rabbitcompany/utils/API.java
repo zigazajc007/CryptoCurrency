@@ -104,7 +104,7 @@ public class API {
         }
         Settings.cryptos.get(crypto).wallet.set(UUID, balance + amount);
         Settings.cryptos.get(crypto).saveWallet();
-        CryptoCurrency.getEconomy().withdrawPlayer(player, amount);
+        CryptoCurrency.getEconomy().withdrawPlayer(player, money_price);
         return 10;
     }
 
