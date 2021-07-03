@@ -12,8 +12,6 @@ import org.bukkit.event.block.SignChangeEvent;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Arrays;
-import java.util.List;
 
 public class SignChangeListener implements Listener {
 

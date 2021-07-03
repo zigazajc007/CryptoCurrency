@@ -353,7 +353,7 @@ public class CryptoCMD extends Command {
                 return true;
             }
 
-            if(amount_sell < Settings.cryptos.get(crypto_type).maximum){
+            if(amount_sell > Settings.cryptos.get(crypto_type).maximum){
                 player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_maximum").replace("{amount}", formatter.format(Settings.cryptos.get(crypto_type).maximum)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
                 return true;
             }
@@ -367,14 +367,14 @@ public class CryptoCMD extends Command {
             if(CryptoCurrency.conn != null) {
                 MySql.setPlayerBalance(player.getUniqueId().toString(), player.getName(), formatter.format(balance - amount_sell), crypto_type);
                 CryptoCurrency.getEconomy().depositPlayer(player, money_price);
-                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_sell").replace("{amount}", formatter.format(amount_sell)).replace("{money}", formatter.format(money_price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_sell").replace("{amount}", formatter.format(amount_sell)).replace("{money}", money_formatter.format(money_price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
                 return true;
             }
 
             wallet.set(player.getUniqueId().toString(), balance - amount_sell);
             Settings.cryptos.get(crypto_type).saveWallet();
             CryptoCurrency.getEconomy().depositPlayer(player, money_price);
-            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_sell").replace("{amount}", formatter.format(amount_sell)).replace("{money}", formatter.format(money_price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_sell").replace("{amount}", formatter.format(amount_sell)).replace("{money}", money_formatter.format(money_price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
             return true;
         }
 
@@ -410,14 +410,14 @@ public class CryptoCMD extends Command {
             if(CryptoCurrency.conn != null){
                 MySql.setPlayerBalance(player.getUniqueId().toString(), player.getName(), formatter.format(balance + amount_buy), crypto_type);
                 CryptoCurrency.getEconomy().withdrawPlayer(player, money_price);
-                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_buy").replace("{amount}", formatter.format(amount_buy)).replace("{money}", formatter.format(money_price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_buy").replace("{amount}", formatter.format(amount_buy)).replace("{money}", money_formatter.format(money_price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
                 return true;
             }
 
             wallet.set(player.getUniqueId().toString(), balance + amount_buy);
             Settings.cryptos.get(crypto_type).saveWallet();
             CryptoCurrency.getEconomy().withdrawPlayer(player, money_price);
-            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_buy").replace("{amount}", formatter.format(amount_buy)).replace("{money}", formatter.format(money_price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_buy").replace("{amount}", formatter.format(amount_buy)).replace("{money}", money_formatter.format(money_price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
             return true;
         }
 

@@ -59,10 +59,10 @@ help:
 #----------------------------------------------------------
 #                       Messages
 #----------------------------------------------------------
-message_money_not_enough: "&cYou don't have enough money to send."
+message_money_not_enough: "&cYou don't have enough money to complete this action."
 message_balance: "&aYou have {color}{amount} {crypto} &ain your wallet."
 message_balance_player: "&2{player}&a has {color}{amount} {crypto} &ain his wallet."
-message_not_enough: "&cYou don't have enough {color}{crypto} &cto send."
+message_not_enough: "&cYou don't have enough {color}{crypto} &cto complete this action."
 message_send_success: "&aYou have sent {color}{amount} {crypto} &ato &2{player}&a."
 message_send_yourself: "&cYou can't send {color}{crypto} &cto yourself!"
 message_receive_success: "&2{player} &ahas sent you {color}{amount} {crypto}&a."
