@@ -86,6 +86,28 @@ public class API {
         return 10;
     }
 
+    public static int buyCrypto(String player, String crypto, double amount){
+        if(!CryptoCurrency.vault) return 9;
+        if(!isCryptoEnabled(crypto)) return 1;
+        if(amount < Settings.cryptos.get(crypto).minimum) return 2;
+        if(amount > Settings.cryptos.get(crypto).maximum) return 3;
+        if(!hasWallet(player)) return 4;
+        String UUID = getUUID(player);
+        double balance = getBalance(player, crypto);
+        double player_balance = CryptoCurrency.getEconomy().getBalance(player);
+        double money_price = getCryptoPrice(crypto, amount);
+        if(player_balance < money_price) return 11;
+        if(CryptoCurrency.conn != null){
+            MySql.setPlayerBalance(UUID, player, API.getFormatter(crypto).format(balance + amount), crypto);
+            CryptoCurrency.getEconomy().withdrawPlayer(player, money_price);
+            return 10;
+        }
+        Settings.cryptos.get(crypto).wallet.set(UUID, balance + amount);
+        Settings.cryptos.get(crypto).saveWallet();
+        CryptoCurrency.getEconomy().withdrawPlayer(player, amount);
+        return 10;
+    }
+
     public static int takeCrypto(String fromPlayer, String crypto, double amount){
         if(!isCryptoEnabled(crypto)) return 1;
         if(amount < Settings.cryptos.get(crypto).minimum) return 2;
@@ -100,6 +122,27 @@ public class API {
         }
         Settings.cryptos.get(crypto).wallet.set(UUID, balance - amount);
         Settings.cryptos.get(crypto).saveWallet();
+        return 10;
+    }
+
+    public static int sellCrypto(String player, String crypto, double amount){
+        if(!CryptoCurrency.vault) return 9;
+        if(!isCryptoEnabled(crypto)) return 1;
+        if(amount < Settings.cryptos.get(crypto).minimum) return 2;
+        if(amount > Settings.cryptos.get(crypto).maximum) return 3;
+        if(!hasWallet(player)) return 4;
+        String UUID = getUUID(player);
+        double balance = getBalance(player, crypto);
+        double money_price = getCryptoPrice(crypto, amount);
+        if(balance < amount) return 11;
+        if(CryptoCurrency.conn != null){
+            MySql.setPlayerBalance(UUID, player, API.getFormatter(crypto).format(balance - amount), crypto);
+            CryptoCurrency.getEconomy().depositPlayer(player, money_price);
+            return 10;
+        }
+        Settings.cryptos.get(crypto).wallet.set(UUID, balance - amount);
+        Settings.cryptos.get(crypto).saveWallet();
+        CryptoCurrency.getEconomy().depositPlayer(player, money_price);
         return 10;
     }
 
