@@ -427,7 +427,8 @@ public class CryptoCMD extends Command {
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "is_not_a_player").replace("{player}", target));
                     return true;
                 case 10:
-                    player.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(player.getUniqueId(), "message_send_success").replace("{amount}", API.getFormatter(crypto_type).format(amount_send)).replace("{player}", target).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+                    if(!player.getName().equals(target))
+                        player.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(player.getUniqueId(), "message_send_success").replace("{amount}", API.getFormatter(crypto_type).format(amount_send)).replace("{player}", target).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
                     if(target_player != null && target_player.isOnline())
                         target_player.sendMessage(Message.getMessage(target_player.getUniqueId(), "prefix") + Message.getMessage(target_player.getUniqueId(), "message_receive_success").replace("{player}", player.getName()).replace("{amount}", API.getFormatter(crypto_type).format(amount_send)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
                     return true;
