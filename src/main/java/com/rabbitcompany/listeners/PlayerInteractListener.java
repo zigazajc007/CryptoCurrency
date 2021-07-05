@@ -16,6 +16,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class PlayerInteractListener implements Listener {
 
     private final CryptoCurrency cryptoCurrency;
@@ -58,6 +61,7 @@ public class PlayerInteractListener implements Listener {
         if(owner == null) return;
 
         Player player = event.getPlayer();
+        NumberFormat formatter = new DecimalFormat("#" + Settings.cryptos.get(currency).format);
 
         if(player.getInventory().firstEmpty() == -1){
             player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_full_inventory"));
@@ -78,7 +82,7 @@ public class PlayerInteractListener implements Listener {
                 case 10:
                     player.getInventory().addItem(new ItemStack(Material.getMaterial(material), amount));
                     player.updateInventory();
-                    player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_bought").replace("{amount}", ""+amount).replace("{item}", line3).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", price + " " + currency.toUpperCase()));
+                    player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_bought").replace("{amount}", ""+amount).replace("{item}", line3).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", formatter.format(price) + " " + currency.toUpperCase()));
                     return;
             }
             return;
