@@ -55,7 +55,7 @@ public class API {
     }
 
     public static String getBalanceFormatted(String player, String crypto){
-        return getFormatter(crypto).format(getBalance(crypto, player));
+        return getFormatter(crypto).format(getBalance(player, crypto));
     }
 
     public static double getCryptoPrice(String crypto){
@@ -157,11 +157,23 @@ public class API {
         if(amount > Settings.cryptos.get(crypto).maximum) return 3;
         if(!hasWallet(fromPlayer)) return 4;
         if(!hasWallet(toPlayer)) return 5;
-        double fromBalance = getBalance(crypto, fromPlayer);
+        double fromBalance = getBalance(fromPlayer, crypto);
 
         if(fromBalance < amount) return 6;
         if(takeCrypto(fromPlayer, crypto, amount) != 10) return 7;
         if(giveCrypto(toPlayer, crypto, amount) != 10) return 8;
+        return 10;
+    }
+
+    public static int sendCrypto(String fromPlayer, String crypto, double amount){
+        if(!isCryptoEnabled(crypto)) return 1;
+        if(amount < Settings.cryptos.get(crypto).minimum) return 2;
+        if(amount > Settings.cryptos.get(crypto).maximum) return 3;
+        if(!hasWallet(fromPlayer)) return 4;
+        double fromBalance = getBalance(fromPlayer, crypto);
+
+        if(fromBalance < amount) return 6;
+        if(takeCrypto(fromPlayer, crypto, amount) != 10) return 7;
         return 10;
     }
 }
