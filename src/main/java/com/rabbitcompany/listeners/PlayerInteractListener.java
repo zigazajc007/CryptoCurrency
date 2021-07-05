@@ -8,12 +8,9 @@ import com.rabbitcompany.utils.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -168,6 +165,35 @@ public class PlayerInteractListener implements Listener {
 
         String ownerName = API.getName(owner);
         if(ownerName == null) return;
+
+        if(!(event.getClickedBlock().getBlockData() instanceof Directional)) return;
+        Directional directional = (Directional) event.getClickedBlock().getBlockData();
+        if(event.getClickedBlock().getRelative(directional.getFacing().getOppositeFace()).getType() != Material.CHEST) return;
+
+        Chest chest = (Chest) event.getClickedBlock().getRelative(directional.getFacing().getOppositeFace()).getState();
+        if(chest.getInventory().firstEmpty() == -1){
+            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_full_chest"));
+            return;
+        }
+
+        switch (API.sendCrypto(ownerName, player.getName(), currency, price)){
+            case 2:
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_minimum").replace("{amount}", API.getFormatter(currency).format(Settings.cryptos.get(currency).minimum)).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()));
+                return;
+            case 3:
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_maximum").replace("{amount}", API.getFormatter(currency).format(Settings.cryptos.get(currency).maximum)).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()));
+                return;
+            case 6:
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_not_enough_money").replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()).replace("{player}", ownerName));
+                return;
+            case 10:
+                chest.getInventory().addItem(new ItemStack(material, amount));
+                player.getInventory().removeItem(new ItemStack(material, amount));
+                player.updateInventory();
+                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_sold").replace("{amount}", ""+amount).replace("{material}", line3).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", formatter.format(price) + " " + currency.toUpperCase()));
+                return;
+        }
+
     }
 
 }
