@@ -15,7 +15,7 @@ import java.text.NumberFormat;
 
 public class SignChangeListener implements Listener {
 
-    private CryptoCurrency cryptoCurrency;
+    private final CryptoCurrency cryptoCurrency;
 
     public SignChangeListener(CryptoCurrency plugin){
         cryptoCurrency = plugin;
@@ -55,7 +55,7 @@ public class SignChangeListener implements Listener {
 
         int amount = Integer.parseInt(line2);
         if(amount < 1 || amount > 64){
-            event.setLine(1, Message.chat("&cInvalid area"));
+            event.setLine(1, Message.chat("&cInvalid number"));
             return;
         }
 
@@ -73,13 +73,16 @@ public class SignChangeListener implements Listener {
             return;
         }
 
+        if(type.contains("admin")){
+            cryptoCurrency.getSignShops().set(event.getBlock().getLocation().getBlockX() + "|" + event.getBlock().getLocation().getBlockY() + "|" + event.getBlock().getLocation().getBlockZ(), "AdminShop");
+        }else{
+            cryptoCurrency.getSignShops().set(event.getBlock().getLocation().getBlockX() + "|" + event.getBlock().getLocation().getBlockY() + "|" + event.getBlock().getLocation().getBlockZ(), event.getPlayer().getUniqueId().toString());
+        }
+        cryptoCurrency.saveSignShops();
+
         double price = Double.parseDouble(line4);
         NumberFormat formatter = new DecimalFormat("#" + Settings.cryptos.get(currency).format);
-        if(type.contains("admin")){
-            event.setLine(0, Message.chat(cryptoCurrency.getConf().getString(type + "_player_color") + cryptoCurrency.getConf().getString("admin_shop_owner")));
-        }else{
-            event.setLine(0, Message.chat(cryptoCurrency.getConf().getString(type + "_player_color") + event.getPlayer().getName()));
-        }
+        event.setLine(0, Message.chat(cryptoCurrency.getConf().getString(type + "_success")));
         event.setLine(1, Message.chat(cryptoCurrency.getConf().getString(type + "_amount_color") + amount + "x"));
         String[] lin3 = line3.split("_");
         StringBuilder sb = new StringBuilder();

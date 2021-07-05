@@ -48,6 +48,10 @@ public final class CryptoCurrency extends JavaPlugin {
     private File pl = null;
     private final YamlConfiguration players = new YamlConfiguration();
 
+    //Sign Shop
+    private File ss = null;
+    private final YamlConfiguration signs = new YamlConfiguration();
+
     //English
     private File en = null;
     private final YamlConfiguration engl = new YamlConfiguration();
@@ -58,6 +62,7 @@ public final class CryptoCurrency extends JavaPlugin {
         this.co = new File(getDataFolder(), "config.yml");
         this.cc = new File(getDataFolder(), "cryptocurrencies.yml");
         this.pl = new File(getDataFolder(), "players.yml");
+        this.ss = new File(getDataFolder(), "signshops.yml");
         this.en = new File(getDataFolder(), "Languages/English.yml");
 
         mkdir();
@@ -159,6 +164,7 @@ public final class CryptoCurrency extends JavaPlugin {
         if(!this.co.exists()) saveResource("config.yml", false);
         if(!this.cc.exists()) saveResource("cryptocurrencies.yml", false);
         if(!this.pl.exists()) saveResource("players.yml", false);
+        if(!this.ss.exists()) saveResource("signshops.yml", false);
         if(!this.en.exists()) saveResource("Languages/English.yml", false);
     }
 
@@ -182,6 +188,12 @@ public final class CryptoCurrency extends JavaPlugin {
             e.printStackTrace();
         }
 
+        try{
+            this.signs.load(this.ss);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
         try {
             this.engl.load(this.en);
         } catch (IOException | InvalidConfigurationException e) {
@@ -193,11 +205,20 @@ public final class CryptoCurrency extends JavaPlugin {
     public YamlConfiguration getConf() { return this.conf; }
     public YamlConfiguration getCrypto() { return this.crypto; }
     public YamlConfiguration getPlayers() { return this.players; }
+    public YamlConfiguration getSignShops() { return this.signs; }
     public YamlConfiguration getEngl() { return this.engl; }
 
     public void savePlayers(){
         try {
             this.players.save(pl);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveSignShops(){
+        try {
+            this.signs.save(ss);
         } catch (IOException e) {
             e.printStackTrace();
         }

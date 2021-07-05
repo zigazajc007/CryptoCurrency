@@ -57,32 +57,30 @@ price_fetch: 1
 #                        SignShop
 #----------------------------------------------------------
 shop_buy_format: "[cbuy]"
+shop_buy_success: "&0[&1cbuy&0]"
 shop_buy_error: "&0[&ccbuy&0]"
-shop_buy_player_color: "&0"
-shop_buy_amount_color: "&2"
-shop_buy_material_color: "&2"
+shop_buy_amount_color: "&0"
+shop_buy_material_color: "&0"
 
 shop_sell_format: "[csell]"
+shop_sell_success: "&0[&1csell&0]"
 shop_sell_error: "&0[&ccsell&0]"
-shop_sell_player_color: "&0"
-shop_sell_amount_color: "&c"
-shop_sell_material_color: "&c"
+shop_sell_amount_color: "&0"
+shop_sell_material_color: "&0"
 #----------------------------------------------------------
 #                    Admin SignShop
 #----------------------------------------------------------
 admin_shop_buy_format: "[abuy]"
-admin_shop_buy_error: "&0[&cabuy&0]"
-admin_shop_buy_player_color: "&4"
-admin_shop_buy_amount_color: "&2"
-admin_shop_buy_material_color: "&2"
-
-admin_shop_owner: "Admin Shop"
+admin_shop_buy_success: "&0[&1cbuy&0]"
+admin_shop_buy_error: "&0[&ccbuy&0]"
+admin_shop_buy_amount_color: "&0"
+admin_shop_buy_material_color: "&0"
 
 admin_shop_sell_format: "[asell]"
-admin_shop_sell_error: "&0[&casell&0]"
-admin_shop_sell_player_color: "&4"
-admin_shop_sell_amount_color: "&c"
-admin_shop_sell_material_color: "&c"
+admin_shop_sell_success: "&0[&1csell&0]"
+admin_shop_sell_error: "&0[&ccsell&0]"
+admin_shop_sell_amount_color: "&0"
+admin_shop_sell_material_color: "&0"
 #----------------------------------------------------------
 #                        Bungeecord
 #----------------------------------------------------------

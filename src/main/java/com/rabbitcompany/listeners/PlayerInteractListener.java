@@ -30,7 +30,7 @@ public class PlayerInteractListener implements Listener {
         if(!(event.getClickedBlock().getState() instanceof Sign)) return;
 
         Sign sign = (Sign) event.getClickedBlock().getState();
-        String line1 = ChatColor.stripColor(sign.getLine(0));
+        String line1 = sign.getLine(0);
         String line2 = ChatColor.stripColor(sign.getLine(1)).replace("x", "");
         String line3 = ChatColor.stripColor(sign.getLine(2));
         String line4 = ChatColor.stripColor(sign.getLine(3));
@@ -48,15 +48,18 @@ public class PlayerInteractListener implements Listener {
         if(!Number.isNumeric(line4)) return;
         double price = Double.parseDouble(line4);
 
-        String owner = cryptoCurrency.getPlayers().getString(line1, null);
+        if(!line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_sell_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_sell_success")))) return;
+
+        String formatted_location = sign.getLocation().getBlockX() + "|" + sign.getLocation().getBlockY() + "|" + sign.getLocation().getBlockZ();
+        String owner = cryptoCurrency.getSignShops().getString(formatted_location, null);
         if(owner == null) return;
 
-        if(owner.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_buy_player_color") + cryptoCurrency.getConf().getString("admin_shop_owner")))){
+        if(owner.equals("AdminShop")){
 
             return;
         }
 
-
+        event.getPlayer().sendMessage("Shop is valid!");
     }
 
 }
