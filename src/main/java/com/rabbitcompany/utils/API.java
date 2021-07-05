@@ -38,6 +38,13 @@ public class API {
         CryptoCurrency.getInstance().loadYamls();
     }
 
+    public static String getName(String UUID){
+        for(String name : CryptoCurrency.getInstance().getPlayers().getValues(false).keySet()){
+            if(CryptoCurrency.getInstance().getPlayers().getString(name, "").equals(UUID)) return name;
+        }
+        return null;
+    }
+
     public static String getUUID(String player){
         return CryptoCurrency.getInstance().getPlayers().getString(player, null);
     }
