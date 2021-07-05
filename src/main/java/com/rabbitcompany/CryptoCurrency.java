@@ -109,6 +109,7 @@ public final class CryptoCurrency extends JavaPlugin {
         new SignChangeListener(this);
         new PlayerInteractListener(this);
         new BlockBreakListener(this);
+        new BlockExplodeListener(this);
 
         try {
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
