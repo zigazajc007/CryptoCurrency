@@ -1,10 +1,7 @@
 package com.rabbitcompany;
 
 import com.rabbitcompany.commands.CryptoCMD;
-import com.rabbitcompany.listeners.PlayerInteractListener;
-import com.rabbitcompany.listeners.PlayerJoinListener;
-import com.rabbitcompany.listeners.SignChangeListener;
-import com.rabbitcompany.listeners.TabCompleteListener;
+import com.rabbitcompany.listeners.*;
 import com.rabbitcompany.utils.*;
 import com.zaxxer.hikari.HikariDataSource;
 import net.milkbowl.vault.economy.Economy;
@@ -107,9 +104,11 @@ public final class CryptoCurrency extends JavaPlugin {
 
         //Listeners
         new PlayerJoinListener(this);
-        new SignChangeListener(this);
         new TabCompleteListener(this);
+        //Sign Shop
+        new SignChangeListener(this);
         new PlayerInteractListener(this);
+        new BlockBreakListener(this);
 
         try {
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
