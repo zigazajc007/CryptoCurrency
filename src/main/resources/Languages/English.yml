@@ -76,5 +76,7 @@ message_minimum: "&cYou can't manage with less then {color}{amount} {crypto}&c."
 #----------------------------------------------------------
 #                      Sign Shop
 #----------------------------------------------------------
-message_bought: "&aYou have bought &6{amount}x {item} &afor {color}{crypto}&a!"
+message_bought: "&aYou have bought &6{amount}x {material} &afor {color}{crypto}&a!"
+message_sold: "&aYou have sold &6{amount}x {material} &afor {color}{crypto}&a!"
+message_not_enough_items: "&aYou don't have enough &6{material} &ato complete this action."
 message_full_inventory: "&cYour inventory is full."
