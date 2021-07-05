@@ -73,3 +73,8 @@ message_buy: "&aYou have just bought {color}{amount} {crypto} &afor &2${money}&a
 message_price: "{color}{amount} {crypto} &ais worth &2${money}"
 message_maximum: "&cYou can't manage with more then {color}{amount} {crypto}&c."
 message_minimum: "&cYou can't manage with less then {color}{amount} {crypto}&c."
+#----------------------------------------------------------
+#                      Sign Shop
+#----------------------------------------------------------
+message_bought: "&aYou have bought &6{amount}x {item} &afor {color}{crypto}&a!"
+message_full_inventory: "&cYour inventory is full."

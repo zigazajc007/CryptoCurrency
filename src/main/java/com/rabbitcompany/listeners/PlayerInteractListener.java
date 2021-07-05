@@ -60,7 +60,7 @@ public class PlayerInteractListener implements Listener {
         Player player = event.getPlayer();
 
         if(player.getInventory().firstEmpty() == -1){
-            player.sendMessage("You inventory is full.");
+            player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_full_inventory"));
             return;
         }
 
@@ -78,6 +78,7 @@ public class PlayerInteractListener implements Listener {
                 case 10:
                     player.getInventory().addItem(new ItemStack(Material.getMaterial(material), amount));
                     player.updateInventory();
+                    player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_bought").replace("{amount}", ""+amount).replace("{item}", line3).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", price + " " + currency.toUpperCase()));
                     return;
             }
             return;
