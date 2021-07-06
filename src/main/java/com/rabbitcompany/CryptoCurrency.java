@@ -106,10 +106,12 @@ public final class CryptoCurrency extends JavaPlugin {
         new PlayerJoinListener(this);
         new TabCompleteListener(this);
         //Sign Shop
-        new SignChangeListener(this);
-        new PlayerInteractListener(this);
-        new BlockBreakListener(this);
-        new BlockExplodeListener(this);
+        if(getConf().getBoolean("shop_enabled", true)){
+            new SignChangeListener(this);
+            new PlayerInteractListener(this);
+            new BlockBreakListener(this);
+            new BlockExplodeListener(this);
+        }
 
         try {
             final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");

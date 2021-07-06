@@ -56,6 +56,8 @@ price_fetch: 1
 #----------------------------------------------------------
 #                        SignShop
 #----------------------------------------------------------
+shop_enabled: true
+
 shop_buy_format: "[cbuy]"
 shop_buy_success: "&0[&1cbuy&0]"
 shop_buy_error: "&0[&ccbuy&0]"
