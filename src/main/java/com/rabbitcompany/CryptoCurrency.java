@@ -136,6 +136,7 @@ public final class CryptoCurrency extends JavaPlugin {
             info("&aEnabling");
         });
 
+        API.startPriceFetcher(API.getAPICurrency());
     }
 
     @Override

@@ -1,11 +1,19 @@
 package com.rabbitcompany.utils;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.rabbitcompany.CryptoCurrency;
+import org.bukkit.Bukkit;
 
+import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class API {
 
@@ -182,5 +190,32 @@ public class API {
         if(fromBalance < amount) return 6;
         if(takeCrypto(fromPlayer, crypto, amount) != 10) return 7;
         return 10;
+    }
+
+    public static void startPriceFetcher(String currency){
+        Bukkit.getScheduler().runTaskTimerAsynchronously(CryptoCurrency.getInstance(), () -> {
+            try {
+                String jsonS = new Scanner(new URL("https://api.coinbase.com/v2/exchange-rates?currency=" + currency).openStream(), "UTF-8").useDelimiter("\\A").next();
+
+                Gson gson = new Gson();
+                JsonObject jsonObject = gson.fromJson(jsonS, JsonObject.class);
+
+                for(String cur : Settings.cryptos.keySet()){
+                    String value = jsonObject.getAsJsonObject("data").getAsJsonObject("rates").get(cur.toUpperCase()).getAsString();
+                    double price = 1 / Double.parseDouble(value);
+                    Settings.cryptos.get(cur).price = price;
+
+                    if(!CryptoCurrency.getInstance().getConf().getBoolean("monitor_history", true)) continue;
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+                    double max = Settings.cryptos.get(cur).history.getDouble(formatter.format(new Date()) + ".max", Double.MIN_VALUE);
+                    double min = Settings.cryptos.get(cur).history.getDouble(formatter.format(new Date()) + ".min", Double.MAX_VALUE);
+                    if(price > max) Settings.cryptos.get(cur).history.set(formatter.format(new Date()) + ".max", Number.roundDouble(price, 2));
+                    if(price < min) Settings.cryptos.get(cur).history.set(formatter.format(new Date()) + ".min", Number.roundDouble(price, 2));
+                    Settings.cryptos.get(cur).history.set(formatter.format(new Date()) + ".avg", Number.roundDouble((max + min) / 2.0, 2));
+                    Settings.cryptos.get(cur).saveHistory();
+                }
+
+            } catch (IOException ignored) {}
+        }, 0L, 20L * CryptoCurrency.getInstance().getConf().getInt("price_fetch", 20));
     }
 }

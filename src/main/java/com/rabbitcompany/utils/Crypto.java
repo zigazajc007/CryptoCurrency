@@ -1,17 +1,11 @@
 package com.rabbitcompany.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.rabbitcompany.CryptoCurrency;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Scanner;
 
 public class Crypto {
 
@@ -23,10 +17,12 @@ public class Crypto {
     public double minimum;
     public double price;
     public double marketCap;
-    public BukkitTask priceFetcher;
 
-    public File file;
+    public File fileWallet;
     public YamlConfiguration wallet = new YamlConfiguration();
+
+    public File fileHistory;
+    public YamlConfiguration history = new YamlConfiguration();
 
     public Crypto(String fullName, String name, String color, String format, double maximum, double minimum){
         this.fullName = fullName;
@@ -37,44 +33,40 @@ public class Crypto {
         this.minimum = minimum;
 
         initializeWallet();
-        startPriceFetcher(API.getAPICurrency());
     }
 
     public void initializeWallet(){
         new File(CryptoCurrency.getInstance().getDataFolder(), "Wallets").mkdir();
-        file = new File(CryptoCurrency.getInstance().getDataFolder(), "Wallets/" + this.name + ".yml");
+        new File(CryptoCurrency.getInstance().getDataFolder(), "History").mkdir();
+        fileWallet = new File(CryptoCurrency.getInstance().getDataFolder(), "Wallets/" + this.name + ".yml");
+        fileHistory = new File(CryptoCurrency.getInstance().getDataFolder(), "History/" + this.name + ".yml");
 
         try {
-            file.createNewFile();
+            fileWallet.createNewFile();
+            fileHistory.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         try{
-            this.wallet.load(this.file);
+            this.wallet.load(this.fileWallet);
+            this.history.load(this.fileHistory);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
     }
 
-    public void startPriceFetcher(String currency){
-        priceFetcher = Bukkit.getScheduler().runTaskTimerAsynchronously(CryptoCurrency.getInstance(), () -> {
-            try {
-                String jsonS = new Scanner(new URL("https://api.coinbase.com/v2/prices/" + this.name.toUpperCase() + "-" + currency + "/spot").openStream(), "UTF-8").useDelimiter("\\A").next();
-
-                Gson gson = new Gson();
-                JsonObject jsonObject = gson.fromJson(jsonS, JsonObject.class);
-                String data = jsonObject.getAsJsonObject("data").get("amount").getAsString();
-
-                if(Double.parseDouble(data) != 0) this.price = Double.parseDouble(data);
-
-            } catch (IOException ignored) { }
-        }, 0L, 20L * 60L * CryptoCurrency.getInstance().getConf().getInt("price_fetch", 1));
-    }
-
     public void saveWallet(){
         try {
-            this.wallet.save(this.file);
+            this.wallet.save(this.fileWallet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveHistory(){
+        try {
+            this.history.save(this.fileHistory);
         } catch (IOException e) {
             e.printStackTrace();
         }
