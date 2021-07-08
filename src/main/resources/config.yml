@@ -39,7 +39,7 @@
 # If you translate plugin into any other language feel free to send it and I will include it into this plugin.
 default_language: "English"
 # Money decimal format
-money_format: "##,###.00"
+money_format: "##,##0.00"
 # You can choose between:
 # AED, AFN, ALL, AMD, ANG, AOA, ARS, AUD, AWG, AZN, BAM, BBD, BDT, BGN, BHD, BIF, BMD, BND, BOB, BRL,
 # BSD, BTN, BWP, BYN, BYR, BZD, CAD, CDF, CHF, CLF, CLP, CNH, CNY, COP, CRC, CUC, CVE, CZK, DJF, DKK,

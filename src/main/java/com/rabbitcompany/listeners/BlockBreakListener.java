@@ -3,6 +3,8 @@ package com.rabbitcompany.listeners;
 import com.rabbitcompany.CryptoCurrency;
 import com.rabbitcompany.utils.Message;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,7 +21,7 @@ public class BlockBreakListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreak(BlockBreakEvent event){
+    public void onSignBreak(BlockBreakEvent event){
         if(!(event.getBlock().getState() instanceof Sign)) return;
         Sign sign = (Sign) event.getBlock().getState();
         String line1 = sign.getLine(0);
@@ -33,6 +35,35 @@ public class BlockBreakListener implements Listener {
             return;
         }
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event){
+        if(event.getBlock().getType() == Material.STONE || event.getBlock().getType() == Material.COBBLESTONE || event.getBlock().getType() == Material.NETHERITE_BLOCK || event.getBlock().getType() == Material.DIRT || event.getBlock().getType() == Material.GRASS) return;
+
+        BlockFace blockFace = BlockFace.NORTH;
+        for(int i = 0; i < 2; i++){
+            if(event.getBlock().getRelative(blockFace).getState() instanceof Sign){
+                Sign sign = (Sign) event.getBlock().getRelative(blockFace).getState();
+                String line1 = sign.getLine(0);
+                if(!line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_sell_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_sell_success")))) continue;
+                event.setCancelled(true);
+                return;
+            }
+            blockFace = blockFace.getOppositeFace();
+        }
+
+        blockFace = BlockFace.WEST;
+        for(int i = 0; i < 2; i++){
+            if(event.getBlock().getRelative(blockFace).getState() instanceof Sign){
+                Sign sign = (Sign) event.getBlock().getRelative(blockFace).getState();
+                String line1 = sign.getLine(0);
+                if(!line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_sell_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_sell_success")))) continue;
+                event.setCancelled(true);
+                return;
+            }
+            blockFace = blockFace.getOppositeFace();
+        }
     }
 
 }
