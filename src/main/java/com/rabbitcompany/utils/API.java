@@ -9,7 +9,7 @@ import java.util.List;
 
 public class API {
 
-    public static NumberFormat moneyFormatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("money_format", "###,###.00"));
+    public static NumberFormat moneyFormatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("money_format", "###,##0.00"));
 
     public static boolean isCryptoEnabled(String crypto){
         return Settings.cryptos.get(crypto) != null;
