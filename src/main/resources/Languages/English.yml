@@ -71,8 +71,8 @@ message_taken_target: "&2{player} &chas taken you {color}{amount} {crypto}&c."
 message_sell: "&aYou have just sold {color}{amount} {crypto} &afor &2${money}&a."
 message_buy: "&aYou have just bought {color}{amount} {crypto} &afor &2${money}&a."
 message_price: "{color}{amount} {crypto} &ais worth &2${money}"
-message_maximum: "&cYou can't manage with more then {color}{amount} {crypto}&c."
-message_minimum: "&cYou can't manage with less then {color}{amount} {crypto}&c."
+message_maximum: "&cYou can't manage with more than {color}{amount} {crypto}&c."
+message_minimum: "&cYou can't manage with less than {color}{amount} {crypto}&c."
 #----------------------------------------------------------
 #                      Sign Shop
 #----------------------------------------------------------
