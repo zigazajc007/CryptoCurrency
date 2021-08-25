@@ -54,4 +54,17 @@ public class MySql {
         return false;
     }
 
+    public static double getCryptoSupply(String crypto){
+        String query = "SELECT SUM(balance) as supply FROM cryptocurrency_" + crypto + ";";
+        double supply = 0;
+        try {
+            Connection conn = CryptoCurrency.hikari.getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) supply = rs.getDouble("supply");
+            conn.close();
+        } catch (SQLException ignored) {}
+        return supply;
+    }
+
 }

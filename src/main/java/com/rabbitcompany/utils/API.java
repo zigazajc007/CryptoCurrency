@@ -90,6 +90,16 @@ public class API {
         return moneyFormatter.format(getCryptoPrice(crypto, amount));
     }
 
+    public static double getCryptoSupply(String crypto){
+        if(!isCryptoEnabled(crypto)) return 0;
+        return Settings.cryptos.get(crypto).supply;
+    }
+
+    public static double getCryptoMarketCap(String crypto){
+        if(!isCryptoEnabled(crypto)) return 0;
+        return getCryptoSupply(crypto) * getCryptoPrice(crypto);
+    }
+
     public static int giveCrypto(String toPlayer, String crypto, double amount){
         if(!isCryptoEnabled(crypto)) return 1;
         if(amount < Settings.cryptos.get(crypto).minimum) return 2;
@@ -213,6 +223,17 @@ public class API {
                     if(price < min) Settings.cryptos.get(cur).history.set(formatter.format(new Date()) + ".min", Number.roundDouble(price, 2));
                     Settings.cryptos.get(cur).history.set(formatter.format(new Date()) + ".avg", Number.roundDouble((max + min) / 2.0, 2));
                     Settings.cryptos.get(cur).saveHistory();
+
+                    //Get crypto supply
+                    if(CryptoCurrency.conn != null){
+                        Settings.cryptos.get(cur).supply = MySql.getCryptoSupply(cur);
+                    }else{
+                        double supply = 0;
+                        for(String player : Settings.cryptos.get(cur).wallet.getKeys(false)){
+                            supply += Settings.cryptos.get(cur).wallet.getDouble(player, 0);
+                        }
+                        Settings.cryptos.get(cur).supply = supply;
+                    }
                 }
 
             } catch (IOException ignored) {}
