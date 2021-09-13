@@ -59,6 +59,8 @@ money_format: "##,##0.00"
 api_currency: "USD"
 # After how many seconds plugin will fetch data from Coinbase again (Gets crypto values)
 price_fetch: 20
+# After how many seconds plugin will calculate supply again
+supply_calculator: 60
 # Do you want to monitor prices of cryptocurrencies?
 monitor_history: true
 #----------------------------------------------------------

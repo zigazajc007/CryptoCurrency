@@ -73,6 +73,7 @@ message_buy: "&aYou have just bought {color}{amount} {crypto} &afor &2${money}&a
 message_price: "{color}{amount} {crypto} &ais worth &2${money}"
 message_maximum: "&cYou can't manage with more than {color}{amount} {crypto}&c."
 message_minimum: "&cYou can't manage with less than {color}{amount} {crypto}&c."
+message_max_supply_reached: "&cYou can't buy {color}{amount} {crypto}&c, because maximum {color}{crypto} &csupply has been reached."
 #----------------------------------------------------------
 #                      Sign Shop
 #----------------------------------------------------------

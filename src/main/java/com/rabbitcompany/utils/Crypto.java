@@ -15,6 +15,7 @@ public class Crypto {
     public String format;
     public double maximum;
     public double minimum;
+    public double max_supply;
     public double price;
     public double supply = 0;
 
@@ -24,13 +25,14 @@ public class Crypto {
     public File fileHistory;
     public YamlConfiguration history = new YamlConfiguration();
 
-    public Crypto(String fullName, String name, String color, String format, double maximum, double minimum){
+    public Crypto(String fullName, String name, String color, String format, double maximum, double minimum, double max_supply){
         this.fullName = fullName;
         this.name = name;
         this.color = color;
         this.format = format;
         this.maximum = maximum;
         this.minimum = minimum;
+        this.max_supply = max_supply;
 
         initializeWallet();
     }

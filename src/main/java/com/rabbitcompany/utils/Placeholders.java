@@ -34,6 +34,7 @@ public class Placeholders extends PlaceholderExpansion {
         if(identi.length == 3 && identi[1].equals("price") && Number.isNumeric(identi[2])) return API.getCryptoPriceFormatted(identi[0], Double.parseDouble(identi[2]));
         if(identi.length == 3 && identi[1].equals("balance")) return API.getBalanceFormatted(identi[2], identi[0]);
         if(identi[1].equals("supply")) return API.getFormatter(identi[0]).format(API.getCryptoSupply(identi[0]));
+        if(identi[1].equals("maxSupply")) return API.getFormatter(identi[0]).format(API.getCryptoMaxSupply(identi[0]));
         if(identi[1].equals("marketCap")) return API.moneyFormatter.format(API.getCryptoMarketCap(identi[0]));
         if(identi[1].equals("price")) return API.moneyFormatter.format(Settings.cryptos.get(identi[0]).price);
 
