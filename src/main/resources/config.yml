@@ -94,6 +94,11 @@ admin_shop_sell_error: "&0[&ccsell&0]"
 admin_shop_sell_amount_color: "&0"
 admin_shop_sell_material_color: "&0"
 #----------------------------------------------------------
+#                        Placeholders
+#----------------------------------------------------------
+price_rising: "&a▲"
+price_falling: "&c▼"
+#----------------------------------------------------------
 #                        Bungeecord
 #----------------------------------------------------------
 # Do you want to use mysql database?

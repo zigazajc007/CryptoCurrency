@@ -9,9 +9,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -242,15 +241,15 @@ public class API {
                 for(String cur : Settings.cryptos.keySet()){
                     String value = jsonObject.getAsJsonObject("data").getAsJsonObject("rates").get(cur.toUpperCase()).getAsString();
                     double price = 1 / Double.parseDouble(value);
+                    Settings.cryptos.get(cur).rising = price >= Settings.cryptos.get(cur).price;
                     Settings.cryptos.get(cur).price = price;
 
                     if(!CryptoCurrency.getInstance().getConf().getBoolean("monitor_history", true)) continue;
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-                    double max = Settings.cryptos.get(cur).history.getDouble(formatter.format(new Date()) + ".max", Double.MIN_VALUE);
-                    double min = Settings.cryptos.get(cur).history.getDouble(formatter.format(new Date()) + ".min", Double.MAX_VALUE);
-                    if(price > max) Settings.cryptos.get(cur).history.set(formatter.format(new Date()) + ".max", Number.roundDouble(price, 2));
-                    if(price < min) Settings.cryptos.get(cur).history.set(formatter.format(new Date()) + ".min", Number.roundDouble(price, 2));
-                    Settings.cryptos.get(cur).history.set(formatter.format(new Date()) + ".avg", Number.roundDouble((max + min) / 2.0, 2));
+                    double max = Settings.cryptos.get(cur).history.getDouble(LocalDate.now() + ".max", Double.MIN_VALUE);
+                    double min = Settings.cryptos.get(cur).history.getDouble(LocalDate.now() + ".min", Double.MAX_VALUE);
+                    if(price > max) Settings.cryptos.get(cur).history.set(LocalDate.now() + ".max", Number.roundDouble(price, 2));
+                    if(price < min) Settings.cryptos.get(cur).history.set(LocalDate.now() + ".min", Number.roundDouble(price, 2));
+                    Settings.cryptos.get(cur).history.set(LocalDate.now() + ".avg", Number.roundDouble((max + min) / 2.0, 2));
                     Settings.cryptos.get(cur).saveHistory();
                 }
 

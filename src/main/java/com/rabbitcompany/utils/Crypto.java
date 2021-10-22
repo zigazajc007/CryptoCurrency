@@ -18,6 +18,7 @@ public class Crypto {
     public double max_supply;
     public double price;
     public double supply = 0;
+    public boolean rising = false;
 
     public File fileWallet;
     public YamlConfiguration wallet = new YamlConfiguration();
