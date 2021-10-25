@@ -249,6 +249,8 @@ public class API {
                     double min = Settings.cryptos.get(cur).history.getDouble(LocalDate.now() + ".min", Double.MAX_VALUE);
                     if(price > max) Settings.cryptos.get(cur).history.set(LocalDate.now() + ".max", Number.roundDouble(price, 2));
                     if(price < min) Settings.cryptos.get(cur).history.set(LocalDate.now() + ".min", Number.roundDouble(price, 2));
+                    if(Settings.cryptos.get(cur).history.getDouble(LocalDate.now() + ".open", 0) == 0) Settings.cryptos.get(cur).history.set(LocalDate.now() + ".open", price);
+                    Settings.cryptos.get(cur).history.set(LocalDate.now() + ".close", price);
                     Settings.cryptos.get(cur).history.set(LocalDate.now() + ".avg", Number.roundDouble((max + min) / 2.0, 2));
                     Settings.cryptos.get(cur).saveHistory();
                 }

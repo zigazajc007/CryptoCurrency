@@ -55,6 +55,22 @@ public class Placeholders extends PlaceholderExpansion {
             return "" + Number.roundDouble(Math.abs(yesterdayCryptoPrice - cryptoPrice) / ((yesterdayCryptoPrice + cryptoPrice) / 2.0) * 100, 2);
         }
 
+        if(identi.length == 3 && identi[1].equals("change") && identi[2].equals("high")){
+            return API.getCryptoPriceFormatted(identi[0], Settings.cryptos.get(identi[0]).history.getDouble(LocalDate.now() + ".max", 0));
+        }
+
+        if(identi.length == 3 && identi[1].equals("change") && identi[2].equals("low")){
+            return API.getCryptoPriceFormatted(identi[0], Settings.cryptos.get(identi[0]).history.getDouble(LocalDate.now() + ".min", 0));
+        }
+
+        if(identi.length == 3 && identi[1].equals("change") && identi[2].equals("open")){
+            return API.getCryptoPriceFormatted(identi[0], Settings.cryptos.get(identi[0]).history.getDouble(LocalDate.now().minusDays(1) + ".open", 0));
+        }
+
+        if(identi.length == 3 && identi[1].equals("change") && identi[2].equals("close")){
+            return API.getCryptoPriceFormatted(identi[0], Settings.cryptos.get(identi[0]).history.getDouble(LocalDate.now().minusDays(1) + ".close", 0));
+        }
+
         if (offlinePlayer == null) return "";
         if (offlinePlayer.getPlayer() == null) return "";
 
