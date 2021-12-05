@@ -12,6 +12,7 @@ import org.bukkit.event.block.SignChangeEvent;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Locale;
 
 public class SignChangeListener implements Listener {
 
@@ -65,7 +66,7 @@ public class SignChangeListener implements Listener {
         }
 
         String currency = "btc";
-        for(String crypto : Settings.cryptos.keySet()) if(line4.contains(crypto.toUpperCase())) currency = crypto;
+        for(String crypto : Settings.cryptos.keySet()) if(line4.toUpperCase().contains(crypto.toUpperCase())) currency = crypto;
         line4 = line4.replaceAll("[^0-9.]", "");
 
         if(!Number.isNumeric(line4)){
