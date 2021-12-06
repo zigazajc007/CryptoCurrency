@@ -45,6 +45,10 @@ public final class CryptoCurrency extends JavaPlugin {
     private File ss = null;
     private final YamlConfiguration signs = new YamlConfiguration();
 
+    //Materials
+    private File ma = null;
+    private final YamlConfiguration mater = new YamlConfiguration();
+
     //English
     private File en = null;
     private final YamlConfiguration engl = new YamlConfiguration();
@@ -55,6 +59,7 @@ public final class CryptoCurrency extends JavaPlugin {
         this.co = new File(getDataFolder(), "config.yml");
         this.cc = new File(getDataFolder(), "cryptocurrencies.yml");
         this.ss = new File(getDataFolder(), "signshops.yml");
+        this.ma = new File(getDataFolder(), "materials.yml");
         this.en = new File(getDataFolder(), "Languages/English.yml");
 
         mkdir();
@@ -163,6 +168,7 @@ public final class CryptoCurrency extends JavaPlugin {
         if(!this.co.exists()) saveResource("config.yml", false);
         if(!this.cc.exists()) saveResource("cryptocurrencies.yml", false);
         if(!this.ss.exists()) saveResource("signshops.yml", false);
+        if(!this.ma.exists()) saveResource("materials.yml", false);
         if(!this.en.exists()) saveResource("Languages/English.yml", false);
     }
 
@@ -186,6 +192,12 @@ public final class CryptoCurrency extends JavaPlugin {
             e.printStackTrace();
         }
 
+        try{
+            this.mater.load(this.ma);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
         try {
             this.engl.load(this.en);
         } catch (IOException | InvalidConfigurationException e) {
@@ -197,6 +209,7 @@ public final class CryptoCurrency extends JavaPlugin {
     public YamlConfiguration getConf() { return this.conf; }
     public YamlConfiguration getCrypto() { return this.crypto; }
     public YamlConfiguration getSignShops() { return this.signs; }
+    public YamlConfiguration getMaterials() { return this.mater; }
     public YamlConfiguration getEngl() { return this.engl; }
 
     public void saveSignShops(){

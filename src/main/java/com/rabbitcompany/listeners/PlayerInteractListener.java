@@ -49,7 +49,15 @@ public class PlayerInteractListener implements Listener {
 
         String str_material = line3.replace(" ", "_").toUpperCase();
         Material material = Material.getMaterial(str_material);
-        if(material == null) return;
+        if(material == null){
+            for (String key : cryptoCurrency.getMaterials().getKeys(false)) {
+                if(cryptoCurrency.getMaterials().getStringList(key).contains(str_material.toLowerCase())){
+                    material = Material.getMaterial(key.toUpperCase());
+                    break;
+                }
+            }
+            if(material == null) return;
+        }
 
         String currency = null;
         for(String crypto : Settings.cryptos.keySet()) if(line4.contains(crypto.toUpperCase())) currency = crypto;

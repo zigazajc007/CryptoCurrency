@@ -62,8 +62,17 @@ public class SignChangeListener implements Listener {
         }
 
         if(Material.getMaterial(line3.toUpperCase()) == null){
-            event.setLine(2, Message.chat("&cInvalid material"));
-            return;
+            boolean isIncludedMaterial = false;
+            for (String key : cryptoCurrency.getMaterials().getKeys(false)) {
+                if(cryptoCurrency.getMaterials().getStringList(key).contains(line3.toLowerCase())){
+                    isIncludedMaterial = true;
+                    break;
+                }
+            }
+            if(!isIncludedMaterial){
+                event.setLine(2, Message.chat("&cInvalid material"));
+                return;
+            }
         }
 
         String currency = "btc";
