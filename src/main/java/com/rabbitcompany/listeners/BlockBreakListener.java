@@ -31,7 +31,7 @@ public class BlockBreakListener implements Listener {
 
     @EventHandler
     public void onSignBreak(BlockBreakEvent event){
-        if(!(event.getBlock().getState() instanceof Sign)) return;
+        if(!(event.getBlock().getBlockData() instanceof WallSign)) return;
         Sign sign = (Sign) event.getBlock().getState();
         String line1 = sign.getLine(0);
         if(!line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_sell_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_sell_success")))) return;
@@ -50,7 +50,7 @@ public class BlockBreakListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event){
         for (BlockFace side : SIDES) {
             final Block b = event.getBlock().getRelative(side);
-            if (b.getState() instanceof Sign) {
+            if (b.getBlockData() instanceof WallSign) {
                 WallSign wallSign = (WallSign) b.getBlockData();
                 if (b.getRelative(wallSign.getFacing().getOppositeFace()).equals(event.getBlock())) {
                     Sign sign = (Sign) b.getState();

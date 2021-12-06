@@ -5,6 +5,7 @@ import com.rabbitcompany.utils.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockExplodeEvent;
@@ -23,7 +24,7 @@ public class BlockExplodeListener implements Listener {
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
         for (Block block : event.blockList()) {
-            if (!(block.getState() instanceof Sign)) continue;
+            if (!(block.getBlockData() instanceof WallSign)) continue;
             Sign sign = (Sign) block.getState();
             String line1 = sign.getLine(0);
             if (!line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_sell_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_sell_success")))) continue;
@@ -37,7 +38,7 @@ public class BlockExplodeListener implements Listener {
     @EventHandler
     public void onBlockExplode(BlockExplodeEvent event) {
         for (Block block : event.blockList()) {
-            if (!(block.getState() instanceof Sign)) continue;
+            if (!(block.getBlockData() instanceof WallSign)) continue;
             Sign sign = (Sign) block.getState();
             String line1 = sign.getLine(0);
             if (!line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_sell_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_sell_success")))) continue;

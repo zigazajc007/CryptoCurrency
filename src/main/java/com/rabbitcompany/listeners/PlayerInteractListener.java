@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,7 +36,7 @@ public class PlayerInteractListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event){
         if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if(event.getClickedBlock() == null) return;
-        if(!(event.getClickedBlock().getState() instanceof Sign)) return;
+        if(!(event.getClickedBlock().getBlockData() instanceof WallSign)) return;
 
         Sign sign = (Sign) event.getClickedBlock().getState();
         String line1 = sign.getLine(0);

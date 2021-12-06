@@ -6,6 +6,7 @@ import com.rabbitcompany.utils.Number;
 import com.rabbitcompany.utils.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
@@ -26,6 +27,7 @@ public class SignChangeListener implements Listener {
 
     @EventHandler
     public void onSignChange(SignChangeEvent event){
+        if(!(event.getBlock().getBlockData() instanceof WallSign)) return;
         String line1 = event.getLine(0);
         String line2 = event.getLine(1);
         String line3 = event.getLine(2);
