@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.UUID;
 
 public class API {
 
@@ -45,24 +46,16 @@ public class API {
         CryptoCurrency.getInstance().loadYamls();
     }
 
-    public static String getName(String UUID){
-        for(String name : CryptoCurrency.getInstance().getPlayers().getValues(false).keySet()){
-            if(CryptoCurrency.getInstance().getPlayers().getString(name, "").equals(UUID)) return name;
-        }
-        return null;
+    public static String getName(String uuid){
+        return Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName();
     }
 
     public static String getUUID(String player){
-        return CryptoCurrency.getInstance().getPlayers().getString(player, null);
-    }
-
-    public static boolean hasWallet(String player){
-        return CryptoCurrency.getInstance().getPlayers().getString(player, null) != null;
+        return Bukkit.getOfflinePlayer(player).getUniqueId().toString();
     }
 
     public static double getBalance(String player, String crypto){
         if(!isCryptoEnabled(crypto)) return 0;
-        if(!hasWallet(player)) return 0;
         String UUID = getUUID(player);
         if(CryptoCurrency.conn != null) return MySql.getPlayerBalance(UUID, player, crypto);
         return Settings.cryptos.get(crypto).wallet.getDouble(UUID, 0);
@@ -123,7 +116,6 @@ public class API {
         if(amount < Settings.cryptos.get(crypto).minimum) return 2;
         if(amount > Settings.cryptos.get(crypto).maximum) return 3;
         if(amount > (getCryptoMaxSupply(crypto) - getCryptoSupply(crypto))) return 12;
-        if(!hasWallet(toPlayer)) return 4;
         String UUID = getUUID(toPlayer);
         double balance = getBalance(toPlayer, crypto);
         if(CryptoCurrency.conn != null){
@@ -143,7 +135,6 @@ public class API {
         if(amount < Settings.cryptos.get(crypto).minimum) return 2;
         if(amount > Settings.cryptos.get(crypto).maximum) return 3;
         if(amount > (getCryptoMaxSupply(crypto) - getCryptoSupply(crypto))) return 12;
-        if(!hasWallet(player)) return 4;
         String UUID = getUUID(player);
         double balance = getBalance(player, crypto);
         double player_balance = CryptoCurrency.getEconomy().getBalance(player);
@@ -166,7 +157,6 @@ public class API {
         if(!isCryptoEnabled(crypto)) return 1;
         if(amount < Settings.cryptos.get(crypto).minimum) return 2;
         if(amount > Settings.cryptos.get(crypto).maximum) return 3;
-        if(!hasWallet(fromPlayer)) return 4;
         String UUID = getUUID(fromPlayer);
         double balance = getBalance(fromPlayer, crypto);
         if(balance - amount < 0) amount = balance;
@@ -186,7 +176,6 @@ public class API {
         if(!isCryptoEnabled(crypto)) return 1;
         if(amount < Settings.cryptos.get(crypto).minimum) return 2;
         if(amount > Settings.cryptos.get(crypto).maximum) return 3;
-        if(!hasWallet(player)) return 4;
         String UUID = getUUID(player);
         double balance = getBalance(player, crypto);
         double money_price = getCryptoPrice(crypto, amount);
@@ -208,8 +197,6 @@ public class API {
         if(!isCryptoEnabled(crypto)) return 1;
         if(amount < Settings.cryptos.get(crypto).minimum) return 2;
         if(amount > Settings.cryptos.get(crypto).maximum) return 3;
-        if(!hasWallet(fromPlayer)) return 4;
-        if(!hasWallet(toPlayer)) return 5;
         double fromBalance = getBalance(fromPlayer, crypto);
 
         if(fromBalance < amount) return 6;
@@ -222,7 +209,6 @@ public class API {
         if(!isCryptoEnabled(crypto)) return 1;
         if(amount < Settings.cryptos.get(crypto).minimum) return 2;
         if(amount > Settings.cryptos.get(crypto).maximum) return 3;
-        if(!hasWallet(fromPlayer)) return 4;
         double fromBalance = getBalance(fromPlayer, crypto);
 
         if(fromBalance < amount) return 6;

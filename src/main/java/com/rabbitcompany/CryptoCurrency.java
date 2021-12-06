@@ -41,10 +41,6 @@ public final class CryptoCurrency extends JavaPlugin {
     private File cc = null;
     private final YamlConfiguration crypto = new YamlConfiguration();
 
-    //Players
-    private File pl = null;
-    private final YamlConfiguration players = new YamlConfiguration();
-
     //Sign Shop
     private File ss = null;
     private final YamlConfiguration signs = new YamlConfiguration();
@@ -58,7 +54,6 @@ public final class CryptoCurrency extends JavaPlugin {
         instance = this;
         this.co = new File(getDataFolder(), "config.yml");
         this.cc = new File(getDataFolder(), "cryptocurrencies.yml");
-        this.pl = new File(getDataFolder(), "players.yml");
         this.ss = new File(getDataFolder(), "signshops.yml");
         this.en = new File(getDataFolder(), "Languages/English.yml");
 
@@ -167,7 +162,6 @@ public final class CryptoCurrency extends JavaPlugin {
     private void mkdir(){
         if(!this.co.exists()) saveResource("config.yml", false);
         if(!this.cc.exists()) saveResource("cryptocurrencies.yml", false);
-        if(!this.pl.exists()) saveResource("players.yml", false);
         if(!this.ss.exists()) saveResource("signshops.yml", false);
         if(!this.en.exists()) saveResource("Languages/English.yml", false);
     }
@@ -182,12 +176,6 @@ public final class CryptoCurrency extends JavaPlugin {
 
         try{
             this.crypto.load(this.cc);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-
-        try{
-            this.players.load(this.pl);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -208,17 +196,8 @@ public final class CryptoCurrency extends JavaPlugin {
 
     public YamlConfiguration getConf() { return this.conf; }
     public YamlConfiguration getCrypto() { return this.crypto; }
-    public YamlConfiguration getPlayers() { return this.players; }
     public YamlConfiguration getSignShops() { return this.signs; }
     public YamlConfiguration getEngl() { return this.engl; }
-
-    public void savePlayers(){
-        try {
-            this.players.save(pl);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void saveSignShops(){
         try {

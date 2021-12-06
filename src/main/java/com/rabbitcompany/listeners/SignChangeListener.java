@@ -13,7 +13,6 @@ import org.bukkit.event.block.SignChangeEvent;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Locale;
 
 public class SignChangeListener implements Listener {
 

@@ -99,11 +99,6 @@ public class CryptoCMD extends Command {
                 String target = ChatColor.stripColor(args[1]);
                 Player target_player = Bukkit.getServer().getPlayer(target);
 
-                if(!API.hasWallet(target)){
-                    sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "is_not_a_player").replace("{player}", target));
-                    return true;
-                }
-
                 switch (API.giveCrypto(target, crypto_type, amount_send)){
                     case 2:
                         sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_minimum").replace("{amount}", API.getFormatter(crypto_type).format(Settings.cryptos.get(crypto_type).minimum)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
@@ -345,11 +340,6 @@ public class CryptoCMD extends Command {
 
             String target = ChatColor.stripColor(args[1]);
             Player target_player = Bukkit.getServer().getPlayer(target);
-
-            if(!API.hasWallet(target)){
-                player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(UUID.randomUUID(), "is_not_a_player").replace("{player}", target));
-                return true;
-            }
 
             switch (API.giveCrypto(target, crypto_type, amount_send)){
                 case 2:
