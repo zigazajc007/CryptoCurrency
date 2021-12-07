@@ -1,0 +1,87 @@
+#       ----------- + CryptoCurrency by Ziga Zajc + -----------   #
+#                                                                 #
+#                               Config                            #
+#                          Translated: VLADik                     #
+#                                                                 #
+#       ----------- + --------------------------- + -----------   #
+#
+#       You can use chat colors:
+#                ________________________
+#               |   code: | color:       |
+#               |________________________|
+#               |     &0  | Black        |
+#               |     &1  | Dark Blue    |
+#               |     &2  | Dark Green   |
+#               |     &3  | Dark Aqua    |
+#               |     &4  | Dark Red     |
+#               |     &5  | Dark Purple  |
+#               |     &6  | Gold         |
+#               |     &7  | Gray         |
+#               |     &8  | Dark Gray    |
+#               |     &9  | Blue         |
+#               |     &a  | Green        |
+#               |     &b  | Aqua         |
+#               |     &c  | Red          |
+#               |     &d  | Light Purple |
+#               |     &e  | Yellow       |
+#               |     &f  | White        |
+#               |     &k  | Obfuscated   |
+#               |     &l  | Bold         |
+#               |     &m  | Strikethrough|
+#               |     &n  | Underline    |
+#               |     &o  | Italic       |
+#               |     &r  | Reset        |
+#               |________________________|
+#
+#----------------------------------------------------------
+#                         Prefix
+#----------------------------------------------------------
+prefix: "&7[&bCryptoCurrency&7] "
+#----------------------------------------------------------
+#                       Commands
+#----------------------------------------------------------
+permission: "&cУ вас нет прав чтоб использовать это!"
+is_not_a_player: "&c{player} не игрок!"
+is_not_a_number: "&c{number} не число!"
+wrong_arguments: "&cПожалуйста используйте /{crypto} help"
+vault_required: "&cНа вашем сервере не установлен Vault, для выполнения этого действия."
+#----------------------------------------------------------
+#                        Help
+#----------------------------------------------------------
+help:
+  - "&7Список команд:"
+  - ""
+  - "{color}/{crypto} balance &7- Посмотреть {crypto} баланс."
+  - "{color}/{crypto} price <amount> &7- Посмотреть {crypto} цену."
+  - "{color}/{crypto} buy <amount> &7- купить {crypto}."
+  - "{color}/{crypto} sell <amount> &7- продать {crypto}."
+  - "{color}/{crypto} send <player> <amount> &7- передать {crypto} игроку."
+  - ""
+#----------------------------------------------------------
+#                       Messages
+#----------------------------------------------------------
+message_money_not_enough: "&cУ вас недостаточно денег для этого действия."
+message_balance: "&aУ вас есть {color}{amount} {crypto} &aв Вашем кошельке."
+message_balance_player: "&2{player}&a имеет {color}{amount} {crypto} &aв Его кошельке."
+message_not_enough: "&cВам не хватает {color}{crypto} &cчтобы завершить это действие."
+message_send_success: "&aВы передали {color}{amount} {crypto} &aигроку &2{player}&a."
+message_send_yourself: "&cВы не можете отправить {color}{crypto} &cсамому себе!"
+message_receive_success: "&2{player} &aпередал вам {color}{amount} {crypto}&a."
+message_taken_player: "&aВы получили {color}{amount} {crypto} &aот &2{player}&a."
+message_taken_target: "&2{player} &cполучил от вас {color}{amount} {crypto}&c."
+message_sell: "&aВы продали {color}{amount} {crypto} &aза &2${money}&a."
+message_buy: "&aВы купили {color}{amount} {crypto} &aза &2${money}&a."
+message_price: "{color}{amount} {crypto} &aстоит &2${money}"
+message_maximum: "&cВы не можете изменять больше чем {color}{amount} {crypto}&c."
+message_minimum: "&cВы не можете изменять больше чем {color}{amount} {crypto}&c."
+message_max_supply_reached: "&cВы не можете купить {color}{amount} {crypto}&c, потому что {color}{crypto} &cзавершил продажу."
+#----------------------------------------------------------
+#                      Sign Shop
+#----------------------------------------------------------
+message_bought: "&aВы купили &6{amount}x {material} &aза {color}{crypto}&a!"
+message_sold: "&aВы продали &6{amount}x {material} &aза {color}{crypto}&a!"
+message_not_enough_items: "&cУ вас недостаточно &6{material} &cчтоб завершить это действие."
+message_not_enough_money: "&2{player} &cне хватает денег."
+message_empty_chest: "&cТовары в этом магазине закончились!"
+message_full_chest: "&cМагазин переполнен!"
+message_full_inventory: "&cВаш инвентарь переполнен."
