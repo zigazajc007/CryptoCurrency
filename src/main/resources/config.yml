@@ -40,6 +40,10 @@
 default_language: "English"
 # Money decimal format
 money_format: "##,##0.00"
+# From what crypto exchange, do you want to pull prices (Default is 1)
+# 1 = Coinbase
+# 2 = Binance
+crypto_exchange: 1
 # You can choose between:
 #
 # AED AFN ALL AMD ANG AOA ARS AUD AWG AZN BAM BBD BDT BGN BHD BIF BMD BND BOB BRL
@@ -57,7 +61,7 @@ money_format: "##,##0.00"
 # DOGE MLN GTC AMP CHZ KEEP LPT QNT BOND
 #
 api_currency: "USD"
-# After how many seconds plugin will fetch data from Coinbase again (Gets crypto values)
+# After how many seconds plugin will fetch data from exchange again (Gets crypto values)
 price_fetch: 20
 # After how many seconds plugin will calculate supply again
 supply_calculator: 60

@@ -19,6 +19,7 @@ public class Crypto {
     public double price;
     public double supply = 0;
     public boolean rising = false;
+    public int binanceArrayPosition = -1;
 
     public File fileWallet;
     public YamlConfiguration wallet = new YamlConfiguration();

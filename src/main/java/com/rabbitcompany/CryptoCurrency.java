@@ -136,7 +136,13 @@ public final class CryptoCurrency extends JavaPlugin {
             info("&aEnabling");
         });
 
-        API.startPriceFetcher(API.getAPICurrency());
+        if(getConf().getInt("crypto_exchange", 1) == 2){
+            API.getBinanceArrayPositions();
+            API.startBinancePriceFetcher();
+        }else{
+            API.startCoinbasePriceFetcher(API.getAPICurrency());
+        }
+
         API.startSupplyCalculator();
     }
 

@@ -1,6 +1,7 @@
 package com.rabbitcompany.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.rabbitcompany.CryptoCurrency;
 import org.bukkit.Bukkit;
@@ -216,7 +217,7 @@ public class API {
         return 10;
     }
 
-    public static void startPriceFetcher(String currency){
+    public static void startCoinbasePriceFetcher(String currency){
         Bukkit.getScheduler().runTaskTimerAsynchronously(CryptoCurrency.getInstance(), () -> {
             try {
                 String jsonS = new Scanner(new URL("https://api.coinbase.com/v2/exchange-rates?currency=" + currency).openStream(), "UTF-8").useDelimiter("\\A").next();
@@ -241,6 +242,58 @@ public class API {
                     Settings.cryptos.get(cur).saveHistory();
                 }
 
+            } catch (IOException ignored) {}
+        }, 0L, 20L * CryptoCurrency.getInstance().getConf().getInt("price_fetch", 20));
+    }
+
+    public static void getBinanceArrayPositions(){
+        try {
+            String jsonS = new Scanner(new URL("https://api.binance.com/api/v3/ticker/price").openStream(), "UTF-8").useDelimiter("\\A").next();
+
+            Gson gson = new Gson();
+            JsonArray jsonArray = gson.fromJson(jsonS, JsonArray.class);
+
+            for(String cur : Settings.cryptos.keySet()){
+                if(cur.equalsIgnoreCase("USDT")){
+                    Settings.cryptos.get(cur).price = 1;
+                    continue;
+                }
+                for(int i = 0; i < jsonArray.getAsJsonArray().size(); i++){
+                    if(jsonArray.getAsJsonArray().get(i).getAsJsonObject().get("symbol").getAsString().equals(cur.toUpperCase() + "USDT")){
+                        Settings.cryptos.get(cur).binanceArrayPosition = i;
+                        break;
+                    }
+                }
+            }
+        } catch (IOException ignored) {}
+    }
+
+    public static void startBinancePriceFetcher(){
+        Bukkit.getScheduler().runTaskTimerAsynchronously(CryptoCurrency.getInstance(), () -> {
+            try {
+                String jsonS = new Scanner(new URL("https://api.binance.com/api/v3/ticker/price").openStream(), "UTF-8").useDelimiter("\\A").next();
+
+                Gson gson = new Gson();
+                JsonArray jsonArray = gson.fromJson(jsonS, JsonArray.class);
+
+                for(String cur : Settings.cryptos.keySet()){
+                    if(cur.equalsIgnoreCase("USDT")) continue;
+                    if(Settings.cryptos.get(cur).binanceArrayPosition < 0) continue;
+                    String value = jsonArray.get(Settings.cryptos.get(cur).binanceArrayPosition).getAsJsonObject().get("price").getAsString();
+                    double price = Double.parseDouble(value);
+                    Settings.cryptos.get(cur).rising = price >= Settings.cryptos.get(cur).price;
+                    Settings.cryptos.get(cur).price = price;
+
+                    if(!CryptoCurrency.getInstance().getConf().getBoolean("monitor_history", true)) continue;
+                    double max = Settings.cryptos.get(cur).history.getDouble(LocalDate.now() + ".max", Double.MIN_VALUE);
+                    double min = Settings.cryptos.get(cur).history.getDouble(LocalDate.now() + ".min", Double.MAX_VALUE);
+                    if(price > max) Settings.cryptos.get(cur).history.set(LocalDate.now() + ".max", Number.roundDouble(price, 2));
+                    if(price < min) Settings.cryptos.get(cur).history.set(LocalDate.now() + ".min", Number.roundDouble(price, 2));
+                    if(Settings.cryptos.get(cur).history.getDouble(LocalDate.now() + ".open", 0) == 0) Settings.cryptos.get(cur).history.set(LocalDate.now() + ".open", price);
+                    Settings.cryptos.get(cur).history.set(LocalDate.now() + ".close", price);
+                    Settings.cryptos.get(cur).history.set(LocalDate.now() + ".avg", Number.roundDouble((max + min) / 2.0, 2));
+                    Settings.cryptos.get(cur).saveHistory();
+                }
             } catch (IOException ignored) {}
         }, 0L, 20L * CryptoCurrency.getInstance().getConf().getInt("price_fetch", 20));
     }
