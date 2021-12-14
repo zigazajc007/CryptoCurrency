@@ -16,7 +16,7 @@ public class Message {
 
     public static String getMessage(UUID uuid, String config){
         String mess;
-        String lang = Settings.language.getOrDefault(uuid, CryptoCurrency.getInstance().getConf().getString("default_language"));
+        String lang = CryptoCurrency.getInstance().getConf().getString("default_language", "English");
         switch (lang){
             case "Russian":
                 mess = CryptoCurrency.getInstance().getRussi().getString(config);
@@ -34,7 +34,13 @@ public class Message {
 
     public static void Help(CommandSender player, String currency){
         String color = Settings.cryptos.get(currency).color;
+        String lang = CryptoCurrency.getInstance().getConf().getString("default_language", "English");
         List<String> help = CryptoCurrency.getInstance().getEngl().getStringList("help");
+        switch (lang){
+            case "Russian":
+                help = CryptoCurrency.getInstance().getRussi().getStringList("help");
+                break;
+        }
 
         for(String message : help){
             player.sendMessage(Message.chat(message.replace("{color}", color).replace("{crypto}", currency)));
