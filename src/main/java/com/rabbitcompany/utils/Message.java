@@ -18,6 +18,9 @@ public class Message {
         String mess;
         String lang = Settings.language.getOrDefault(uuid, CryptoCurrency.getInstance().getConf().getString("default_language"));
         switch (lang){
+            case "Russian":
+                mess = CryptoCurrency.getInstance().getRussi().getString(config);
+                break;
             default:
                 mess = CryptoCurrency.getInstance().getEngl().getString(config);
                 break;

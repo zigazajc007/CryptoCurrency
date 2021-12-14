@@ -53,6 +53,10 @@ public final class CryptoCurrency extends JavaPlugin {
     private File en = null;
     private final YamlConfiguration engl = new YamlConfiguration();
 
+    //Russian
+    private File ru = null;
+    private final YamlConfiguration russi = new YamlConfiguration();
+
     @Override
     public void onEnable() {
         instance = this;
@@ -61,6 +65,7 @@ public final class CryptoCurrency extends JavaPlugin {
         this.ss = new File(getDataFolder(), "signshops.yml");
         this.ma = new File(getDataFolder(), "materials.yml");
         this.en = new File(getDataFolder(), "Languages/English.yml");
+        this.ru = new File(getDataFolder(), "Languages/Russian.yml");
 
         mkdir();
         loadYamls();
@@ -176,6 +181,7 @@ public final class CryptoCurrency extends JavaPlugin {
         if(!this.ss.exists()) saveResource("signshops.yml", false);
         if(!this.ma.exists()) saveResource("materials.yml", false);
         if(!this.en.exists()) saveResource("Languages/English.yml", false);
+        if(!this.ru.exists()) saveResource("Languages/Russian.yml", false);
     }
 
     public void loadYamls(){
@@ -210,6 +216,12 @@ public final class CryptoCurrency extends JavaPlugin {
             e.printStackTrace();
         }
 
+        try {
+            this.russi.load(this.ru);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public YamlConfiguration getConf() { return this.conf; }
@@ -217,6 +229,7 @@ public final class CryptoCurrency extends JavaPlugin {
     public YamlConfiguration getSignShops() { return this.signs; }
     public YamlConfiguration getMaterials() { return this.mater; }
     public YamlConfiguration getEngl() { return this.engl; }
+    public YamlConfiguration getRussi() { return this.russi; }
 
     public void saveSignShops(){
         try {

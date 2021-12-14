@@ -35,7 +35,7 @@
 #----------------------------------------------------------
 #                        Config
 #----------------------------------------------------------
-# Players will see messages in default language (Default is English) - Available options: English.
+# Players will see messages in default language (Default is English) - Available options: English, Russian.
 # If you translate plugin into any other language feel free to send it and I will include it into this plugin.
 default_language: "English"
 # Money decimal format
@@ -44,7 +44,7 @@ money_format: "##,##0.00"
 # 1 = Coinbase
 # 2 = Binance
 crypto_exchange: 1
-# You can choose between:
+# You can choose between: (Only works with Coinbase exchange)
 #
 # AED AFN ALL AMD ANG AOA ARS AUD AWG AZN BAM BBD BDT BGN BHD BIF BMD BND BOB BRL
 # BSD BTN BWP BYN BYR BZD CAD CDF CHF CLF CLP CNY COP CRC CUC CVE CZK DJF DKK DOP
