@@ -69,6 +69,7 @@ supply_calculator: 60
 monitor_history: true
 #----------------------------------------------------------
 #                        SignShop
+#          Only works on newer MC server versions
 #----------------------------------------------------------
 shop_enabled: true
 
