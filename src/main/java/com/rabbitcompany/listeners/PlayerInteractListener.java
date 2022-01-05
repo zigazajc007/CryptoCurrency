@@ -21,6 +21,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerInteractListener implements Listener {
 
@@ -110,9 +112,12 @@ public class PlayerInteractListener implements Listener {
 
             Chest chest = (Chest) event.getClickedBlock().getRelative(directional.getFacing().getOppositeFace()).getState();
             int hasAmount = 0;
+            List<ItemStack> chestItems = new ArrayList<>();
             for(ItemStack item : chest.getInventory().getStorageContents()){
                 if(item == null) continue;
                 if(item.getType() != material) continue;
+                if(item.getDurability() >= 1) continue;
+                chestItems.add(item);
                 hasAmount += item.getAmount();
                 if(hasAmount >= amount) break;
             }
@@ -133,9 +138,16 @@ public class PlayerInteractListener implements Listener {
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_not_enough").replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()));
                     return;
                 case 10:
+                    for(int i = 0; i < amount; i++){
+                        player.getInventory().addItem(chestItems.get(i));
+                        chest.getInventory().removeItem(chestItems.get(i));
+                        player.updateInventory();
+                    }
+                    /*
                     chest.getInventory().removeItem(new ItemStack(material, amount));
                     player.getInventory().addItem(new ItemStack(material, amount));
                     player.updateInventory();
+                     */
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_bought").replace("{amount}", ""+amount).replace("{material}", line3).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", formatter.format(price) + " " + currency.toUpperCase()));
                     return;
             }
@@ -143,9 +155,12 @@ public class PlayerInteractListener implements Listener {
         }
 
         int hasAmount = 0;
+        List<ItemStack> playerItems = new ArrayList<>();
         for(ItemStack item : player.getInventory().getStorageContents()){
             if(item == null) continue;
             if(item.getType() != material) continue;
+            if(item.getDurability() >= 1) continue;
+            playerItems.add(item);
             hasAmount += item.getAmount();
             if(hasAmount >= amount) break;
         }
@@ -196,9 +211,16 @@ public class PlayerInteractListener implements Listener {
                 player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_not_enough_money").replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()).replace("{player}", ownerName));
                 return;
             case 10:
+                for(int i = 0; i < amount; i++){
+                    chest.getInventory().addItem(playerItems.get(i));
+                    player.getInventory().removeItem(playerItems.get(i));
+                    player.updateInventory();
+                }
+                /*
                 chest.getInventory().addItem(new ItemStack(material, amount));
                 player.getInventory().removeItem(new ItemStack(material, amount));
                 player.updateInventory();
+                 */
                 player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_sold").replace("{amount}", ""+amount).replace("{material}", line3).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", formatter.format(price) + " " + currency.toUpperCase()));
                 return;
         }
