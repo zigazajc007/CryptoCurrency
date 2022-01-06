@@ -21,6 +21,9 @@ public class Message {
             case "Russian":
                 mess = CryptoCurrency.getInstance().getRussi().getString(config);
                 break;
+            case "Spanish":
+                mess = CryptoCurrency.getInstance().getSpanni().getString(config);
+                break;
             default:
                 mess = CryptoCurrency.getInstance().getEngl().getString(config);
                 break;
@@ -39,6 +42,9 @@ public class Message {
         switch (lang){
             case "Russian":
                 help = CryptoCurrency.getInstance().getRussi().getStringList("help");
+                break;
+            case "Spanish":
+                help = CryptoCurrency.getInstance().getSpanni().getStringList("help");
                 break;
         }
 

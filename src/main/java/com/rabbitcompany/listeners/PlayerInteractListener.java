@@ -138,16 +138,17 @@ public class PlayerInteractListener implements Listener {
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_not_enough").replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()));
                     return;
                 case 10:
-                    for(int i = 0; i < amount; i++){
-                        player.getInventory().addItem(chestItems.get(i));
-                        chest.getInventory().removeItem(chestItems.get(i));
+                    if(material.getMaxStackSize() != 1){
+                        chest.getInventory().removeItem(new ItemStack(material, amount));
+                        player.getInventory().addItem(new ItemStack(material, amount));
                         player.updateInventory();
+                    }else{
+                        for(int i = 0; i < amount; i++){
+                            player.getInventory().addItem(chestItems.get(i));
+                            chest.getInventory().removeItem(chestItems.get(i));
+                            player.updateInventory();
+                        }
                     }
-                    /*
-                    chest.getInventory().removeItem(new ItemStack(material, amount));
-                    player.getInventory().addItem(new ItemStack(material, amount));
-                    player.updateInventory();
-                     */
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_bought").replace("{amount}", ""+amount).replace("{material}", line3).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", formatter.format(price) + " " + currency.toUpperCase()));
                     return;
             }
@@ -211,16 +212,17 @@ public class PlayerInteractListener implements Listener {
                 player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_not_enough_money").replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()).replace("{player}", ownerName));
                 return;
             case 10:
-                for(int i = 0; i < amount; i++){
-                    chest.getInventory().addItem(playerItems.get(i));
-                    player.getInventory().removeItem(playerItems.get(i));
+                if(material.getMaxStackSize() != 1){
+                    chest.getInventory().addItem(new ItemStack(material, amount));
+                    player.getInventory().removeItem(new ItemStack(material, amount));
                     player.updateInventory();
+                }else{
+                    for(int i = 0; i < amount; i++){
+                        chest.getInventory().addItem(playerItems.get(i));
+                        player.getInventory().removeItem(playerItems.get(i));
+                        player.updateInventory();
+                    }
                 }
-                /*
-                chest.getInventory().addItem(new ItemStack(material, amount));
-                player.getInventory().removeItem(new ItemStack(material, amount));
-                player.updateInventory();
-                 */
                 player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_sold").replace("{amount}", ""+amount).replace("{material}", line3).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", formatter.format(price) + " " + currency.toUpperCase()));
                 return;
         }

@@ -1,0 +1,86 @@
+#       ----------- + CryptoCurrency by Ziga Zajc + -----------   #
+#                                                                 #
+#                               Configuración                     #
+#                                                                 #
+#       ----------- + --------------------------- + -----------   #
+#
+#       Puedes usar estos colores:
+#                ________________________
+#               |   code: | color:       |
+#               |________________________|
+#               |     &0  |	Negro	     |
+#               |     &1  |	Azul oscuro	 |
+#               |     &2  |	Verde oscuro |
+#               |     &3  |	Aqua oscuro	 |
+#               |     &4  |	Rojo oscuro	 |
+#               |     &5  |	Morado oscuro|
+#               |     &6  |	Oro	         |
+#               |     &7  |	Gris	     |
+#               |     &8  |	Gris oscuro	 |
+#               |     &9  |	Azul	     |
+#               |     &a  |	Verde	     |
+#               |     &b  |	Aqua	     |
+#               |     &c  |	Rojo	     |
+#               |     &d  |	Morado claro |
+#               |     &e  |	Amarillo	 |
+#               |     &f  |	Blanco	     |
+#               |     &k  |	Obfuscated	 |
+#               |     &l  |	Negrita	     |
+#               |     &m  |	Tachado		 |
+#               |     &n  |	Subrayado	 |
+#               |     &o  |	Cursiva	     |
+#               |     &r  |	Reset	     |
+#               |________________________|
+#
+#----------------------------------------------------------
+#                       Prefijo
+#----------------------------------------------------------
+prefix: "&7[&bCrypto&7] "
+#----------------------------------------------------------
+#                       Comandos
+#----------------------------------------------------------
+permission: "&f[&6BTC&f]&c¡No tienes permiso para hacer esto!"
+is_not_a_player: "&c¡{player} no es un usuario!"
+is_not_a_number: "&c¡{number} no es un número!"
+wrong_arguments: "&cPor favor usa /{crypto} help"
+vault_required: "&c¡Tú server no tiene instalado Vault para completar esta acción!"
+#----------------------------------------------------------
+#                        Ayuda
+#----------------------------------------------------------
+help:
+  - "&8&m--------------------------"
+  - "&5&lCrypto {crypto}:"
+  - "&8&m--------------------------"
+  - "{color}/{crypto} balance &7- Mira tu balance de {crypto}"
+  - "{color}/{crypto} price <cantidad> &7- Ver precio de {crypto}"
+  - "{color}/{crypto} buy <cantidad> &7- Comprar {crypto}"
+  - "{color}/{crypto} sell <cantidad> &7- Vender {crypto}"
+  - "{color}/{crypto} send <usuario> <cantidad> &7- Enviar {crypto} a un usuario"
+  - "&8&m--------------------------"
+#----------------------------------------------------------
+#                       Mensajes
+#----------------------------------------------------------
+message_money_not_enough: "&cNo tienes suficiente dinero para completar esta acción."
+message_balance: "&aTienes {color}{amount} {crypto} &aen tu wallet."
+message_balance_player: "&2{player}&a tiene {color}{amount} {crypto} &aen su wallet."
+message_not_enough: "&cNo tienes suficiente {color}{crypto} &cpara completar esta acción."
+message_send_success: "&aHas enviado {color}{amount} {crypto} &aa &2{player}&a."
+message_send_yourself: "&c¡No puedes enviar {color}{crypto} &ca tí mismo!"
+message_receive_success: "&2{player} &ate ha enviado {color}{amount} {crypto}&a."
+message_taken_player: "&aHas cogido {color}{amount} {crypto} &ade &2{player}&a."
+message_taken_target: "&2{player} &cte ha cogido {color}{amount} {crypto}&c."
+message_sell: "&aAcabas de vender {color}{amount} {crypto} &apor &2${money}&a."
+message_buy: "&aAcabas de comprar {color}{amount} {crypto} &apor &2${money}&a."
+message_price: "{color}{amount} {crypto} &atiene un valor de &2${money}"
+message_maximum: "&cNo puedes usar mas de {color}{amount} {crypto}&c."
+message_minimum: "&cNo puedes usar menos de {color}{amount} {crypto}&c."
+#----------------------------------------------------------
+#                    Tienda con cartel
+#----------------------------------------------------------
+message_bought: "&aHas comprado &6{amount}x {material} &apor {color}{crypto}&a!"
+message_sold: "&aHas vendido &6{amount}x {material} &apor {color}{crypto}&a!"
+message_not_enough_items: "&cNo tienes suficiente &6{material} &cpara completar esta acción."
+message_not_enough_money: "&2{player} &cNo tiene suficiente dinero."
+message_empty_chest: "&cEsta tienda está fuera de stock!"
+message_full_chest: "&cEsta tienda tiene un exceso de existencias!"
+message_full_inventory: "&cTu inventario está lleno."

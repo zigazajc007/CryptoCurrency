@@ -35,7 +35,7 @@
 #----------------------------------------------------------
 #                        Config
 #----------------------------------------------------------
-# Players will see messages in default language (Default is English) - Available options: English, Russian.
+# Players will see messages in default language (Default is English) - Available options: English, Russian, Spanish.
 # If you translate plugin into any other language feel free to send it and I will include it into this plugin.
 default_language: "English"
 # Money decimal format
