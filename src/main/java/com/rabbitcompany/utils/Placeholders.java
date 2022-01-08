@@ -39,7 +39,7 @@ public class Placeholders extends PlaceholderExpansion {
         //%cryptocurrency_<crypto>_balance_<player>%
         if(identi.length == 3 && identi[1].equals("balance")) return API.getBalanceFormatted(identi[2], identi[0]);
         //%cryptocurrency_<crypto>_balance_fiat_<player>%
-        if(identi.length == 4 && identi[1].equals("balance") && identi[2].equals("fiat")) return API.moneyFormatter.format(API.getCryptoPrice(identi[0], API.getBalance(identi[3], identi[0])));
+        //if(identi.length == 4 && identi[1].equals("balance") && identi[2].equals("fiat")) return API.moneyFormatter.format(API.getCryptoPrice(identi[0], API.getBalance(identi[3], identi[0])));
         //%cryptocurrency_<crypto>_supply%
         if(identi.length == 2 && identi[1].equals("supply")) return API.getFormatter(identi[0]).format(API.getCryptoSupply(identi[0]));
         //%cryptocurrency_<crypto>_maxSupply%
@@ -88,7 +88,7 @@ public class Placeholders extends PlaceholderExpansion {
         if(identi.length == 2 && identi[1].equals("balance")) return API.getBalanceFormatted(player.getName(), identi[0]);
 
         //%cryptocurrency_<crypto>_balance_fiat%
-        if(identi.length == 3 && identi[1].equals("balance") && identi[2].equals("fiat")) return API.moneyFormatter.format(API.getCryptoPrice(identi[0], API.getBalance(player.getName(), identi[0])));
+        //if(identi.length == 3 && identi[1].equals("balance") && identi[2].equals("fiat")) return API.moneyFormatter.format(API.getCryptoPrice(identi[0], API.getBalance(player.getName(), identi[0])));
 
         //%cryptocurrency_<crypto>_change_fiat_player%
         if(identi.length == 4 && identi[1].equals("change") && identi[2].equals("fiat") && identi[3].equals("player")){
