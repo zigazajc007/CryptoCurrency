@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.rabbitcompany.CryptoCurrency;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,10 +49,16 @@ public class API {
     }
 
     public static String getName(String uuid){
+        Player target = Bukkit.getPlayer(UUID.fromString(uuid));
+        if(target != null && target.isOnline())
+            return target.getName();
         return Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName();
     }
 
     public static String getUUID(String player){
+        Player target = Bukkit.getPlayer(player);
+        if(target != null && target.isOnline())
+            return target.getUniqueId().toString();
         return Bukkit.getOfflinePlayer(player).getUniqueId().toString();
     }
 

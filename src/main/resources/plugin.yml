@@ -2,7 +2,7 @@ name: CryptoCurrency
 version: ${project.version}
 main: com.rabbitcompany.CryptoCurrency
 api-version: 1.13
-softdepend: [Vault]
+softdepend: [Vault, PlaceholderAPI]
 authors: [Black1_TV]
 description: Take crypto world into MInecraft
 website: https://rabbit-company.com
