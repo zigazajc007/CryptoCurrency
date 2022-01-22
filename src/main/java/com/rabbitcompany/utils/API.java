@@ -235,7 +235,7 @@ public class API {
                 for(String cur : Settings.cryptos.keySet()){
                     String value = jsonObject.getAsJsonObject("data").getAsJsonObject("rates").get(cur.toUpperCase()).getAsString();
                     double price = 1 / Double.parseDouble(value);
-                    Settings.cryptos.get(cur).rising = price >= Settings.cryptos.get(cur).price;
+                    Settings.cryptos.get(cur).previousPrice = Settings.cryptos.get(cur).price;
                     Settings.cryptos.get(cur).price = price;
 
                     if(!CryptoCurrency.getInstance().getConf().getBoolean("monitor_history", true)) continue;
@@ -288,7 +288,7 @@ public class API {
                     if(Settings.cryptos.get(cur).binanceArrayPosition < 0) continue;
                     String value = jsonArray.get(Settings.cryptos.get(cur).binanceArrayPosition).getAsJsonObject().get("price").getAsString();
                     double price = Double.parseDouble(value);
-                    Settings.cryptos.get(cur).rising = price >= Settings.cryptos.get(cur).price;
+                    Settings.cryptos.get(cur).previousPrice = Settings.cryptos.get(cur).price;
                     Settings.cryptos.get(cur).price = price;
 
                     if(!CryptoCurrency.getInstance().getConf().getBoolean("monitor_history", true)) continue;
@@ -310,4 +310,5 @@ public class API {
             for(String cur : Settings.cryptos.keySet()) calculateCryptoSupply(cur);
         }, 0L, 20L * CryptoCurrency.getInstance().getConf().getInt("supply_calculator", 60));
     }
+
 }

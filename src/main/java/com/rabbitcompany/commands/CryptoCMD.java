@@ -39,6 +39,7 @@ public class CryptoCMD extends Command {
 
             if(args.length == 1 && args[0].equals("reload")){
                 CryptoCurrency.getInstance().loadYamls();
+                for(Crypto crypto : Settings.cryptos.values()) crypto.initializeWallet();
                 sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.chat("&aPlugin is reloaded."));
                 return true;
             }
@@ -170,6 +171,7 @@ public class CryptoCMD extends Command {
         if(args.length == 1 && args[0].equals("reload")){
             if(player.hasPermission("cryptocurrency.reload")){
                 CryptoCurrency.getInstance().loadYamls();
+                for(Crypto crypto : Settings.cryptos.values()) crypto.initializeWallet();
                 player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.chat("&aPlugin is reloaded."));
                 return true;
             }
