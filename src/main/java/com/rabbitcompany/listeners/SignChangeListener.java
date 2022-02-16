@@ -61,16 +61,24 @@ public class SignChangeListener implements Listener {
             return;
         }
 
-        if(Material.getMaterial(line3.toUpperCase()) == null){
-            boolean isIncludedMaterial = false;
+        Material material = Material.getMaterial(line3.toUpperCase());
+        if(material == null){
             for (String key : cryptoCurrency.getMaterials().getKeys(false)) {
                 if(cryptoCurrency.getMaterials().getStringList(key).contains(line3.toLowerCase())){
-                    isIncludedMaterial = true;
+                    material = Material.getMaterial(line3.toUpperCase());
                     break;
                 }
             }
-            if(!isIncludedMaterial){
-                event.setLine(2, Message.chat("&cInvalid material"));
+        }
+        if(material == null){
+            event.setLine(2, Message.chat("&cInvalid material"));
+            return;
+        }
+        for (String dMaterial : cryptoCurrency.getConf().getStringList("shop_disabled_material")) {
+            Material disMaterial = Material.getMaterial(dMaterial.toUpperCase());
+            if(disMaterial == null) continue;
+            if(material.name().equals(disMaterial.name())){
+                event.setLine(2, Message.chat("&cDisabled material"));
                 return;
             }
         }

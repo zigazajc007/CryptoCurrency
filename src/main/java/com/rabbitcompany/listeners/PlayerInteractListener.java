@@ -60,6 +60,11 @@ public class PlayerInteractListener implements Listener {
             }
             if(material == null) return;
         }
+        for (String dMaterial : cryptoCurrency.getConf().getStringList("shop_disabled_material")) {
+            Material disMaterial = Material.getMaterial(dMaterial.toUpperCase());
+            if(disMaterial == null) continue;
+            if(material.name().equals(disMaterial.name())) return;
+        }
 
         String currency = null;
         for(String crypto : Settings.cryptos.keySet()) if(line4.contains(crypto.toUpperCase())) currency = crypto;
@@ -138,16 +143,16 @@ public class PlayerInteractListener implements Listener {
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_not_enough").replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()));
                     return;
                 case 10:
-                    if(material.getMaxStackSize() != 1){
-                        chest.getInventory().removeItem(new ItemStack(material, amount));
-                        player.getInventory().addItem(new ItemStack(material, amount));
-                        player.updateInventory();
-                    }else{
+                    if(material.getMaxStackSize() == 1){
                         for(int i = 0; i < amount; i++){
                             player.getInventory().addItem(chestItems.get(i));
                             chest.getInventory().removeItem(chestItems.get(i));
                             player.updateInventory();
                         }
+                    }else{
+                        chest.getInventory().removeItem(new ItemStack(material, amount));
+                        player.getInventory().addItem(new ItemStack(material, amount));
+                        player.updateInventory();
                     }
                     player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_bought").replace("{amount}", ""+amount).replace("{material}", line3).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", formatter.format(price) + " " + currency.toUpperCase()));
                     return;
@@ -212,16 +217,16 @@ public class PlayerInteractListener implements Listener {
                 player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_not_enough_money").replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()).replace("{player}", ownerName));
                 return;
             case 10:
-                if(material.getMaxStackSize() != 1){
-                    chest.getInventory().addItem(new ItemStack(material, amount));
-                    player.getInventory().removeItem(new ItemStack(material, amount));
-                    player.updateInventory();
-                }else{
+                if(material.getMaxStackSize() == 1){
                     for(int i = 0; i < amount; i++){
                         chest.getInventory().addItem(playerItems.get(i));
                         player.getInventory().removeItem(playerItems.get(i));
                         player.updateInventory();
                     }
+                }else{
+                    chest.getInventory().addItem(new ItemStack(material, amount));
+                    player.getInventory().removeItem(new ItemStack(material, amount));
+                    player.updateInventory();
                 }
                 player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_sold").replace("{amount}", ""+amount).replace("{material}", line3).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", formatter.format(price) + " " + currency.toUpperCase()));
                 return;

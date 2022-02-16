@@ -84,6 +84,9 @@ shop_sell_success: "&0[&1csell&0]"
 shop_sell_error: "&0[&ccsell&0]"
 shop_sell_amount_color: "&0"
 shop_sell_material_color: "&0"
+
+shop_disabled_material:
+  - "firework_rocket"
 #----------------------------------------------------------
 #                    Admin SignShop
 #----------------------------------------------------------
