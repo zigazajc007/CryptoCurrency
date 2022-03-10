@@ -62,6 +62,13 @@ public class API {
         return Bukkit.getOfflinePlayer(player).getUniqueId().toString();
     }
 
+    public static double getTotalAssets(String player){
+        double balance = 0;
+        for(String crypto : Settings.cryptos.keySet())
+            balance += getCryptoPrice(crypto, getBalance(player, crypto));
+        return balance;
+    }
+
     public static double getBalance(String player, String crypto){
         if(!isCryptoEnabled(crypto)) return 0;
         String UUID = getUUID(player);
