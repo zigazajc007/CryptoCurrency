@@ -1,4 +1,4 @@
-package com.rabbitcompany.listeners;
+package com.rabbitcompany.listeners.tabCompleteEvent;
 
 import com.rabbitcompany.CryptoCurrency;
 import com.rabbitcompany.utils.Settings;
@@ -11,11 +11,11 @@ import org.bukkit.event.server.TabCompleteEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TabCompleteListener implements Listener {
+public class CryptosTabCompleteListener implements Listener {
 
     private CryptoCurrency cryptoCurrency;
 
-    public TabCompleteListener(CryptoCurrency plugin){
+    public CryptosTabCompleteListener(CryptoCurrency plugin){
         cryptoCurrency = plugin;
 
         Bukkit.getPluginManager().registerEvents(this, plugin);

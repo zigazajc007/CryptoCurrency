@@ -1,4 +1,4 @@
-package com.rabbitcompany.listeners;
+package com.rabbitcompany.listeners.playerJoinEvent;
 
 import com.rabbitcompany.CryptoCurrency;
 import com.rabbitcompany.utils.MySql;
@@ -8,11 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerJoinListener implements Listener {
+public class CreateWalletListener implements Listener {
 
     private final CryptoCurrency cryptoCurrency;
 
-    public PlayerJoinListener(CryptoCurrency plugin){
+    public CreateWalletListener(CryptoCurrency plugin){
         cryptoCurrency = plugin;
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
