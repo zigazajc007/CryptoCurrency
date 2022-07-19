@@ -145,12 +145,11 @@ public final class CryptoCurrency extends JavaPlugin {
         }
 
         //Sign Shop - Quick Fix
-        if (Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.18")
-                || Bukkit.getVersion().contains("1.19")) {
-            if (getConf().getBoolean("shop_enabled", true)) {
-                new CreateSignShopListener(this);
-                new SignShopListener(this);
-                new BreakShopListener(this);
+        if(Version.isAtLeast(Version.MC1_16)){
+            if(getConf().getBoolean("shop_enabled", true)){
+                new SignChangeListener(this);
+                new PlayerInteractListener(this);
+                new BlockBreakListener(this);
                 new BlockExplodeListener(this);
                 new EntityExplodeListener(this);
             }
