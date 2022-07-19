@@ -1,0 +1,15 @@
+# cryptocurrency to be given, the block for which it will be rewarded (needs to be enabled in cryptocurrencies.yml)
+# and amount to be awarded for mining.
+# If they use silk touch they will not be rewarded.
+# This does not work for normal blocks and could lead to infinite mining. Any block that does not drop drops when mined
+# will give infinite mining. That is, if you mine a DIAMOND_BLOCK you will not be able to place it again as it will drop
+# diamonds, if you mine a brick block you will be able to place it again.
+# crypto: block;amount
+btc: DIAMOND_ORE;0.0001
+eth: GOLD_ORE;0.001
+matic: IRON_ORE;1
+algo: COPPER_ORE;5
+sol: REDSTONE_ORE;0.5
+xtz: EMERALD_ORE;5
+link: LAPIS_ORE;1
+ada: COAL_ORE;5

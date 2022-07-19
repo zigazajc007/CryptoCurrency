@@ -1,4 +1,4 @@
-package com.rabbitcompany.listeners;
+package com.rabbitcompany.listeners.signChangeEvent;
 
 import com.rabbitcompany.CryptoCurrency;
 import com.rabbitcompany.utils.Message;
@@ -14,11 +14,11 @@ import org.bukkit.event.block.SignChangeEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
-public class SignChangeListener implements Listener {
+public class CreateSignShopListener implements Listener {
 
     private final CryptoCurrency cryptoCurrency;
 
-    public SignChangeListener(CryptoCurrency plugin){
+    public CreateSignShopListener(CryptoCurrency plugin){
         cryptoCurrency = plugin;
 
         Bukkit.getPluginManager().registerEvents(this, plugin);

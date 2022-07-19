@@ -1,7 +1,14 @@
 package com.rabbitcompany;
 
 import com.rabbitcompany.commands.CryptoCMD;
-import com.rabbitcompany.listeners.*;
+import com.rabbitcompany.listeners.blockBreakEvent.BreakShopListener;
+import com.rabbitcompany.listeners.blockBreakEvent.CryptoMiningListener;
+import com.rabbitcompany.listeners.blockExplodeEvent.BlockExplodeListener;
+import com.rabbitcompany.listeners.blockExplodeEvent.EntityExplodeListener;
+import com.rabbitcompany.listeners.playerInteractEvent.SignShopListener;
+import com.rabbitcompany.listeners.playerJoinEvent.CreateWalletListener;
+import com.rabbitcompany.listeners.signChangeEvent.CreateSignShopListener;
+import com.rabbitcompany.listeners.tabCompleteEvent.CryptosTabCompleteListener;
 import com.rabbitcompany.utils.*;
 import com.zaxxer.hikari.HikariDataSource;
 import net.milkbowl.vault.economy.Economy;
@@ -17,6 +24,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Set;
 
 public final class CryptoCurrency extends JavaPlugin {
@@ -49,6 +57,10 @@ public final class CryptoCurrency extends JavaPlugin {
     private File ma = null;
     private final YamlConfiguration mater = new YamlConfiguration();
 
+    //Mining
+    private File mi = null;
+    private final YamlConfiguration mining = new YamlConfiguration();
+
     //English
     private File en = null;
     private final YamlConfiguration engl = new YamlConfiguration();
@@ -68,6 +80,7 @@ public final class CryptoCurrency extends JavaPlugin {
         this.cc = new File(getDataFolder(), "cryptocurrencies.yml");
         this.ss = new File(getDataFolder(), "signshops.yml");
         this.ma = new File(getDataFolder(), "materials.yml");
+        this.mi = new File(getDataFolder(), "mining.yml");
         this.en = new File(getDataFolder(), "Languages/English.yml");
         this.ru = new File(getDataFolder(), "Languages/Russian.yml");
         this.sp = new File(getDataFolder(), "Languages/Spanish.yml");
@@ -77,12 +90,12 @@ public final class CryptoCurrency extends JavaPlugin {
 
         //Initialize all crypto currencies
         Set<String> crypto_keys = getCrypto().getKeys(false);
-        for(String crypto_str : crypto_keys){
-            Settings.cryptos.put(crypto_str, new Crypto(getCrypto().getString(crypto_str+ ".name"), crypto_str, getCrypto().getString(crypto_str+ ".color", "6"), getCrypto().getString(crypto_str+".format", "0.0000"), getCrypto().getDouble(crypto_str+".maximum", 100), getCrypto().getDouble(crypto_str+".minimum", 0.0001), getCrypto().getDouble(crypto_str+".max_supply", 21000000)));
+        for (String crypto_str : crypto_keys) {
+            Settings.cryptos.put(crypto_str, new Crypto(getCrypto().getString(crypto_str + ".name"), crypto_str, getCrypto().getString(crypto_str + ".color", "6"), getCrypto().getString(crypto_str + ".format", "0.0000"), getCrypto().getDouble(crypto_str + ".maximum", 100), getCrypto().getDouble(crypto_str + ".minimum", 0.0001), getCrypto().getDouble(crypto_str + ".max_supply", 21000000)));
         }
 
         //VaultAPI
-        if (getServer().getPluginManager().getPlugin("Vault") != null){
+        if (getServer().getPluginManager().getPlugin("Vault") != null) {
             vault = setupEconomy();
         }
 
@@ -90,7 +103,7 @@ public final class CryptoCurrency extends JavaPlugin {
         new Metrics(this, 11090);
 
         //SQL
-        if(getConf().getBoolean("mysql", false)){
+        if (getConf().getBoolean("mysql", false)) {
             try {
                 hikari = new HikariDataSource();
                 hikari.setMaximumPoolSize(10);
@@ -103,7 +116,7 @@ public final class CryptoCurrency extends JavaPlugin {
                 hikari.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
                 conn = hikari.getConnection();
-                for(String crypto_str : crypto_keys){
+                for (String crypto_str : crypto_keys) {
                     conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_" + crypto_str + "(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
                 }
                 conn.close();
@@ -113,8 +126,23 @@ public final class CryptoCurrency extends JavaPlugin {
         }
 
         //Listeners
-        new PlayerJoinListener(this);
-        new TabCompleteListener(this);
+        new CreateWalletListener(this);
+        new CryptosTabCompleteListener(this);
+        if (getConfig().getBoolean("mining", false)) {
+            new CryptoMiningListener(this);
+
+            //Initialize all crypto mining
+            for (String mining_str : getMining().getKeys(false)) {
+                String crypto = mining_str.toLowerCase(Locale.ROOT);
+
+                if (!API.isCryptoEnabled(crypto)) continue;
+
+                String[] miningDetail = getMining().getString(crypto).split(";");
+                String block = miningDetail[0].toUpperCase(Locale.ROOT);
+                Settings.mining.put(block, new Mining(crypto, block, Double.parseDouble(miningDetail[1])));
+            }
+
+        }
 
         //Sign Shop - Quick Fix
         if(Version.isAtLeast(Version.MC1_16)){
@@ -123,6 +151,7 @@ public final class CryptoCurrency extends JavaPlugin {
                 new PlayerInteractListener(this);
                 new BlockBreakListener(this);
                 new BlockExplodeListener(this);
+                new EntityExplodeListener(this);
             }
         }
 
@@ -131,7 +160,7 @@ public final class CryptoCurrency extends JavaPlugin {
             bukkitCommandMap.setAccessible(true);
             CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
 
-            for(String crypto_str : crypto_keys){
+            for (String crypto_str : crypto_keys) {
                 commandMap.register(crypto_str, new CryptoCMD(crypto_str));
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -139,7 +168,7 @@ public final class CryptoCurrency extends JavaPlugin {
         }
 
         //PlaceholderAPI
-        if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new Placeholders().register();
         }
 
@@ -149,14 +178,15 @@ public final class CryptoCurrency extends JavaPlugin {
             info("&aEnabling");
         });
 
-        if(getConf().getInt("crypto_exchange", 1) == 2){
+        if (getConf().getInt("crypto_exchange", 1) == 2) {
             API.getBinanceArrayPositions();
             API.startBinancePriceFetcher();
-        }else{
+        } else {
             API.startCoinbasePriceFetcher(API.getAPICurrency());
         }
 
         API.startSupplyCalculator();
+
     }
 
     @Override
@@ -164,10 +194,11 @@ public final class CryptoCurrency extends JavaPlugin {
         info("&4Disabling");
 
         //SQL
-        if(conn != null){
+        if (conn != null) {
             try {
                 conn.close();
-            } catch (SQLException ignored) { }
+            } catch (SQLException ignored) {
+            }
         }
     }
 
@@ -183,38 +214,45 @@ public final class CryptoCurrency extends JavaPlugin {
         return econ;
     }
 
-    private void mkdir(){
-        if(!this.co.exists()) saveResource("config.yml", false);
-        if(!this.cc.exists()) saveResource("cryptocurrencies.yml", false);
-        if(!this.ss.exists()) saveResource("signshops.yml", false);
-        if(!this.ma.exists()) saveResource("materials.yml", false);
-        if(!this.en.exists()) saveResource("Languages/English.yml", false);
-        if(!this.ru.exists()) saveResource("Languages/Russian.yml", false);
-        if(!this.sp.exists()) saveResource("Languages/Spanish.yml", false);
+    private void mkdir() {
+        if (!this.co.exists()) saveResource("config.yml", false);
+        if (!this.cc.exists()) saveResource("cryptocurrencies.yml", false);
+        if (!this.ss.exists()) saveResource("signshops.yml", false);
+        if (!this.ma.exists()) saveResource("materials.yml", false);
+        if (!this.mi.exists()) saveResource("mining.yml", false);
+        if (!this.en.exists()) saveResource("Languages/English.yml", false);
+        if (!this.ru.exists()) saveResource("Languages/Russian.yml", false);
+        if (!this.sp.exists()) saveResource("Languages/Spanish.yml", false);
     }
 
     public void loadYamls() {
 
-        try{
+        try {
             this.conf.load(this.co);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
 
-        try{
+        try {
             this.crypto.load(this.cc);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
 
-        try{
+        try {
             this.signs.load(this.ss);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
 
-        try{
+        try {
             this.mater.load(this.ma);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            this.mining.load(this.mi);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -238,15 +276,39 @@ public final class CryptoCurrency extends JavaPlugin {
         }
     }
 
-    public YamlConfiguration getConf() { return this.conf; }
-    public YamlConfiguration getCrypto() { return this.crypto; }
-    public YamlConfiguration getSignShops() { return this.signs; }
-    public YamlConfiguration getMaterials() { return this.mater; }
-    public YamlConfiguration getEngl() { return this.engl; }
-    public YamlConfiguration getRussi() { return this.russi; }
-    public YamlConfiguration getSpanni() { return this.spanni; }
+    public YamlConfiguration getConf() {
+        return this.conf;
+    }
 
-    public void saveSignShops(){
+    public YamlConfiguration getCrypto() {
+        return this.crypto;
+    }
+
+    public YamlConfiguration getSignShops() {
+        return this.signs;
+    }
+
+    public YamlConfiguration getMaterials() {
+        return this.mater;
+    }
+
+    public YamlConfiguration getMining() {
+        return this.mining;
+    }
+
+    public YamlConfiguration getEngl() {
+        return this.engl;
+    }
+
+    public YamlConfiguration getRussi() {
+        return this.russi;
+    }
+
+    public YamlConfiguration getSpanni() {
+        return this.spanni;
+    }
+
+    public void saveSignShops() {
         try {
             this.signs.save(ss);
         } catch (IOException e) {
@@ -254,7 +316,7 @@ public final class CryptoCurrency extends JavaPlugin {
         }
     }
 
-    private void info(String message){
+    private void info(String message) {
         Bukkit.getConsoleSender().sendMessage(Message.chat(""));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8[]=====[" + message + " &bCryptoCurrency&8]=====[]"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
@@ -262,9 +324,9 @@ public final class CryptoCurrency extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Name: &bCryptoCurrency"));
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Developer: &bBlack1_TV"));
-        if(new_version != null){
+        if (new_version != null) {
             Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion() + " (&6update available&b)"));
-        }else{
+        } else {
             Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion()));
         }
         Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Premium: &bhttps://rabbit-company.com"));
@@ -279,7 +341,7 @@ public final class CryptoCurrency extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Message.chat(""));
     }
 
-    public static CryptoCurrency getInstance(){
+    public static CryptoCurrency getInstance() {
         return instance;
     }
 }

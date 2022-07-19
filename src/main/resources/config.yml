@@ -67,6 +67,8 @@ price_fetch: 20
 supply_calculator: 60
 # Do you want to monitor prices of cryptocurrencies?
 monitor_history: true
+# Cryptocurrency mining; mining.yml
+mining: true
 #----------------------------------------------------------
 #                        SignShop
 #          Only works on newer MC server versions

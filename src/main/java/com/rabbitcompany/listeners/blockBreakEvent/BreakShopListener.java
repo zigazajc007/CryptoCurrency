@@ -1,4 +1,4 @@
-package com.rabbitcompany.listeners;
+package com.rabbitcompany.listeners.blockBreakEvent;
 
 import com.rabbitcompany.CryptoCurrency;
 import com.rabbitcompany.utils.Message;
@@ -11,11 +11,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-public class BlockBreakListener implements Listener {
+public class BreakShopListener implements Listener {
 
     private final CryptoCurrency cryptoCurrency;
 
-    public BlockBreakListener(CryptoCurrency plugin){
+    public BreakShopListener(CryptoCurrency plugin){
         cryptoCurrency = plugin;
 
         Bukkit.getPluginManager().registerEvents(this, plugin);

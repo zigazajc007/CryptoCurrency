@@ -1,4 +1,4 @@
-package com.rabbitcompany.listeners;
+package com.rabbitcompany.listeners.playerInteractEvent;
 
 import com.rabbitcompany.CryptoCurrency;
 import com.rabbitcompany.utils.API;
@@ -24,11 +24,11 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerInteractListener implements Listener {
+public class SignShopListener implements Listener {
 
     private final CryptoCurrency cryptoCurrency;
 
-    public PlayerInteractListener(CryptoCurrency plugin){
+    public SignShopListener(CryptoCurrency plugin){
         cryptoCurrency = plugin;
 
         Bukkit.getPluginManager().registerEvents(this, plugin);
