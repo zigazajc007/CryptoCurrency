@@ -117,7 +117,7 @@ public final class CryptoCurrency extends JavaPlugin {
         new TabCompleteListener(this);
 
         //Sign Shop - Quick Fix
-        if(Bukkit.getVersion().contains("1.16") || Bukkit.getVersion().contains("1.17") || Bukkit.getVersion().contains("1.18")){
+        if(Version.isAtLeast(Version.MC1_16)){
             if(getConf().getBoolean("shop_enabled", true)){
                 new SignChangeListener(this);
                 new PlayerInteractListener(this);
