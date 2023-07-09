@@ -13,64 +13,64 @@ import java.util.List;
 
 public class CryptosTabCompleteListener implements Listener {
 
-    private CryptoCurrency cryptoCurrency;
+	private final CryptoCurrency cryptoCurrency;
 
-    public CryptosTabCompleteListener(CryptoCurrency plugin){
-        cryptoCurrency = plugin;
+	public CryptosTabCompleteListener(CryptoCurrency plugin) {
+		cryptoCurrency = plugin;
 
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+	}
 
-    @EventHandler
-    public void onTabComplete(TabCompleteEvent event){
-        String[] args = event.getBuffer().replace("/", "").split(" ");
-        if(Settings.cryptos.containsKey(args[0])){
-            List<String> completions = new ArrayList<>();
+	@EventHandler
+	public void onTabComplete(TabCompleteEvent event) {
+		String[] args = event.getBuffer().replace("/", "").split(" ");
+		if (Settings.cryptos.containsKey(args[0])) {
+			List<String> completions = new ArrayList<>();
 
-            if(args.length == 1){
-                completions.add("balance");
-                completions.add("price");
-                completions.add("send");
-                completions.add("buy");
-                completions.add("sell");
+			if (args.length == 1) {
+				completions.add("balance");
+				completions.add("price");
+				completions.add("send");
+				completions.add("buy");
+				completions.add("sell");
 
-                if(event.getSender().hasPermission("cryptocurrency.give")) completions.add("give");
-                if(event.getSender().hasPermission("cryptocurrency.take")) completions.add("take");
-                if(event.getSender().hasPermission("cryptocurrency.reload")) completions.add("reload");
-            }else if(args.length == 2){
-                switch (args[1]) {
-                    case "send":
-                        for (Player all : Bukkit.getServer().getOnlinePlayers()) {
-                            completions.add(all.getName());
-                        }
-                        break;
-                    case "give":
-                        if (event.getSender().hasPermission("cryptocurrency.give")) {
-                            for (Player all : Bukkit.getServer().getOnlinePlayers()) {
-                                completions.add(all.getName());
-                            }
-                        }
-                        break;
-                    case "take":
-                        if (event.getSender().hasPermission("cryptocurrency.take")) {
-                            for (Player all : Bukkit.getServer().getOnlinePlayers()) {
-                                completions.add(all.getName());
-                            }
-                        }
-                        break;
-                    case "bal":
-                    case "balance":
-                    case "check":
-                    case "info":
-                        if(event.getSender().hasPermission("cryptocurrency.balance")){
-                            for (Player all : Bukkit.getServer().getOnlinePlayers()) {
-                                completions.add(all.getName());
-                            }
-                        }
-                        break;
-                }
-            }
-            event.setCompletions(completions);
-        }
-    }
+				if (event.getSender().hasPermission("cryptocurrency.give")) completions.add("give");
+				if (event.getSender().hasPermission("cryptocurrency.take")) completions.add("take");
+				if (event.getSender().hasPermission("cryptocurrency.reload")) completions.add("reload");
+			} else if (args.length == 2) {
+				switch (args[1]) {
+					case "send":
+						for (Player all : Bukkit.getServer().getOnlinePlayers()) {
+							completions.add(all.getName());
+						}
+						break;
+					case "give":
+						if (event.getSender().hasPermission("cryptocurrency.give")) {
+							for (Player all : Bukkit.getServer().getOnlinePlayers()) {
+								completions.add(all.getName());
+							}
+						}
+						break;
+					case "take":
+						if (event.getSender().hasPermission("cryptocurrency.take")) {
+							for (Player all : Bukkit.getServer().getOnlinePlayers()) {
+								completions.add(all.getName());
+							}
+						}
+						break;
+					case "bal":
+					case "balance":
+					case "check":
+					case "info":
+						if (event.getSender().hasPermission("cryptocurrency.balance")) {
+							for (Player all : Bukkit.getServer().getOnlinePlayers()) {
+								completions.add(all.getName());
+							}
+						}
+						break;
+				}
+			}
+			event.setCompletions(completions);
+		}
+	}
 }

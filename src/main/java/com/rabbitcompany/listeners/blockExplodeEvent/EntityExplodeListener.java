@@ -8,15 +8,15 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class EntityExplodeListener extends AbstracExplodeListener implements Listener {
 
-    public EntityExplodeListener(CryptoCurrency plugin) {
-        super(plugin);
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
+	public EntityExplodeListener(CryptoCurrency plugin) {
+		super(plugin);
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+	}
 
-    @EventHandler
-    public void onEntityExplode(EntityExplodeEvent event) {
-        onExplode(event.blockList());
-        event.setCancelled(true);
-    }
+	@EventHandler
+	public void onEntityExplode(EntityExplodeEvent event) {
+		onExplode(event.blockList());
+		event.setCancelled(true);
+	}
 
 }

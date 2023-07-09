@@ -4,4 +4,4 @@
 #                                                                 #
 #       ----------- + --------------------------- + -----------   #
 # NOTICE: Only lowercase characters are allowed and do not use spaces! Use _ instead.
-experience_bottle: ["xp_bottle", "exp_bottle"]
+experience_bottle: [ "xp_bottle", "exp_bottle" ]

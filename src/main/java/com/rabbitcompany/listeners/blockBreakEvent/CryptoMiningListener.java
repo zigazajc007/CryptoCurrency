@@ -12,28 +12,28 @@ import org.bukkit.inventory.ItemStack;
 
 public class CryptoMiningListener implements Listener {
 
-    public CryptoMiningListener(CryptoCurrency plugin) {
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
+	public CryptoMiningListener(CryptoCurrency plugin) {
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+	}
 
-    @EventHandler
-    public void onMining(BlockBreakEvent event) {
+	@EventHandler
+	public void onMining(BlockBreakEvent event) {
 
-        ItemStack tool;
-        if (!Bukkit.getVersion().contains("1.8")){
-            tool = event.getPlayer().getInventory().getItemInMainHand();
-        } else {
-            tool = event.getPlayer().getInventory().getItemInHand();
-        }
+		ItemStack tool;
+		if (!Bukkit.getVersion().contains("1.8")) {
+			tool = event.getPlayer().getInventory().getItemInMainHand();
+		} else {
+			tool = event.getPlayer().getInventory().getItemInHand();
+		}
 
-        if (tool.containsEnchantment(Enchantment.SILK_TOUCH)) return;
+		if (tool.containsEnchantment(Enchantment.SILK_TOUCH)) return;
 
-        String material = event.getBlock().getType().toString();
-        Player player = event.getPlayer();
+		String material = event.getBlock().getType().toString();
+		Player player = event.getPlayer();
 
-        API.cryptoMining(player, material);
+		API.cryptoMining(player, material);
 
-    }
+	}
 
 
 }

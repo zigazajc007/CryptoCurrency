@@ -10,20 +10,21 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class CreateWalletListener implements Listener {
 
-    private final CryptoCurrency cryptoCurrency;
+	private final CryptoCurrency cryptoCurrency;
 
-    public CreateWalletListener(CryptoCurrency plugin){
-        cryptoCurrency = plugin;
+	public CreateWalletListener(CryptoCurrency plugin) {
+		cryptoCurrency = plugin;
 
-        Bukkit.getPluginManager().registerEvents(this, plugin);
-    }
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+	}
 
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
-        //Save player to Database
-        if(CryptoCurrency.conn != null){
-            for(String crypto : Settings.cryptos.keySet()) MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), crypto);
-        }
-    }
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		//Save player to Database
+		if (CryptoCurrency.conn != null) {
+			for (String crypto : Settings.cryptos.keySet())
+				MySql.createPlayerWallet(event.getPlayer().getUniqueId().toString(), event.getPlayer().getName(), crypto);
+		}
+	}
 
 }

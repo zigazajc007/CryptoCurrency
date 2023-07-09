@@ -29,319 +29,308 @@ import java.util.Set;
 
 public final class CryptoCurrency extends JavaPlugin {
 
-    private static CryptoCurrency instance;
+	public static String new_version = null;
+	//SQL
+	public static HikariDataSource hikari;
+	public static Connection conn = null;
+	public static boolean vault = false;
+	private static CryptoCurrency instance;
+	//VaultAPI
+	private static Economy econ = null;
+	private final YamlConfiguration conf = new YamlConfiguration();
+	private final YamlConfiguration crypto = new YamlConfiguration();
+	private final YamlConfiguration signs = new YamlConfiguration();
+	private final YamlConfiguration mater = new YamlConfiguration();
+	private final YamlConfiguration mining = new YamlConfiguration();
+	private final YamlConfiguration engl = new YamlConfiguration();
+	private final YamlConfiguration russi = new YamlConfiguration();
+	private final YamlConfiguration spanni = new YamlConfiguration();
+	//Config
+	private File co = null;
+	//Crypto Currencies
+	private File cc = null;
+	//Sign Shop
+	private File ss = null;
+	//Materials
+	private File ma = null;
+	//Mining
+	private File mi = null;
+	//English
+	private File en = null;
+	//Russian
+	private File ru = null;
+	//Spanish
+	private File sp = null;
 
-    public static String new_version = null;
+	public static Economy getEconomy() {
+		return econ;
+	}
 
-    //SQL
-    public static HikariDataSource hikari;
-    public static Connection conn = null;
+	public static CryptoCurrency getInstance() {
+		return instance;
+	}
 
-    //VaultAPI
-    private static Economy econ = null;
-    public static boolean vault = false;
+	@Override
+	public void onEnable() {
+		instance = this;
+		this.co = new File(getDataFolder(), "config.yml");
+		this.cc = new File(getDataFolder(), "cryptocurrencies.yml");
+		this.ss = new File(getDataFolder(), "signshops.yml");
+		this.ma = new File(getDataFolder(), "materials.yml");
+		this.mi = new File(getDataFolder(), "mining.yml");
+		this.en = new File(getDataFolder(), "Languages/English.yml");
+		this.ru = new File(getDataFolder(), "Languages/Russian.yml");
+		this.sp = new File(getDataFolder(), "Languages/Spanish.yml");
 
-    //Config
-    private File co = null;
-    private final YamlConfiguration conf = new YamlConfiguration();
+		mkdir();
+		loadYamls();
 
-    //Crypto Currencies
-    private File cc = null;
-    private final YamlConfiguration crypto = new YamlConfiguration();
+		//Initialize all crypto currencies
+		Set<String> crypto_keys = getCrypto().getKeys(false);
+		for (String crypto_str : crypto_keys) {
+			Settings.cryptos.put(crypto_str, new Crypto(getCrypto().getString(crypto_str + ".name"), crypto_str, getCrypto().getString(crypto_str + ".color", "6"), getCrypto().getString(crypto_str + ".format", "0.0000"), getCrypto().getDouble(crypto_str + ".maximum", 100), getCrypto().getDouble(crypto_str + ".minimum", 0.0001), getCrypto().getDouble(crypto_str + ".max_supply", 21000000)));
+		}
 
-    //Sign Shop
-    private File ss = null;
-    private final YamlConfiguration signs = new YamlConfiguration();
+		//VaultAPI
+		if (getServer().getPluginManager().getPlugin("Vault") != null) {
+			vault = setupEconomy();
+		}
 
-    //Materials
-    private File ma = null;
-    private final YamlConfiguration mater = new YamlConfiguration();
+		//Metrics
+		new Metrics(this, 11090);
 
-    //Mining
-    private File mi = null;
-    private final YamlConfiguration mining = new YamlConfiguration();
+		//SQL
+		if (getConf().getBoolean("mysql", false)) {
+			try {
+				hikari = new HikariDataSource();
+				hikari.setMaximumPoolSize(10);
+				hikari.setJdbcUrl("jdbc:mysql://" + getConf().getString("mysql_host") + ":" + getConf().getString("mysql_port") + "/" + getConf().getString("mysql_database"));
+				hikari.setUsername(getConf().getString("mysql_user"));
+				hikari.setPassword(getConf().getString("mysql_password"));
+				hikari.addDataSourceProperty("useSSL", getConf().getString("mysql_useSSL"));
+				hikari.addDataSourceProperty("cachePrepStmts", "true");
+				hikari.addDataSourceProperty("prepStmtCacheSize", "250");
+				hikari.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
 
-    //English
-    private File en = null;
-    private final YamlConfiguration engl = new YamlConfiguration();
+				conn = hikari.getConnection();
+				for (String crypto_str : crypto_keys) {
+					conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_" + crypto_str + "(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
+				}
+				conn.close();
+			} catch (SQLException e) {
+				conn = null;
+			}
+		}
 
-    //Russian
-    private File ru = null;
-    private final YamlConfiguration russi = new YamlConfiguration();
+		//Listeners
+		new CreateWalletListener(this);
+		new CryptosTabCompleteListener(this);
+		if (getConfig().getBoolean("mining", false)) {
+			new CryptoMiningListener(this);
 
-    //Spanish
-    private File sp = null;
-    private final YamlConfiguration spanni = new YamlConfiguration();
+			//Initialize all crypto mining
+			for (String mining_str : getMining().getKeys(false)) {
+				String crypto = mining_str.toLowerCase(Locale.ROOT);
 
-    @Override
-    public void onEnable() {
-        instance = this;
-        this.co = new File(getDataFolder(), "config.yml");
-        this.cc = new File(getDataFolder(), "cryptocurrencies.yml");
-        this.ss = new File(getDataFolder(), "signshops.yml");
-        this.ma = new File(getDataFolder(), "materials.yml");
-        this.mi = new File(getDataFolder(), "mining.yml");
-        this.en = new File(getDataFolder(), "Languages/English.yml");
-        this.ru = new File(getDataFolder(), "Languages/Russian.yml");
-        this.sp = new File(getDataFolder(), "Languages/Spanish.yml");
+				if (!API.isCryptoEnabled(crypto)) continue;
 
-        mkdir();
-        loadYamls();
+				String[] miningDetail = getMining().getString(crypto).split(";");
+				String block = miningDetail[0].toUpperCase(Locale.ROOT);
+				Settings.mining.put(block, new Mining(crypto, block, Double.parseDouble(miningDetail[1])));
+			}
 
-        //Initialize all crypto currencies
-        Set<String> crypto_keys = getCrypto().getKeys(false);
-        for (String crypto_str : crypto_keys) {
-            Settings.cryptos.put(crypto_str, new Crypto(getCrypto().getString(crypto_str + ".name"), crypto_str, getCrypto().getString(crypto_str + ".color", "6"), getCrypto().getString(crypto_str + ".format", "0.0000"), getCrypto().getDouble(crypto_str + ".maximum", 100), getCrypto().getDouble(crypto_str + ".minimum", 0.0001), getCrypto().getDouble(crypto_str + ".max_supply", 21000000)));
-        }
+		}
 
-        //VaultAPI
-        if (getServer().getPluginManager().getPlugin("Vault") != null) {
-            vault = setupEconomy();
-        }
+		//Sign Shop - Quick Fix
+		if (Version.isAtLeast(Version.MC1_16)) {
+			if (getConf().getBoolean("shop_enabled", true)) {
+				new CreateSignShopListener(this);
+				new SignShopListener(this);
+				new BreakShopListener(this);
+				new BlockExplodeListener(this);
+				new EntityExplodeListener(this);
+			}
+		}
 
-        //Metrics
-        new Metrics(this, 11090);
+		try {
+			final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+			bukkitCommandMap.setAccessible(true);
+			CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
 
-        //SQL
-        if (getConf().getBoolean("mysql", false)) {
-            try {
-                hikari = new HikariDataSource();
-                hikari.setMaximumPoolSize(10);
-                hikari.setJdbcUrl("jdbc:mysql://" + getConf().getString("mysql_host") + ":" + getConf().getString("mysql_port") + "/" + getConf().getString("mysql_database"));
-                hikari.setUsername(getConf().getString("mysql_user"));
-                hikari.setPassword(getConf().getString("mysql_password"));
-                hikari.addDataSourceProperty("useSSL", getConf().getString("mysql_useSSL"));
-                hikari.addDataSourceProperty("cachePrepStmts", "true");
-                hikari.addDataSourceProperty("prepStmtCacheSize", "250");
-                hikari.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+			for (String crypto_str : crypto_keys) {
+				commandMap.register(crypto_str, new CryptoCMD(crypto_str));
+			}
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 
-                conn = hikari.getConnection();
-                for (String crypto_str : crypto_keys) {
-                    conn.createStatement().execute("CREATE TABLE IF NOT EXISTS cryptocurrency_" + crypto_str + "(uuid char(36) NOT NULL PRIMARY KEY, username varchar(25) NOT NULL, balance double);");
-                }
-                conn.close();
-            } catch (SQLException e) {
-                conn = null;
-            }
-        }
+		//PlaceholderAPI
+		if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+			new Placeholders().register();
+		}
 
-        //Listeners
-        new CreateWalletListener(this);
-        new CryptosTabCompleteListener(this);
-        if (getConfig().getBoolean("mining", false)) {
-            new CryptoMiningListener(this);
+		//Update Checker
+		new UpdateChecker(this, 51).getVersion(updater_version -> {
+			if (!getDescription().getVersion().equalsIgnoreCase(updater_version)) new_version = updater_version;
+			info("&aEnabling");
+		});
 
-            //Initialize all crypto mining
-            for (String mining_str : getMining().getKeys(false)) {
-                String crypto = mining_str.toLowerCase(Locale.ROOT);
+		if (getConf().getInt("crypto_exchange", 1) == 2) {
+			API.getBinanceArrayPositions();
+			API.startBinancePriceFetcher();
+		} else {
+			API.startCoinbasePriceFetcher(API.getAPICurrency());
+		}
 
-                if (!API.isCryptoEnabled(crypto)) continue;
+		API.startSupplyCalculator();
 
-                String[] miningDetail = getMining().getString(crypto).split(";");
-                String block = miningDetail[0].toUpperCase(Locale.ROOT);
-                Settings.mining.put(block, new Mining(crypto, block, Double.parseDouble(miningDetail[1])));
-            }
+	}
 
-        }
+	@Override
+	public void onDisable() {
+		info("&4Disabling");
 
-        //Sign Shop - Quick Fix
-        if(Version.isAtLeast(Version.MC1_16)){
-            if(getConf().getBoolean("shop_enabled", true)){
-                new CreateSignShopListener(this);
-                new SignShopListener(this);
-                new BreakShopListener(this);
-                new BlockExplodeListener(this);
-                new EntityExplodeListener(this);
-            }
-        }
+		//SQL
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException ignored) {
+			}
+		}
+	}
 
-        try {
-            final Field bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-            bukkitCommandMap.setAccessible(true);
-            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+	//VaultAPI
+	private boolean setupEconomy() {
+		RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+		if (rsp == null) return false;
+		econ = rsp.getProvider();
+		return true;
+	}
 
-            for (String crypto_str : crypto_keys) {
-                commandMap.register(crypto_str, new CryptoCMD(crypto_str));
-            }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+	private void mkdir() {
+		if (!this.co.exists()) saveResource("config.yml", false);
+		if (!this.cc.exists()) saveResource("cryptocurrencies.yml", false);
+		if (!this.ss.exists()) saveResource("signshops.yml", false);
+		if (!this.ma.exists()) saveResource("materials.yml", false);
+		if (!this.mi.exists()) saveResource("mining.yml", false);
+		if (!this.en.exists()) saveResource("Languages/English.yml", false);
+		if (!this.ru.exists()) saveResource("Languages/Russian.yml", false);
+		if (!this.sp.exists()) saveResource("Languages/Spanish.yml", false);
+	}
 
-        //PlaceholderAPI
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            new Placeholders().register();
-        }
+	public void loadYamls() {
 
-        //Update Checker
-        new UpdateChecker(this, 51).getVersion(updater_version -> {
-            if (!getDescription().getVersion().equalsIgnoreCase(updater_version)) new_version = updater_version;
-            info("&aEnabling");
-        });
+		try {
+			this.conf.load(this.co);
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
 
-        if (getConf().getInt("crypto_exchange", 1) == 2) {
-            API.getBinanceArrayPositions();
-            API.startBinancePriceFetcher();
-        } else {
-            API.startCoinbasePriceFetcher(API.getAPICurrency());
-        }
+		try {
+			this.crypto.load(this.cc);
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
 
-        API.startSupplyCalculator();
+		try {
+			this.signs.load(this.ss);
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
 
-    }
+		try {
+			this.mater.load(this.ma);
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
 
-    @Override
-    public void onDisable() {
-        info("&4Disabling");
+		try {
+			this.mining.load(this.mi);
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
 
-        //SQL
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException ignored) {
-            }
-        }
-    }
+		try {
+			this.engl.load(this.en);
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
 
-    //VaultAPI
-    private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) return false;
-        econ = rsp.getProvider();
-        return true;
-    }
+		try {
+			this.russi.load(this.ru);
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
 
-    public static Economy getEconomy() {
-        return econ;
-    }
+		try {
+			this.spanni.load(this.sp);
+		} catch (IOException | InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
+	}
 
-    private void mkdir() {
-        if (!this.co.exists()) saveResource("config.yml", false);
-        if (!this.cc.exists()) saveResource("cryptocurrencies.yml", false);
-        if (!this.ss.exists()) saveResource("signshops.yml", false);
-        if (!this.ma.exists()) saveResource("materials.yml", false);
-        if (!this.mi.exists()) saveResource("mining.yml", false);
-        if (!this.en.exists()) saveResource("Languages/English.yml", false);
-        if (!this.ru.exists()) saveResource("Languages/Russian.yml", false);
-        if (!this.sp.exists()) saveResource("Languages/Spanish.yml", false);
-    }
+	public YamlConfiguration getConf() {
+		return this.conf;
+	}
 
-    public void loadYamls() {
+	public YamlConfiguration getCrypto() {
+		return this.crypto;
+	}
 
-        try {
-            this.conf.load(this.co);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+	public YamlConfiguration getSignShops() {
+		return this.signs;
+	}
 
-        try {
-            this.crypto.load(this.cc);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+	public YamlConfiguration getMaterials() {
+		return this.mater;
+	}
 
-        try {
-            this.signs.load(this.ss);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+	public YamlConfiguration getMining() {
+		return this.mining;
+	}
 
-        try {
-            this.mater.load(this.ma);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+	public YamlConfiguration getEngl() {
+		return this.engl;
+	}
 
-        try {
-            this.mining.load(this.mi);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+	public YamlConfiguration getRussi() {
+		return this.russi;
+	}
 
-        try {
-            this.engl.load(this.en);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+	public YamlConfiguration getSpanni() {
+		return this.spanni;
+	}
 
-        try {
-            this.russi.load(this.ru);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
+	public void saveSignShops() {
+		try {
+			this.signs.save(ss);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-        try {
-            this.spanni.load(this.sp);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public YamlConfiguration getConf() {
-        return this.conf;
-    }
-
-    public YamlConfiguration getCrypto() {
-        return this.crypto;
-    }
-
-    public YamlConfiguration getSignShops() {
-        return this.signs;
-    }
-
-    public YamlConfiguration getMaterials() {
-        return this.mater;
-    }
-
-    public YamlConfiguration getMining() {
-        return this.mining;
-    }
-
-    public YamlConfiguration getEngl() {
-        return this.engl;
-    }
-
-    public YamlConfiguration getRussi() {
-        return this.russi;
-    }
-
-    public YamlConfiguration getSpanni() {
-        return this.spanni;
-    }
-
-    public void saveSignShops() {
-        try {
-            this.signs.save(ss);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void info(String message) {
-        Bukkit.getConsoleSender().sendMessage(Message.chat(""));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8[]=====[" + message + " &bCryptoCurrency&8]=====[]"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8| &cInformation:"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Name: &bCryptoCurrency"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Developer: &bBlack1_TV"));
-        if (new_version != null) {
-            Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion() + " (&6update available&b)"));
-        } else {
-            Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion()));
-        }
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Premium: &bhttps://rabbit-company.com"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8| &cSupport:"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Discord: &bCrazy Rabbit#0001"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Mail: &bziga.zajc007@gmail.com"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Discord: &bhttps://discord.gg/hUNymXX"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat("&8[]=====================================[]"));
-        Bukkit.getConsoleSender().sendMessage(Message.chat(""));
-    }
-
-    public static CryptoCurrency getInstance() {
-        return instance;
-    }
+	private void info(String message) {
+		Bukkit.getConsoleSender().sendMessage(Message.chat(""));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8[]=====[" + message + " &bCryptoCurrency&8]=====[]"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8| &cInformation:"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Name: &bCryptoCurrency"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Developer: &bBlack1_TV"));
+		if (new_version != null) {
+			Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion() + " (&6update available&b)"));
+		} else {
+			Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion()));
+		}
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Premium: &bhttps://rabbit-company.com"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8| &cSupport:"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Discord: &bCrazy Rabbit#0001"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Mail: &bziga.zajc007@gmail.com"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Discord: &bhttps://discord.gg/hUNymXX"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat("&8[]=====================================[]"));
+		Bukkit.getConsoleSender().sendMessage(Message.chat(""));
+	}
 }
