@@ -10,13 +10,17 @@ import java.sql.SQLException;
 public class MySql {
 
 	public static double getPlayerBalance(String player_uuid, String player_name, String crypto) {
-		String query = "SELECT balance FROM cryptocurrency_" + crypto + " WHERE uuid = '" + player_uuid + "' OR username = '" + player_name + "';";
+		String query = "SELECT balance FROM cryptocurrency_" + crypto + " WHERE uuid = ? OR username = ?;";
 		double balance = 0;
 		try {
 			Connection conn = CryptoCurrency.hikari.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, player_uuid);
+			ps.setString(2, player_name);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) balance = rs.getDouble("balance");
+			rs.close();
+			ps.close();
 			conn.close();
 		} catch (SQLException ignored) {
 		}
@@ -24,9 +28,14 @@ public class MySql {
 	}
 
 	public static boolean setPlayerBalance(String player_uuid, String player_name, String balance, String crypto) {
+		String query = "UPDATE cryptocurrency_" + crypto + " SET balance = " + balance + " WHERE uuid = ? OR username = ?;";
 		try {
 			Connection conn = CryptoCurrency.hikari.getConnection();
-			conn.createStatement().executeUpdate("UPDATE cryptocurrency_" + crypto + " SET balance = " + balance + " WHERE uuid = '" + player_uuid + "' OR username = '" + player_name + "';");
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, player_uuid);
+			ps.setString(2, player_name);
+			ps.executeUpdate();
+			ps.close();
 			conn.close();
 			return true;
 		} catch (SQLException ignored) {
@@ -35,22 +44,31 @@ public class MySql {
 	}
 
 	public static boolean isPlayerInDatabase(String player_name, String crypto) {
-		String query = "SELECT * FROM cryptocurrency_" + crypto + " WHERE username = '" + player_name + "';";
+		String query = "SELECT * FROM cryptocurrency_" + crypto + " WHERE username = ?;";
+		boolean isInDB = false;
 		try {
 			Connection conn = CryptoCurrency.hikari.getConnection();
 			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, player_name);
 			ResultSet rs = ps.executeQuery();
+			if (rs.next()) isInDB = true;
+			rs.close();
+			ps.close();
 			conn.close();
-			if (rs.next()) return true;
 		} catch (SQLException ignored) {
 		}
-		return false;
+		return isInDB;
 	}
 
 	public static boolean createPlayerWallet(String player_uuid, String player_name, String crypto) {
+		String query = "INSERT INTO cryptocurrency_" + crypto + " VALUES (?, ?, 0);";
 		try {
 			Connection conn = CryptoCurrency.hikari.getConnection();
-			conn.createStatement().executeUpdate("INSERT INTO cryptocurrency_" + crypto + " VALUES ('" + player_uuid + "', '" + player_name + "', 0);");
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, player_uuid);
+			ps.setString(2, player_name);
+			ps.executeUpdate();
+			ps.close();
 			conn.close();
 			return true;
 		} catch (SQLException ignored) {
@@ -66,6 +84,8 @@ public class MySql {
 			PreparedStatement ps = conn.prepareStatement(query);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) supply = rs.getDouble("supply");
+			rs.close();
+			ps.close();
 			conn.close();
 		} catch (SQLException ignored) {
 		}

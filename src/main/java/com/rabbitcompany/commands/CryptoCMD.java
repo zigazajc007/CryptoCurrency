@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,7 +22,6 @@ public class CryptoCMD extends Command {
 	public boolean execute(@NotNull CommandSender sender, @NotNull String crypto_type, @NotNull String[] args) {
 		double price = Settings.cryptos.get(crypto_type).price;
 		double balance;
-		YamlConfiguration wallet = Settings.cryptos.get(crypto_type).wallet;
 
 		if (!(sender instanceof Player)) {
 

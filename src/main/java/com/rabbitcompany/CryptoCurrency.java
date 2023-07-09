@@ -45,6 +45,8 @@ public final class CryptoCurrency extends JavaPlugin {
 	private final YamlConfiguration engl = new YamlConfiguration();
 	private final YamlConfiguration russi = new YamlConfiguration();
 	private final YamlConfiguration spanni = new YamlConfiguration();
+	String username = "%%__USERNAME__%%";
+	String user_id = "%%__USER__%%";
 	//Config
 	private File co = null;
 	//Crypto Currencies
@@ -310,27 +312,39 @@ public final class CryptoCurrency extends JavaPlugin {
 	}
 
 	private void info(String message) {
-		Bukkit.getConsoleSender().sendMessage(Message.chat(""));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8[]=====[" + message + " &bCryptoCurrency&8]=====[]"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8| &cInformation:"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Name: &bCryptoCurrency"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Developer: &bBlack1_TV"));
-		if (new_version != null) {
-			Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion() + " (&6update available&b)"));
+		String text = "\n\n";
+		text += "&8[]========[" + message + " &cCryptoCurrency&8]========[]\n";
+		text += "&8|\n";
+		text += "&8| &cInformation:\n";
+		text += "&8|\n";
+		text += "&8|   &9Name: &bCryptoCurrency\n";
+		text += "&8|   &9Developer: &bBlack1_TV\n";
+		if (!username.contains("%%__")) {
+			text += "&6|   &9Plugin owner: &b" + username + "\n";
+		} else if (!user_id.contains("%%__")) {
+			text += "&6|   &9Plugin owner: &b" + user_id + "\n";
 		} else {
-			Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Version: &b" + getDescription().getVersion()));
+			text += "&6|   &9Plugin owner: &4&lCRACKED\n";
 		}
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Premium: &bhttps://rabbit-company.com"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8| &cSupport:"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Discord: &bCrazy Rabbit#0001"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Mail: &bziga.zajc007@gmail.com"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|   &9Discord: &bhttps://discord.gg/hUNymXX"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8|"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat("&8[]=====================================[]"));
-		Bukkit.getConsoleSender().sendMessage(Message.chat(""));
+		if (new_version != null) {
+			text += "&8|   &9Version: &b" + getDescription().getVersion() + " (&6update available&b)\n";
+		} else {
+			text += "&8|   &9Version: &b" + getDescription().getVersion() + "\n";
+		}
+		text += "&8|   &9Website: &bhttps://rabbit-company.com\n";
+		text += "&8|\n";
+		text += "&8| &cSponsors:\n";
+		text += "&8|\n";
+		text += "&8|   &9- &6https://rabbitserverlist.com\n";
+		text += "&8|\n";
+		text += "&8| &cSupport:\n";
+		text += "&8|\n";
+		text += "&8|   &9Discord: &bziga.zajc007\n";
+		text += "&8|   &9Mail: &bziga.zajc007@gmail.com\n";
+		text += "&8|   &9Discord: &bhttps://discord.gg/hUNymXX\n";
+		text += "&8|\n";
+		text += "&8[]=========================================[]\n";
+
+		Bukkit.getConsoleSender().sendMessage(Message.chat(text));
 	}
 }

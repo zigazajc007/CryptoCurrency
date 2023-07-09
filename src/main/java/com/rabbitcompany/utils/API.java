@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.rabbitcompany.CryptoCurrency;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -177,19 +178,20 @@ public class API {
 		if (amount > Settings.cryptos.get(crypto).maximum) return 3;
 		if (amount > (getCryptoMaxSupply(crypto) - getCryptoSupply(crypto))) return 12;
 		String UUID = getUUID(player);
+		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
 		double balance = getBalance(player, crypto);
-		double player_balance = CryptoCurrency.getEconomy().getBalance(player);
+		double player_balance = CryptoCurrency.getEconomy().getBalance(offlinePlayer);
 		double money_price = getCryptoPrice(crypto, amount);
 		if (player_balance < money_price) return 11;
 		if (CryptoCurrency.conn != null) {
 			MySql.setPlayerBalance(UUID, player, API.getFormatter(crypto).format(balance + amount), crypto);
-			CryptoCurrency.getEconomy().withdrawPlayer(player, money_price);
+			CryptoCurrency.getEconomy().withdrawPlayer(offlinePlayer, money_price);
 			Settings.cryptos.get(crypto).supply += amount;
 			return 10;
 		}
 		Settings.cryptos.get(crypto).wallet.set(UUID, balance + amount);
 		Settings.cryptos.get(crypto).saveWallet();
-		CryptoCurrency.getEconomy().withdrawPlayer(player, money_price);
+		CryptoCurrency.getEconomy().withdrawPlayer(offlinePlayer, money_price);
 		Settings.cryptos.get(crypto).supply += amount;
 		return 10;
 	}
@@ -218,18 +220,19 @@ public class API {
 		if (amount < Settings.cryptos.get(crypto).minimum) return 2;
 		if (amount > Settings.cryptos.get(crypto).maximum) return 3;
 		String UUID = getUUID(player);
+		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
 		double balance = getBalance(player, crypto);
 		double money_price = getCryptoPrice(crypto, amount);
 		if (balance < amount) return 11;
 		if (CryptoCurrency.conn != null) {
 			MySql.setPlayerBalance(UUID, player, API.getFormatter(crypto).format(balance - amount), crypto);
-			CryptoCurrency.getEconomy().depositPlayer(player, money_price);
+			CryptoCurrency.getEconomy().depositPlayer(offlinePlayer, money_price);
 			Settings.cryptos.get(crypto).supply -= amount;
 			return 10;
 		}
 		Settings.cryptos.get(crypto).wallet.set(UUID, balance - amount);
 		Settings.cryptos.get(crypto).saveWallet();
-		CryptoCurrency.getEconomy().depositPlayer(player, money_price);
+		CryptoCurrency.getEconomy().depositPlayer(offlinePlayer, money_price);
 		Settings.cryptos.get(crypto).supply -= amount;
 		return 10;
 	}
