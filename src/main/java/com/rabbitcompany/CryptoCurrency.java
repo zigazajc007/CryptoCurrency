@@ -320,11 +320,11 @@ public final class CryptoCurrency extends JavaPlugin {
 		text += "&8|   &9Name: &bCryptoCurrency\n";
 		text += "&8|   &9Developer: &bBlack1_TV\n";
 		if (!username.contains("%%__")) {
-			text += "&6|   &9Plugin owner: &b" + username + "\n";
+			text += "&8|   &9Plugin owner: &b" + username + "\n";
 		} else if (!user_id.contains("%%__")) {
-			text += "&6|   &9Plugin owner: &b" + user_id + "\n";
+			text += "&8|   &9Plugin owner: &b" + user_id + "\n";
 		} else {
-			text += "&6|   &9Plugin owner: &4&lCRACKED\n";
+			text += "&8|   &9Plugin owner: &4&lCRACKED\n";
 		}
 		if (new_version != null) {
 			text += "&8|   &9Version: &b" + getDescription().getVersion() + " (&6update available&b)\n";
