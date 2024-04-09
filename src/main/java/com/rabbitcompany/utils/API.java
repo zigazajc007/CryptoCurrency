@@ -270,7 +270,7 @@ public class API {
 
 				for (String cur : Settings.cryptos.keySet()) {
 					String value = jsonObject.getAsJsonObject("data").getAsJsonObject("rates").get(cur.toUpperCase()).getAsString();
-					double price = 1 / Double.parseDouble(value);
+					double price = (1 / Double.parseDouble(value)) * Settings.cryptos.get(cur).price_multiplier;
 					Settings.cryptos.get(cur).previousPrice = Settings.cryptos.get(cur).price;
 					Settings.cryptos.get(cur).price = price;
 
@@ -328,7 +328,7 @@ public class API {
 					if (cur.equalsIgnoreCase("USDT")) continue;
 					if (Settings.cryptos.get(cur).binanceArrayPosition < 0) continue;
 					String value = jsonArray.get(Settings.cryptos.get(cur).binanceArrayPosition).getAsJsonObject().get("price").getAsString();
-					double price = Double.parseDouble(value);
+					double price = Double.parseDouble(value) * Settings.cryptos.get(cur).price_multiplier;
 					Settings.cryptos.get(cur).previousPrice = Settings.cryptos.get(cur).price;
 					Settings.cryptos.get(cur).price = price;
 

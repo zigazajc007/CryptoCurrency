@@ -60,6 +60,7 @@ btc:
   maximum: 100
   minimum: 0.0001
   max_supply: 21000000
+  price_multiplier: 1
 bch:
   name: "Bitcoin Cash"
   color: "&a"
@@ -67,6 +68,7 @@ bch:
   maximum: 10000
   minimum: 0.0001
   max_supply: 21000000
+  price_multiplier: 1
 eth:
   name: "Ethereum"
   color: "&b"
@@ -74,6 +76,7 @@ eth:
   maximum: 5000
   minimum: 0.001
   max_supply: 120000000
+  price_multiplier: 1
 etc:
   name: "Ethereum Classic"
   color: "&a"
@@ -81,6 +84,7 @@ etc:
   maximum: 100000
   minimum: 0.001
   max_supply: 210700000
+  price_multiplier: 1
 doge:
   name: "Dogecoin"
   color: "&6"
@@ -88,6 +92,7 @@ doge:
   maximum: 1000000
   minimum: 1
   max_supply: 132000000000
+  price_multiplier: 1
 ltc:
   name: "Litecoin"
   color: "&7"
@@ -95,6 +100,7 @@ ltc:
   maximum: 10000
   minimum: 0.001
   max_supply: 84000000
+  price_multiplier: 1
 usdt:
   name: "Tether"
   color: "&2"
@@ -102,3 +108,4 @@ usdt:
   maximum: 1000000
   minimum: 0.01
   max_supply: 70000000000
+  price_multiplier: 1
