@@ -6,7 +6,7 @@ public class Settings {
 	//Crypto currencies
 	public static HashMap<String, Crypto> cryptos = new HashMap<>();
 	//Crypto mining
-	public static HashMap<String, Mining> mining = new HashMap<>();
+	public static HashMap<String, Mining[]> mining = new HashMap<>();
 
 }
 //

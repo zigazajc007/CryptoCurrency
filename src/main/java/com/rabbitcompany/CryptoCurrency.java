@@ -24,8 +24,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 public final class CryptoCurrency extends JavaPlugin {
 
@@ -131,16 +130,35 @@ public final class CryptoCurrency extends JavaPlugin {
 			new CryptoMiningListener(this);
 
 			//Initialize all crypto mining
-			for (String mining_str : getMining().getKeys(false)) {
-				String crypto = mining_str.toLowerCase(Locale.ROOT);
+			for (String block_str : getMining().getKeys(false)) {
+				String block = block_str.toUpperCase(Locale.ROOT);
 
-				if (!API.isCryptoEnabled(crypto)) continue;
+				for(String crypto_str : getMining().getConfigurationSection(block_str).getKeys(false)) {
+					String crypto = crypto_str.toLowerCase(Locale.ROOT);
 
-				String[] miningDetail = getMining().getString(crypto).split(";");
-				String block = miningDetail[0].toUpperCase(Locale.ROOT);
-				Settings.mining.put(block, new Mining(crypto, block, Double.parseDouble(miningDetail[1])));
+					if (!API.isCryptoEnabled(crypto)) continue;
+
+					Mining[] miningArray = Settings.mining.get(block);
+
+					List<Mining> miningList;
+					if (miningArray == null) {
+						miningList = new ArrayList<>();
+					} else {
+						miningList = new ArrayList<>(Arrays.asList(miningArray));
+					}
+
+					miningList.add(new Mining(
+						crypto,
+						getMining().getDouble(block_str + "." + crypto_str + ".max", 0),
+						getMining().getDouble(block_str + "." + crypto_str + ".min", 0),
+						getMining().getDouble(block_str + "." + crypto_str + ".chance", 0),
+						getMining().getInt(block_str + "." + crypto_str + ".message_type", 1),
+						getMining().getString(block_str + "." + crypto_str + ".message", null)
+					));
+
+					Settings.mining.put(block_str, miningList.toArray(new Mining[0]));
+				}
 			}
-
 		}
 
 		//Sign Shop - Quick Fix

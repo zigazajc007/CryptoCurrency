@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.rabbitcompany.CryptoCurrency;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -13,13 +15,11 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.UUID;
+import java.util.*;
 
 public class API {
 
+	private static final Random random = new Random();
 	public static NumberFormat moneyFormatter = new DecimalFormat("#" + CryptoCurrency.getInstance().getConf().getString("money_format", "###,##0.00"));
 
 	public static boolean isCryptoEnabled(String crypto) {
@@ -149,25 +149,47 @@ public class API {
 
 		if (!Settings.mining.containsKey(material)) return;
 
+		Mining[] cryptoMinings = Settings.mining.get(material);
+		if(cryptoMinings.length == 0) return;
+
+		Mining cryptoMining = cryptoMinings[random.nextInt(cryptoMinings.length)];
+		if(!cryptoMining.isAwarded()) return;
+
 		String UUID = player.getUniqueId().toString();
 		String name = player.getName();
 
-		Mining cryptoMining = Settings.mining.get(material);
 		String crypto = cryptoMining.getCrypto();
 		double amountAdded = cryptoMining.getAmount();
 		double balance = getBalance(name, crypto);
 
 		if (amountAdded > (getCryptoMaxSupply(crypto) - getCryptoSupply(crypto))) return;
 
+		String message = cryptoMining.getMessage();
+		int messageType = cryptoMining.getMessageType();
+
 		if (CryptoCurrency.conn != null) {
 			MySql.setPlayerBalance(UUID, name, getFormatter(crypto).format(balance + amountAdded), crypto);
 			Settings.cryptos.get(crypto).supply += amountAdded;
+			if(message != null){
+				if(messageType == 1){
+					player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Message.chat(message.replace("{amount}", API.getFormatter(crypto).format(amountAdded)))));
+				}else {
+					player.sendMessage(Message.chat(message.replace("{amount}", API.getFormatter(crypto).format(amountAdded))));
+				}
+			}
 			return;
 		}
 
 		Settings.cryptos.get(crypto).wallet.set(UUID, balance + amountAdded);
 		Settings.cryptos.get(crypto).saveWallet();
 		Settings.cryptos.get(crypto).supply += amountAdded;
+		if(message != null){
+			if(messageType == 1){
+				player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(Message.chat(message.replace("{amount}", API.getFormatter(crypto).format(amountAdded)))));
+			}else {
+				player.sendMessage(Message.chat(message.replace("{amount}", API.getFormatter(crypto).format(amountAdded))));
+			}
+		}
 	}
 
 

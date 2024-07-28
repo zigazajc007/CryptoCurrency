@@ -4,12 +4,53 @@
 # This does not work for normal blocks and could lead to infinite mining. Any block that does not drop drops when mined
 # will give infinite mining. That is, if you mine a DIAMOND_BLOCK you will not be able to place it again as it will drop
 # diamonds, if you mine a brick block you will be able to place it again.
-# crypto: block;amount
-btc: DIAMOND_ORE;0.0001
-eth: GOLD_ORE;0.001
-matic: IRON_ORE;1
-algo: COPPER_ORE;5
-sol: REDSTONE_ORE;0.5
-xtz: EMERALD_ORE;5
-link: LAPIS_ORE;1
-ada: COAL_ORE;5
+#
+# item_name:
+#   crypto:
+#     max: maximum amount of cryptos awarded
+#     min: minimum amount of cryptos awarded
+#     chance: award chance in percentages
+#     message_type: 0 for in chat and 1 for in action bar
+#     message: message to be displayed to a player when the reward is received. Use null for no message.
+
+ANCIENT_DEBRIS:
+  btc:
+    max: 1
+    min: 0.1
+    chance: 100
+    message_type: 1
+    message: "&aYou have found &6{amount} BTC"
+  eth:
+    max: 10
+    min: 1
+    chance: 100
+    message_type: 1
+    message: "&aYou have found &b{amount} ETH"
+
+EMERALD_ORE:
+  btc:
+    max: 0.5
+    min: 0.05
+    chance: 90
+    message_type: 1
+    message: "&aYou have found &6{amount} BTC"
+  eth:
+    max: 5
+    min: 0.5
+    chance: 90
+    message_type: 1
+    message: "&aYou have found &b{amount} ETH"
+
+DIAMOND_ORE:
+  btc:
+    max: 0.1
+    min: 0.01
+    chance: 80
+    message_type: 1
+    message: "&aYou have found &6{amount} BTC"
+  eth:
+    max: 1
+    min: 0.1
+    chance: 80
+    message_type: 1
+    message: "&aYou have found &b{amount} ETH"
