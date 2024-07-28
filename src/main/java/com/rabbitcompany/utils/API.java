@@ -16,6 +16,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class API {
 
@@ -149,10 +150,19 @@ public class API {
 
 		if (!Settings.mining.containsKey(material)) return;
 
-		Mining[] cryptoMinings = Settings.mining.get(material);
-		if(cryptoMinings.length == 0) return;
+		String playerGamemode = player.getGameMode().name().toLowerCase(Locale.ROOT);
+		String playerWorld = player.getWorld().getName();
 
-		Mining cryptoMining = cryptoMinings[random.nextInt(cryptoMinings.length)];
+		List<Mining> cryptoMinings = Settings.mining.get(material);
+		if(cryptoMinings == null || cryptoMinings.isEmpty()) return;
+
+		cryptoMinings = cryptoMinings.stream()
+			.filter(cm -> cm.getWorlds().contains(playerWorld))
+			.filter(cm -> cm.getGamemodes().contains(playerGamemode))
+			.collect(Collectors.toList());
+		if(cryptoMinings.isEmpty()) return;
+
+		Mining cryptoMining = cryptoMinings.get(random.nextInt(cryptoMinings.size()));
 		if(!cryptoMining.isAwarded()) return;
 
 		String UUID = player.getUniqueId().toString();

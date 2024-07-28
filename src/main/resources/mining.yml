@@ -2,7 +2,7 @@
 # and amount to be awarded for mining.
 # If they use silk touch they will not be rewarded.
 # This does not work for normal blocks and could lead to infinite mining. Any block that does not drop drops when mined
-# will give infinite mining. That is, if you mine a DIAMOND_BLOCK you will not be able to place it again as it will drop
+# will give infinite mining. That is, if you mine a DIAMOND_ORE you will not be able to place it again as it will drop
 # diamonds, if you mine a brick block you will be able to place it again.
 #
 # item_name:
@@ -12,6 +12,8 @@
 #     chance: award chance in percentages
 #     message_type: 0 for in chat and 1 for in action bar
 #     message: message to be displayed to a player when the reward is received. Use null for no message.
+#     gamemodes: in what gamemodes the crypto can be mined
+#     worlds: list of worlds in which the crypto can be mined
 
 ANCIENT_DEBRIS:
   btc:
@@ -20,12 +22,26 @@ ANCIENT_DEBRIS:
     chance: 100
     message_type: 1
     message: "&aYou have found &6{amount} BTC"
+    gamemodes:
+      - survival
+      - adventure
+    worlds:
+      - world
+      - world_nether
+      - world_the_end
   eth:
     max: 10
     min: 1
     chance: 100
     message_type: 1
     message: "&aYou have found &b{amount} ETH"
+    gamemodes:
+      - survival
+      - adventure
+    worlds:
+      - world
+      - world_nether
+      - world_the_end
 
 EMERALD_ORE:
   btc:
@@ -34,12 +50,26 @@ EMERALD_ORE:
     chance: 90
     message_type: 1
     message: "&aYou have found &6{amount} BTC"
+    gamemodes:
+      - survival
+      - adventure
+    worlds:
+      - world
+      - world_nether
+      - world_the_end
   eth:
     max: 5
     min: 0.5
     chance: 90
     message_type: 1
     message: "&aYou have found &b{amount} ETH"
+    gamemodes:
+      - survival
+      - adventure
+    worlds:
+      - world
+      - world_nether
+      - world_the_end
 
 DIAMOND_ORE:
   btc:
@@ -48,9 +78,23 @@ DIAMOND_ORE:
     chance: 80
     message_type: 1
     message: "&aYou have found &6{amount} BTC"
+    gamemodes:
+      - survival
+      - adventure
+    worlds:
+      - world
+      - world_nether
+      - world_the_end
   eth:
     max: 1
     min: 0.1
     chance: 80
     message_type: 1
     message: "&aYou have found &b{amount} ETH"
+    gamemodes:
+      - survival
+      - adventure
+    worlds:
+      - world
+      - world_nether
+      - world_the_end
