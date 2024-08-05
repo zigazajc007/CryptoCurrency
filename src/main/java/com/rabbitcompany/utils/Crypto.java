@@ -16,6 +16,7 @@ public class Crypto {
 	public double maximum;
 	public double minimum;
 	public double max_supply;
+	public double max_per_player;
 	public double price_multiplier;
 	public double price;
 	public double previousPrice;
@@ -28,7 +29,7 @@ public class Crypto {
 	public File fileHistory;
 	public YamlConfiguration history = new YamlConfiguration();
 
-	public Crypto(String fullName, String name, String color, String format, double maximum, double minimum, double max_supply, double price_multiplier) {
+	public Crypto(String fullName, String name, String color, String format, double maximum, double minimum, double max_supply, double max_per_player, double price_multiplier) {
 		this.fullName = fullName;
 		this.name = name;
 		this.color = color;
@@ -36,6 +37,7 @@ public class Crypto {
 		this.maximum = maximum;
 		this.minimum = minimum;
 		this.max_supply = max_supply;
+		this.max_per_player = max_per_player;
 		this.price_multiplier = price_multiplier;
 
 		initializeWallet();

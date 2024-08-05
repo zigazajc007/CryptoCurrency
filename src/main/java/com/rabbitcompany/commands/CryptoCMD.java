@@ -112,6 +112,9 @@ public class CryptoCMD extends Command {
 					case 12:
 						sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_max_supply_reached").replace("{amount}", API.getFormatter(crypto_type).format(amount_send)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
 						return true;
+					case 13:
+						sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_max_crypto_per_player_reached").replace("{amount}", API.getFormatter(crypto_type).format(Settings.cryptos.get(crypto_type).max_per_player)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+						return true;
 					case 10:
 						sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_send_success").replace("{amount}", API.getFormatter(crypto_type).format(amount_send)).replace("{player}", target).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
 						if (target_player != null && target_player.isOnline())
@@ -277,6 +280,9 @@ public class CryptoCMD extends Command {
 				case 12:
 					sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_max_supply_reached").replace("{amount}", API.getFormatter(crypto_type).format(amount_buy)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
 					return true;
+				case 13:
+					sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_max_crypto_per_player_reached").replace("{amount}", API.getFormatter(crypto_type).format(Settings.cryptos.get(crypto_type).max_per_player)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+					return true;
 				case 10:
 					player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_buy").replace("{amount}", API.getFormatter(crypto_type).format(amount_buy)).replace("{money}", API.moneyFormatter.format(money_price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
 					return true;
@@ -355,6 +361,9 @@ public class CryptoCMD extends Command {
 					return true;
 				case 12:
 					sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_max_supply_reached").replace("{amount}", API.getFormatter(crypto_type).format(amount_send)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
+					return true;
+				case 13:
+					sender.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_max_crypto_per_player_reached").replace("{amount}", API.getFormatter(crypto_type).format(Settings.cryptos.get(crypto_type).max_per_player)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
 					return true;
 				case 10:
 					if (!player.getName().equals(target))

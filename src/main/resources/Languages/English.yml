@@ -70,10 +70,11 @@ message_taken_player: "&aYou have taken {color}{amount} {crypto} &afrom &2{playe
 message_taken_target: "&2{player} &chas taken you {color}{amount} {crypto}&c."
 message_sell: "&aYou have just sold {color}{amount} {crypto} &afor &2${money}&a."
 message_buy: "&aYou have just bought {color}{amount} {crypto} &afor &2${money}&a."
-message_price: "{color}{amount} {crypto} &ais worth &2${money}"
+message_price: "{color}{amount} {crypto} &ais worth &2${money}&a."
 message_maximum: "&cYou can't manage with more than {color}{amount} {crypto}&c."
 message_minimum: "&cYou can't manage with less than {color}{amount} {crypto}&c."
 message_max_supply_reached: "&cYou can't buy {color}{amount} {crypto}&c, because maximum {color}{crypto} &csupply has been reached."
+message_max_crypto_per_player_reached: "&cPlayer can't hold more than {color}{amount} {crypto}&c."
 #----------------------------------------------------------
 #                      Sign Shop
 #----------------------------------------------------------

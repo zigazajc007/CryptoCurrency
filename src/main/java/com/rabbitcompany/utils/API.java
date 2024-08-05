@@ -123,6 +123,11 @@ public class API {
 		return Settings.cryptos.get(crypto).max_supply;
 	}
 
+	public static double getMaxCryptoPerPlayer(String crypto){
+		if (!isCryptoEnabled(crypto)) return 0;
+		return Settings.cryptos.get(crypto).max_per_player;
+	}
+
 	public static double getCryptoMarketCap(String crypto) {
 		if (!isCryptoEnabled(crypto)) return 0;
 		return getCryptoSupply(crypto) * getCryptoPrice(crypto);
@@ -135,6 +140,8 @@ public class API {
 		if (amount > (getCryptoMaxSupply(crypto) - getCryptoSupply(crypto))) return 12;
 		String UUID = getUUID(toPlayer);
 		double balance = getBalance(toPlayer, crypto);
+		if((balance + amount) > getMaxCryptoPerPlayer(crypto)) return 13;
+
 		if (CryptoCurrency.conn != null) {
 			MySql.setPlayerBalance(UUID, toPlayer, getFormatter(crypto).format(balance + amount), crypto);
 			Settings.cryptos.get(crypto).supply += amount;
@@ -173,6 +180,7 @@ public class API {
 		double balance = getBalance(name, crypto);
 
 		if (amountAdded > (getCryptoMaxSupply(crypto) - getCryptoSupply(crypto))) return;
+		if ((balance + amountAdded) > getMaxCryptoPerPlayer(crypto)) return;
 
 		String message = cryptoMining.getMessage();
 		int messageType = cryptoMining.getMessageType();
@@ -212,6 +220,7 @@ public class API {
 		String UUID = getUUID(player);
 		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(player);
 		double balance = getBalance(player, crypto);
+		if((balance + amount) > getMaxCryptoPerPlayer(crypto)) return 13;
 		double player_balance = CryptoCurrency.getEconomy().getBalance(offlinePlayer);
 		double money_price = getCryptoPrice(crypto, amount);
 		if (player_balance < money_price) return 11;

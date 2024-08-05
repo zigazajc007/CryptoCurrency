@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class SignShopListener implements Listener {
 
@@ -187,6 +188,9 @@ public class SignShopListener implements Listener {
 					return;
 				case 3:
 					player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_maximum").replace("{amount}", API.getFormatter(currency).format(Settings.cryptos.get(currency).maximum)).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()));
+					return;
+				case 13:
+					player.sendMessage(Message.getMessage(UUID.randomUUID(), "prefix") + Message.getMessage(UUID.randomUUID(), "message_max_crypto_per_player_reached").replace("{amount}", API.getFormatter(currency).format(Settings.cryptos.get(currency).max_per_player)).replace("{color}", Message.chat(Settings.cryptos.get(currency).color)).replace("{crypto}", currency.toUpperCase()));
 					return;
 				case 10:
 					player.getInventory().removeItem(new ItemStack(material, amount));

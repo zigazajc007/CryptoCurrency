@@ -60,6 +60,7 @@ btc:
   maximum: 100
   minimum: 0.0001
   max_supply: 21000000
+  max_per_player: 1000000
   price_multiplier: 1
 bch:
   name: "Bitcoin Cash"
@@ -68,6 +69,7 @@ bch:
   maximum: 10000
   minimum: 0.0001
   max_supply: 21000000
+  max_per_player: 1000000
   price_multiplier: 1
 eth:
   name: "Ethereum"
@@ -76,6 +78,7 @@ eth:
   maximum: 5000
   minimum: 0.001
   max_supply: 120000000
+  max_per_player: 10000000
   price_multiplier: 1
 etc:
   name: "Ethereum Classic"
@@ -84,6 +87,7 @@ etc:
   maximum: 100000
   minimum: 0.001
   max_supply: 210700000
+  max_per_player: 10000000
   price_multiplier: 1
 doge:
   name: "Dogecoin"
@@ -92,6 +96,7 @@ doge:
   maximum: 1000000
   minimum: 1
   max_supply: 132000000000
+  max_per_player: 10000000000
   price_multiplier: 1
 ltc:
   name: "Litecoin"
@@ -100,6 +105,7 @@ ltc:
   maximum: 10000
   minimum: 0.001
   max_supply: 84000000
+  max_per_player: 10000000
   price_multiplier: 1
 usdt:
   name: "Tether"
@@ -108,4 +114,5 @@ usdt:
   maximum: 1000000
   minimum: 0.01
   max_supply: 70000000000
+  max_per_player: 1000000000
   price_multiplier: 1

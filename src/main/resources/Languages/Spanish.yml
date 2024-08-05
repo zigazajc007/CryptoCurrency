@@ -74,6 +74,7 @@ message_buy: "&aAcabas de comprar {color}{amount} {crypto} &apor &2${money}&a."
 message_price: "{color}{amount} {crypto} &atiene un valor de &2${money}"
 message_maximum: "&cNo puedes usar mas de {color}{amount} {crypto}&c."
 message_minimum: "&cNo puedes usar menos de {color}{amount} {crypto}&c."
+message_max_crypto_per_player_reached: "&cLudanto ne povas teni pli ol {color}{amount} {crypto}&c."
 #----------------------------------------------------------
 #                    Tienda con cartel
 #----------------------------------------------------------

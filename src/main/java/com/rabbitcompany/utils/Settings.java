@@ -8,7 +8,4 @@ public class Settings {
 	public static HashMap<String, Crypto> cryptos = new HashMap<>();
 	//Crypto mining
 	public static HashMap<String, List<Mining>> mining = new HashMap<>();
-
 }
-//
-// contiene el bloque minado en mining.yml?

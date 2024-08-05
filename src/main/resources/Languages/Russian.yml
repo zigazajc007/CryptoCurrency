@@ -75,6 +75,7 @@ message_price: "{color}{amount} {crypto} &aстоит &2${money}"
 message_maximum: "&cВы не можете изменять больше чем {color}{amount} {crypto}&c."
 message_minimum: "&cВы не можете изменять больше чем {color}{amount} {crypto}&c."
 message_max_supply_reached: "&cВы не можете купить {color}{amount} {crypto}&c, потому что {color}{crypto} &cзавершил продажу."
+message_max_crypto_per_player_reached: "&cИгрок не может держать больше {color}{amount} {crypto}&c."
 #----------------------------------------------------------
 #                      Sign Shop
 #----------------------------------------------------------

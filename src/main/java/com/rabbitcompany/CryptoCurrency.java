@@ -89,7 +89,7 @@ public final class CryptoCurrency extends JavaPlugin {
 		//Initialize all crypto currencies
 		Set<String> crypto_keys = getCrypto().getKeys(false);
 		for (String crypto_str : crypto_keys) {
-			Settings.cryptos.put(crypto_str, new Crypto(getCrypto().getString(crypto_str + ".name"), crypto_str, getCrypto().getString(crypto_str + ".color", "6"), getCrypto().getString(crypto_str + ".format", "0.0000"), getCrypto().getDouble(crypto_str + ".maximum", 100), getCrypto().getDouble(crypto_str + ".minimum", 0.0001), getCrypto().getDouble(crypto_str + ".max_supply", 21000000), getCrypto().getDouble(crypto_str + ".price_multiplier", 1)));
+			Settings.cryptos.put(crypto_str, new Crypto(getCrypto().getString(crypto_str + ".name"), crypto_str, getCrypto().getString(crypto_str + ".color", "6"), getCrypto().getString(crypto_str + ".format", "0.0000"), getCrypto().getDouble(crypto_str + ".maximum", 100), getCrypto().getDouble(crypto_str + ".minimum", 0.0001), getCrypto().getDouble(crypto_str + ".max_supply", 21000000), getCrypto().getDouble(crypto_str + ".max_per_player", 1000000), getCrypto().getDouble(crypto_str + ".price_multiplier", 1)));
 		}
 
 		//VaultAPI
