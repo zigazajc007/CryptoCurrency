@@ -1,4 +1,4 @@
-# CryptoCurrency
+![Cryptocurrency](https://cdn.rabbit-company.com/plugins/CryptoCurrency/banner5.png)
 
 ## Plugin Description
 
