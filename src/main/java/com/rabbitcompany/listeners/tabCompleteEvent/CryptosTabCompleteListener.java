@@ -28,20 +28,21 @@ public class CryptosTabCompleteListener implements Listener {
 			List<String> completions = new ArrayList<>();
 
 			if (args.length == 1) {
-				completions.add("balance");
-				completions.add("price");
-				completions.add("send");
-				completions.add("buy");
-				completions.add("sell");
-
+				if (event.getSender().hasPermission("cryptocurrency.balance")) completions.add("balance");
+				if (event.getSender().hasPermission("cryptocurrency.price")) completions.add("price");
+				if (event.getSender().hasPermission("cryptocurrency.send")) completions.add("send");
+				if (event.getSender().hasPermission("cryptocurrency.buy")) completions.add("buy");
+				if (event.getSender().hasPermission("cryptocurrency.sell")) completions.add("sell");
 				if (event.getSender().hasPermission("cryptocurrency.give")) completions.add("give");
 				if (event.getSender().hasPermission("cryptocurrency.take")) completions.add("take");
 				if (event.getSender().hasPermission("cryptocurrency.reload")) completions.add("reload");
 			} else if (args.length == 2) {
 				switch (args[1]) {
 					case "send":
-						for (Player all : Bukkit.getServer().getOnlinePlayers()) {
-							completions.add(all.getName());
+						if (event.getSender().hasPermission("cryptocurrency.send")) {
+							for (Player all : Bukkit.getServer().getOnlinePlayers()) {
+								completions.add(all.getName());
+							}
 						}
 						break;
 					case "give":
@@ -62,7 +63,7 @@ public class CryptosTabCompleteListener implements Listener {
 					case "balance":
 					case "check":
 					case "info":
-						if (event.getSender().hasPermission("cryptocurrency.balance")) {
+						if (event.getSender().hasPermission("cryptocurrency.balance.other")) {
 							for (Player all : Bukkit.getServer().getOnlinePlayers()) {
 								completions.add(all.getName());
 							}

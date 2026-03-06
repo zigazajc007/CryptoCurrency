@@ -18,6 +18,10 @@ public class CryptoMiningListener implements Listener {
 
 	@EventHandler
 	public void onMining(BlockBreakEvent event) {
+		Player player = event.getPlayer();
+		String material = event.getBlock().getType().toString();
+
+		if(!player.hasPermission("cryptocurrency.mining")) return;
 
 		ItemStack tool;
 		if (!Bukkit.getVersion().contains("1.8")) {
@@ -28,11 +32,7 @@ public class CryptoMiningListener implements Listener {
 
 		if (tool.containsEnchantment(Enchantment.SILK_TOUCH)) return;
 
-		String material = event.getBlock().getType().toString();
-		Player player = event.getPlayer();
-
 		API.cryptoMining(player, material);
-
 	}
 
 

@@ -305,9 +305,11 @@ public class API {
 		Bukkit.getScheduler().runTaskTimerAsynchronously(CryptoCurrency.getInstance(), () -> {
 			try {
 				String jsonS = new Scanner(new URL("https://api.coinbase.com/v2/exchange-rates?currency=" + currency).openStream(), "UTF-8").useDelimiter("\\A").next();
+				if(jsonS == null || jsonS.isEmpty()) return;
 
 				Gson gson = new Gson();
 				JsonObject jsonObject = gson.fromJson(jsonS, JsonObject.class);
+				if(jsonObject == null || !jsonObject.has("data")) return;
 
 				for (String cur : Settings.cryptos.keySet()) {
 					String value = jsonObject.getAsJsonObject("data").getAsJsonObject("rates").get(cur.toUpperCase()).getAsString();

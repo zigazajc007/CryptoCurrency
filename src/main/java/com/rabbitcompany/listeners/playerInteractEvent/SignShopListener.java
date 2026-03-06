@@ -84,6 +84,16 @@ public class SignShopListener implements Listener {
 		Player player = event.getPlayer();
 		NumberFormat formatter = new DecimalFormat("#" + Settings.cryptos.get(currency).format);
 
+		if(owner.equals("AdminShop") && !player.hasPermission("cryptocurrency.shop.use.admin")){
+			player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+			return;
+		}
+
+		if(!owner.equals("AdminShop") && !player.hasPermission("cryptocurrency.shop.use")) {
+			player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+			return;
+		}
+
 		if (line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_buy_success"))) || line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_buy_success")))) {
 			if (player.getInventory().firstEmpty() == -1) {
 				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_full_inventory"));

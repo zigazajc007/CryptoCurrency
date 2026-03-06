@@ -306,7 +306,7 @@ public final class CryptoCurrency extends JavaPlugin {
 		text += "&8| &cInformation:\n";
 		text += "&8|\n";
 		text += "&8|   &9Name: &bCryptoCurrency\n";
-		text += "&8|   &9Developer: &bBlack1_TV\n";
+		text += "&8|   &9Developer: &bBlackRabbit3\n";
 		if (!username.contains("%%__")) {
 			text += "&8|   &9Plugin owner: &b" + username + "\n";
 		} else if (!user_id.contains("%%__")) {
@@ -328,7 +328,7 @@ public final class CryptoCurrency extends JavaPlugin {
 		text += "&8| &cSupport:\n";
 		text += "&8|\n";
 		text += "&8|   &9Discord: &bziga.zajc007\n";
-		text += "&8|   &9Mail: &bziga.zajc007@gmail.com\n";
+		text += "&8|   &9Mail: &bziga@zajc.email\n";
 		text += "&8|   &9Discord: &bhttps://discord.gg/hUNymXX\n";
 		text += "&8|\n";
 		text += "&8[]=========================================[]\n";

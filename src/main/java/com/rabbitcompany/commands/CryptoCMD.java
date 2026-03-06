@@ -166,28 +166,43 @@ public class CryptoCMD extends Command {
 		}
 
 		if (args.length == 0 || (args.length == 1 && args[0].equals("help"))) {
+			if (!player.hasPermission("cryptocurrency.help")) {
+				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+				return true;
+			}
+
 			Message.Help(player, crypto_type);
 			return true;
 		}
 
 		if (args.length == 1 && args[0].equals("reload")) {
-			if (player.hasPermission("cryptocurrency.reload")) {
-				CryptoCurrency.getInstance().loadYamls();
-				for (Crypto crypto : Settings.cryptos.values()) crypto.initializeWallet();
-				Mining.initializeMining();
-				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.chat("&aPlugin is reloaded."));
+			if (!player.hasPermission("cryptocurrency.reload")) {
+				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
 				return true;
 			}
-			player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+
+			CryptoCurrency.getInstance().loadYamls();
+			for (Crypto crypto : Settings.cryptos.values()) crypto.initializeWallet();
+			Mining.initializeMining();
+			player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.chat("&aPlugin is reloaded."));
 			return true;
 		}
 
 		if (args.length == 1 && (args[0].equals("price") || args[0].equals("worth"))) {
+			if (!player.hasPermission("cryptocurrency.price")){
+				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+				return true;
+			}
+
 			player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_price").replace("{amount}", "1").replace("{money}", API.moneyFormatter.format(price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
 			return true;
 		}
 
 		if (args.length == 2 && (args[0].equals("price") || args[0].equals("worth"))) {
+			if (!player.hasPermission("cryptocurrency.price")){
+				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+				return true;
+			}
 
 			if (!Number.isNumeric(args[1])) {
 				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_price").replace("{amount}", "1").replace("{money}", API.moneyFormatter.format(price)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
@@ -207,13 +222,17 @@ public class CryptoCMD extends Command {
 
 		balance = API.getBalance(player.getName(), crypto_type);
 		if (args.length == 1 && (args[0].equals("balance") || args[0].equals("bal") || args[0].equals("check") || args[0].equals("info"))) {
+			if (!player.hasPermission("cryptocurrency.balance")) {
+				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+				return true;
+			}
+
 			player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_balance").replace("{amount}", API.getFormatter(crypto_type).format(balance)).replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
 			return true;
 		}
 
 		if (args.length == 2 && (args[0].equals("balance") || args[0].equals("bal") || args[0].equals("check") || args[0].equals("info"))) {
-
-			if (!player.hasPermission("cryptocurrency.balance")) {
+			if (!player.hasPermission("cryptocurrency.balance.other")) {
 				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
 				return true;
 			}
@@ -225,6 +244,10 @@ public class CryptoCMD extends Command {
 		}
 
 		if (args.length == 2 && args[0].equals("sell")) {
+			if (!player.hasPermission("cryptocurrency.sell")) {
+				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+				return true;
+			}
 
 			if (!Number.isNumeric(args[1])) {
 				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "is_not_a_number").replace("{number}", args[1]));
@@ -255,6 +278,10 @@ public class CryptoCMD extends Command {
 		}
 
 		if (args.length == 2 && args[0].equals("buy")) {
+			if (!player.hasPermission("cryptocurrency.buy")) {
+				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+				return true;
+			}
 
 			if (!Number.isNumeric(args[1])) {
 				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "is_not_a_number").replace("{number}", args[1]));
@@ -291,6 +318,11 @@ public class CryptoCMD extends Command {
 		}
 
 		if (args.length == 3 && args[0].equals("send")) {
+			if (!player.hasPermission("cryptocurrency.send")) {
+				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+				return true;
+			}
+
 			if (player.getName().equals(ChatColor.stripColor(args[1]))) {
 				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "message_send_yourself").replace("{color}", Message.chat(Settings.cryptos.get(crypto_type).color)).replace("{crypto}", crypto_type.toUpperCase()));
 				return true;

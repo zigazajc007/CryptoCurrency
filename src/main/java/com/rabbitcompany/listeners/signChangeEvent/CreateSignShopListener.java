@@ -7,6 +7,7 @@ import com.rabbitcompany.utils.Settings;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
@@ -36,6 +37,8 @@ public class CreateSignShopListener implements Listener {
 		if (!line1.equals(cryptoCurrency.getConf().getString("shop_buy_format")) && !line1.equals(cryptoCurrency.getConf().getString("shop_sell_format")) && !line1.equals(cryptoCurrency.getConf().getString("admin_shop_buy_format")) && !line1.equals(cryptoCurrency.getConf().getString("admin_shop_sell_format")))
 			return;
 
+		Player player = event.getPlayer();
+
 		String type;
 		if (line1.equals(cryptoCurrency.getConf().getString("admin_shop_buy_format"))) {
 			type = "admin_shop_buy";
@@ -47,10 +50,15 @@ public class CreateSignShopListener implements Listener {
 			type = "shop_buy";
 		}
 
-		if (type.contains("admin") && !event.getPlayer().hasPermission("cryptocurrency.shop"))
+		if (type.contains("admin") && !event.getPlayer().hasPermission("cryptocurrency.shop.create.admin"))
 			type = type.replace("admin_", "");
 
 		event.setLine(0, Message.chat(cryptoCurrency.getConf().getString(type + "_error")));
+
+		if (!player.hasPermission("cryptocurrency.shop.create")){
+			event.setLine(1, Message.chat("&cMissing permission"));
+			return;
+		}
 
 		if (!Number.isNumeric(line2)) {
 			event.setLine(1, Message.chat("&cInvalid number"));

@@ -18,20 +18,21 @@ public class TabCompletion implements TabCompleter {
 			List<String> completions = new ArrayList<>();
 
 			if (args.length == 1) {
-				completions.add("balance");
-				completions.add("price");
-				completions.add("send");
-				completions.add("buy");
-				completions.add("sell");
-
+				if (commandSender.hasPermission("cryptocurrency.balance")) completions.add("balance");
+				if (commandSender.hasPermission("cryptocurrency.price")) completions.add("price");
+				if (commandSender.hasPermission("cryptocurrency.send")) completions.add("send");
+				if (commandSender.hasPermission("cryptocurrency.buy")) completions.add("buy");
+				if (commandSender.hasPermission("cryptocurrency.sell")) completions.add("sell");
 				if (commandSender.hasPermission("cryptocurrency.give")) completions.add("give");
 				if (commandSender.hasPermission("cryptocurrency.take")) completions.add("take");
 				if (commandSender.hasPermission("cryptocurrency.reload")) completions.add("reload");
 			} else if (args.length == 2) {
 				switch (args[0]) {
 					case "send":
-						for (Player all : Bukkit.getServer().getOnlinePlayers()) {
-							completions.add(all.getName());
+						if (commandSender.hasPermission("cryptocurrency.send")) {
+							for (Player all : Bukkit.getServer().getOnlinePlayers()) {
+								completions.add(all.getName());
+							}
 						}
 						break;
 					case "give":
@@ -52,7 +53,7 @@ public class TabCompletion implements TabCompleter {
 					case "balance":
 					case "check":
 					case "info":
-						if (commandSender.hasPermission("cryptocurrency.balance")) {
+						if (commandSender.hasPermission("cryptocurrency.balance.other")) {
 							for (Player all : Bukkit.getServer().getOnlinePlayers()) {
 								completions.add(all.getName());
 							}

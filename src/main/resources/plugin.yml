@@ -6,3 +6,55 @@ softdepend: [ Vault, PlaceholderAPI ]
 authors: [ Black1_TV ]
 description: Unleash the Crypto Revolution in Minecraft!
 website: https://rabbit-company.com
+permissions:
+  cryptocurrency.help:
+    description: Allow players to see all available commands
+    default: true
+  cryptocurrency.reload:
+    description: Reload the plugin configuration
+    default: op
+  cryptocurrency.price:
+    description: Allow players to see current crypto prices
+    default: true
+  cryptocurrency.balance:
+    description: Allow players to see their crypto balance
+    default: true
+  cryptocurrency.balance.other:
+    description: Allow players to see crypto balance of other players
+    default: op
+  cryptocurrency.sell:
+    description: Allow players to sell their cryptocurrencies
+    default: true
+  cryptocurrency.buy:
+    description: Allow players to buy cryptocurrencies
+    default: true
+  cryptocurrency.send:
+    description: Allow players to send their cryptocurrencies to other players
+    default: true
+  cryptocurrency.give:
+    description: Allow players to give cryptocurrencies to other players
+    default: op
+  cryptocurrency.take:
+    description: Allow players to take cryptocurrencies from other players
+    default: op
+  cryptocurrency.shop.create:
+    description: Allow players to create crypto sign shops
+    default: true
+  cryptocurrency.shop.create.admin:
+    description: Allow players to create admin crypto sign shops
+    default: op
+  cryptocurrency.shop.use:
+    description: Allow players to use crypto sign shops
+    default: true
+  cryptocurrency.shop.use.admin:
+    description: Allow players to use admin crypto sign shops
+    default: true
+  cryptocurrency.shop.break:
+    description: Allow players to break their own crypto sign shops
+    default: true
+  cryptocurrency.shop.break.other:
+    description: Allow players to break crypto sign shops from other players
+    default: op
+  cryptocurrency.mining:
+    description: Allow players to earn cryptocurrencies when mining blocks
+    default: true

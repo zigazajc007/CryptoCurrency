@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -36,13 +37,34 @@ public class BreakShopListener implements Listener {
 		if (!line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("shop_sell_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_buy_success"))) && !line1.equals(Message.chat(cryptoCurrency.getConf().getString("admin_shop_sell_success"))))
 			return;
 
+		Player player = event.getPlayer();
 		String formatted_location = sign.getLocation().getBlockX() + "|" + sign.getLocation().getBlockY() + "|" + sign.getLocation().getBlockZ();
 		String owner = cryptoCurrency.getSignShops().getString(formatted_location, null);
-		if (owner == null || event.getPlayer().getUniqueId().toString().equals(owner) || event.getPlayer().hasPermission("cryptocurrency.shop.break")) {
+
+		if (owner == null) {
 			cryptoCurrency.getSignShops().set(formatted_location, null);
 			cryptoCurrency.saveSignShops();
 			return;
 		}
+
+		if (player.hasPermission("cryptocurrency.shop.break.other")){
+			cryptoCurrency.getSignShops().set(formatted_location, null);
+			cryptoCurrency.saveSignShops();
+			return;
+		}
+
+		if (player.getUniqueId().toString().equals(owner)) {
+			if (!player.hasPermission("cryptocurrency.shop.break")){
+				player.sendMessage(Message.getMessage(player.getUniqueId(), "prefix") + Message.getMessage(player.getUniqueId(), "permission"));
+				event.setCancelled(true);
+				return;
+			}
+
+			cryptoCurrency.getSignShops().set(formatted_location, null);
+			cryptoCurrency.saveSignShops();
+			return;
+		}
+
 		event.setCancelled(true);
 	}
 
