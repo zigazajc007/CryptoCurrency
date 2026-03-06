@@ -301,6 +301,73 @@ public class API {
 		return 10;
 	}
 
+	public static void startRabbitForexPriceFetcher(String currency) {
+		Bukkit.getScheduler().runTaskTimerAsynchronously(CryptoCurrency.getInstance(), () -> {
+			try {
+				String jsonS = new Scanner(new URL("https://forex.rabbitmonitor.com/v1/crypto/rates/" + currency).openStream(), "UTF-8").useDelimiter("\\A").next();
+				if (jsonS == null || jsonS.isEmpty()) return;
+
+				Gson gson = new Gson();
+				JsonObject jsonObject = gson.fromJson(jsonS, JsonObject.class);
+				if (jsonObject == null || !jsonObject.has("rates")) return;
+
+				for (String cur : Settings.cryptos.keySet()) {
+					if (!jsonObject.getAsJsonObject("rates").has(cur.toUpperCase())) continue;
+					String value = jsonObject.getAsJsonObject("rates").get(cur.toUpperCase()).getAsString();
+					double price = (1 / Double.parseDouble(value)) * Settings.cryptos.get(cur).price_multiplier;
+					Settings.cryptos.get(cur).previousPrice = Settings.cryptos.get(cur).price;
+					Settings.cryptos.get(cur).price = price;
+
+					if (!CryptoCurrency.getInstance().getConf().getBoolean("monitor_history", true)) continue;
+					double max = Settings.cryptos.get(cur).history.getDouble(LocalDate.now() + ".max", Double.MIN_VALUE);
+					double min = Settings.cryptos.get(cur).history.getDouble(LocalDate.now() + ".min", Double.MAX_VALUE);
+					if (price > max)
+						Settings.cryptos.get(cur).history.set(LocalDate.now() + ".max", Number.roundDouble(price, 2));
+					if (price < min)
+						Settings.cryptos.get(cur).history.set(LocalDate.now() + ".min", Number.roundDouble(price, 2));
+					if (Settings.cryptos.get(cur).history.getDouble(LocalDate.now() + ".open", 0) == 0)
+						Settings.cryptos.get(cur).history.set(LocalDate.now() + ".open", price);
+					Settings.cryptos.get(cur).history.set(LocalDate.now() + ".close", price);
+					Settings.cryptos.get(cur).history.set(LocalDate.now() + ".avg", Number.roundDouble((max + min) / 2.0, 2));
+					Settings.cryptos.get(cur).saveHistory();
+				}
+
+			} catch (IOException ignored) {}
+		}, 0L, 20L * CryptoCurrency.getInstance().getConf().getInt("price_fetch", 30));
+	}
+
+	public static void fetchRabbitForexHistory(String currency) {
+		Bukkit.getScheduler().runTaskAsynchronously(CryptoCurrency.getInstance(), () -> {
+			for (String cur : Settings.cryptos.keySet()) {
+				try {
+					String jsonS = new Scanner(new URL("https://forex.rabbitmonitor.com/v1/crypto/history/" + cur.toUpperCase() + "/currency/" + currency + "/daily").openStream(), "UTF-8").useDelimiter("\\A").next();
+					if (jsonS == null || jsonS.isEmpty()) continue;
+
+					Gson gson = new Gson();
+					JsonObject jsonObject = gson.fromJson(jsonS, JsonObject.class);
+					if (jsonObject == null || !jsonObject.has("data")) continue;
+
+					JsonArray dataArray = jsonObject.getAsJsonArray("data");
+					for (int i = 0; i < dataArray.size(); i++) {
+						JsonObject entry = dataArray.get(i).getAsJsonObject();
+						String date = entry.get("timestamp").getAsString();
+
+						// Skip today --> let the live price fetcher handle the current day
+						if (date.equals(LocalDate.now().toString())) continue;
+
+						double multiplier = Settings.cryptos.get(cur).price_multiplier;
+						Settings.cryptos.get(cur).history.set(date + ".max", Number.roundDouble(entry.get("max").getAsDouble() * multiplier, 2));
+						Settings.cryptos.get(cur).history.set(date + ".min", Number.roundDouble(entry.get("min").getAsDouble() * multiplier, 2));
+						Settings.cryptos.get(cur).history.set(date + ".open", Number.roundDouble(entry.get("open").getAsDouble() * multiplier, 2));
+						Settings.cryptos.get(cur).history.set(date + ".close", Number.roundDouble(entry.get("close").getAsDouble() * multiplier, 2));
+						Settings.cryptos.get(cur).history.set(date + ".avg", Number.roundDouble(entry.get("avg").getAsDouble() * multiplier, 2));
+					}
+					Settings.cryptos.get(cur).saveHistory();
+				} catch (IOException ignored) {}
+			}
+		});
+	}
+
 	public static void startCoinbasePriceFetcher(String currency) {
 		Bukkit.getScheduler().runTaskTimerAsynchronously(CryptoCurrency.getInstance(), () -> {
 			try {

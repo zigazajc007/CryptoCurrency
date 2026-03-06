@@ -6,7 +6,7 @@
 
     <groupId>com.rabbitcompany</groupId>
     <artifactId>CryptoCurrency</artifactId>
-    <version>6.0.0</version>
+    <version>7.0.0</version>
     <packaging>jar</packaging>
 
     <name>CryptoCurrency</name>

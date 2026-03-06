@@ -165,15 +165,20 @@ public final class CryptoCurrency extends JavaPlugin {
 			info("&aEnabling");
 		});
 
-		if (getConf().getInt("crypto_exchange", 1) == 2) {
+		int exchange = getConf().getInt("crypto_exchange", 1);
+		if (exchange == 3) {
 			API.getBinanceArrayPositions();
 			API.startBinancePriceFetcher();
-		} else {
+		} else if (exchange == 2) {
 			API.startCoinbasePriceFetcher(API.getAPICurrency());
+		} else {
+			API.startRabbitForexPriceFetcher(API.getAPICurrency());
+			if (getConf().getBoolean("monitor_history", true)) {
+				API.fetchRabbitForexHistory(API.getAPICurrency());
+			}
 		}
 
 		API.startSupplyCalculator();
-
 	}
 
 	@Override
